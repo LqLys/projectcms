@@ -1,0 +1,59 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="role-insert_001" author="lq">
+        <insert tableName="ROLES">
+            <column name="name" value="ADMIN"/>
+            <column name="description" value="admin"/>
+        </insert>
+        <insert tableName="ROLES">
+            <column name="name" value="MODERATOR"/>
+            <column name="description" value="moderator"/>
+        </insert>
+        <insert tableName="ROLES">
+            <column name="name" value="USER"/>
+            <column name="description" value="user"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="user-insert_001" author="lq">
+        <insert tableName="USERS">
+            <column name="username" value="jacek"></column>
+            <column name="password" value="qwert"></column>
+            <column name="email" value="jacek@wp.pl"></column>
+            <column name="active" value="true"></column>
+        </insert>
+        <insert tableName="USERS">
+            <column name="username" value="placek"></column>
+            <column name="password" value="qwert"></column>
+            <column name="email" value="placek@wp.pl"></column>
+            <column name="active" value="true"></column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="user-role-insert_001" author="lq">
+        <insert tableName="USER_ROLE">
+            <column name="user_id" valueComputed="(select id from users where email = 'jacek@wp.pl')"></column>
+            <column name="role_id" valueComputed="(select id from roles where name = 'ADMIN')"></column>
+        </insert>
+        <insert tableName="USER_ROLE">
+            <column name="user_id" valueComputed="(select id from users where email = 'jacek@wp.pl')"></column>
+            <column name="role_id" valueComputed="(select id from roles where name = 'MODERATOR')"></column>
+        </insert>
+        <insert tableName="USER_ROLE">
+            <column name="user_id" valueComputed="(select id from users where email = 'jacek@wp.pl')"></column>
+            <column name="role_id" valueComputed="(select id from roles where name = 'USER')"></column>
+        </insert>
+        <insert tableName="USER_ROLE">
+            <column name="user_id" valueComputed="(select id from users where email = 'placek@wp.pl')"></column>
+            <column name="role_id" valueComputed="(select id from roles where name = 'USER')"></column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

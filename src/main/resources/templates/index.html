@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Registration Form</title>
+	<!--<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" th:href="@{/}">Home Page</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li><a th:href="@{/results}">Results</a></li>
+			<li><a th:href="@{/customers}" sec:authorize="hasAuthority('OFFICE_WORKER')">Klienci</a></li>
+			<li><a th:href="@{/employees(type='MECHANIC')}" sec:authorize="hasAuthority('OWNER')">Pracownicy</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+			<li sec:authorize="isAnonymous()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		</ul>
+	</div>
+</nav>
+
+
+<div sec:authorize="isAuthenticated()">
+	<a class="btn btn-success"th:href="@{/dashboard}">Dashboard</a>
+</div>
+
+<div sec:authorize="isAnonymous()">
+	<a class="btn btn-success" th:href="@{/login}">Login</a>
+	<a class="btn btn-primary" th:href="@{/register}">Register</a>
+</div>
+<!--<div sec:authentication="name">-->
+	<!--The value of the "name" property of the authentication object should appear here.-->
+<!--</div>-->
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+	<div class="col-md-10 col-md-offset-2">
+		<h2>siema</h2>
+	</div>
+</div>
+<div sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
+	<p>MAKA PAKA</p>
+</div>
+
+
+<div class="row" sec:authorize="hasAuthority('ADMIN')">
+	<div class="col-md-10 col-md-offset-2">
+		<h2>User Has Authority Admin</h2>
+	</div>
+</div>
+<div class="row" sec:authorize="hasAuthority('OWNER')">
+	<div class="col-md-10 col-md-offset-2">
+		<h2>siema owner</h2>
+	</div>
+</div>
+<div sec:authorize="isAuthenticated()">
+	<p>USER IS AUTHENTICATED</p>
+</div>
+
+<div sec:authorize="!isAuthenticated()">
+	<p>USER IS NOT AUTHENTICATED</p>
+</div>
+
+<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+<div sec:authorize="isAuthenticated()">
+	Text visible only to authenticated users.
+</div>
+Authenticated username:
+<div sec:authentication="name"></div>
+Authenticated user roles:
+<th:block th:each="r, iter:${#authentication.getAuthorities()}">
+	<span th:text="${r}"></span>
+	<th:block th:if="${!iter.last}">, </th:block>
+</th:block>
+
+
+
+
+
+<!--&lt;!&ndash; jQuery &ndash;&gt;-->
+<!--<script src="../../vendor/jquery/jquery.min.js"></script>-->
+
+<!--&lt;!&ndash; Bootstrap Core JavaScript &ndash;&gt;-->
+<!--<script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>-->
+
+<!--&lt;!&ndash; Metis Menu Plugin JavaScript &ndash;&gt;-->
+<!--<script src="../../vendor/metisMenu/metisMenu.min.js"></script>-->
+
+<!--&lt;!&ndash; DataTables JavaScripta &ndash;&gt;-->
+<!--<script src="../../vendor/datatables/js/jquery.dataTables.min.js"></script>-->
+<!--<script-->
+		<!--src="../../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>-->
+<!--<script-->
+		<!--src="../../vendor/datatables-responsive/dataTables.responsive.js"></script>-->
+
+<!--&lt;!&ndash; Custom Theme JavaScript &ndash;&gt;-->
+<!--<script src="../../dist/js/sb-admin-2.js"></script>-->
+
+
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<!--<script>-->
+	<!--$(document).ready(function() {-->
+		<!--$('#dataTables-example').DataTable({-->
+			<!--responsive : true-->
+		<!--});-->
+	<!--});-->
+<!--</script>-->
+</body>
+</html>

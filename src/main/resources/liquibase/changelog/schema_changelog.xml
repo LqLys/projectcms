@@ -1,0 +1,66 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="user_creation_001" author="lq">
+        <createSequence sequenceName="SEQ_USER" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="USERS">
+            <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_USER">
+                <constraints primaryKey="true" primaryKeyName="PK_USER"/>
+            </column>
+            <column name="USERNAME" type="varchar2(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="varchar2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="varchar2(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="ACTIVE" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="role_creation_001" author="lq">
+        <createSequence sequenceName="SEQ_ROLE" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="ROLES">
+            <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_ROLE">
+                <constraints primaryKey="true" primaryKeyName="PK_ROLE"/>
+            </column>
+            <column name="NAME" type="varchar2(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar2(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="user_role_association_creation_001" author="lq">
+        <createTable tableName="USER_ROLE">
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="USER_ROLE" columnNames="USER_ID, ROLE_ID"/>
+
+        <addForeignKeyConstraint baseTableName="USER_ROLE" baseColumnNames="USER_ID"
+                                 constraintName="FK_USER_ROLE_USER" referencedTableName="USERS"
+                                 referencedColumnNames="ID"/>
+        <addForeignKeyConstraint baseTableName="USER_ROLE" baseColumnNames="ROLE_ID"
+                                 constraintName="FK_USER_ROLE_ROLES" referencedTableName="ROLES"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+
+</databaseChangeLog>
