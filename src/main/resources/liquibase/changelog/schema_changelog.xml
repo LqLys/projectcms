@@ -14,7 +14,10 @@
             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_USER">
                 <constraints primaryKey="true" primaryKeyName="PK_USER"/>
             </column>
-            <column name="USERNAME" type="varchar2(255)">
+            <column name="FIRST_NAME" type="varchar2(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="varchar2(255)">
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="PASSWORD" type="varchar2(255)">

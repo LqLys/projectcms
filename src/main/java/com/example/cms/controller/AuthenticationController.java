@@ -57,7 +57,6 @@ public class AuthenticationController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
-            user.setUsername("TEMPUSERNAME" + LocalDateTime.now().toString());
             userService.saveUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new UserEntity());
