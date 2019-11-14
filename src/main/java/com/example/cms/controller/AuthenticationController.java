@@ -38,28 +38,27 @@ public class AuthenticationController {
     @RequestMapping(value="/registration", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
-        UserEntity user = new UserEntity();
-        modelAndView.addObject("user", user);
+        UserEntity userEntity = new UserEntity();
+        modelAndView.addObject("userEntity", userEntity);
 
         modelAndView.setViewName("registration");
         return modelAndView;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid UserEntity user, BindingResult bindingResult) {
+    public ModelAndView createNewUser(@Valid UserEntity userEntity, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        UserEntity userExists = userService.findUserByEmail(user.getEmail());
+        UserEntity userExists = userService.findUserByEmail(userEntity.getEmail());
         if (userExists != null) {
-            bindingResult
-                    .rejectValue("email", "error.user",
+            bindingResult.rejectValue("email", "error.userEntity",
                             "There is already a user registered with the email provided");
         }
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
-            userService.saveUser(user);
+            userService.saveUser(userEntity);
             modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new UserEntity());
+            modelAndView.addObject("userEntity", new UserEntity());
             modelAndView.setViewName("registration");
 
         }
