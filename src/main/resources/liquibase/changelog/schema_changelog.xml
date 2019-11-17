@@ -1,4 +1,4 @@
-<databaseChangeLog
+ <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -65,5 +65,60 @@
                                  constraintName="FK_USER_ROLE_ROLES" referencedTableName="ROLES"
                                  referencedColumnNames="ID"/>
     </changeSet>
+
+     <changeSet id="travel_group_creation_001" author="lq">
+         <createSequence sequenceName="SEQ_TRAVEL_GROUP" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="TRAVEL_GROUP">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_TRAVEL_GROUP">
+                 <constraints primaryKey="true" primaryKeyName="PK_TRAVEL_GROUP"/>
+             </column>
+             <column name="NAME" type="varchar2(255)">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="DESTINATION" type="varchar2(255)">
+
+             </column>
+             <column name="SIGN_OUT_DEADLINE" type="date">
+             </column>
+             <column name="START_DATE" type="date">
+             </column>
+             <column name="END_DATE" type="date">
+             </column>
+             <column name="GROUP_VISIBILITY" type="varchar2(255)">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="GROUP_STATUS" type="varchar2(255)">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="DEBT_LIMIT" type="decimal">
+             </column>
+         </createTable>
+     </changeSet>
+
+     <changeSet id="user_travel_group_association_creation_001" author="lq">
+         <createTable tableName="USER_TRAVEL_GROUP">
+             <column name="USER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="TRAVEL_GROUP_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="GROUP_ROLE" type="varchar(50)">
+                 <constraints nullable="false"/>
+             </column>
+         </createTable>
+
+         <addPrimaryKey tableName="USER_TRAVEL_GROUP" columnNames="USER_ID, TRAVEL_GROUP_ID"/>
+
+         <addForeignKeyConstraint baseTableName="USER_TRAVEL_GROUP" baseColumnNames="USER_ID"
+                                  constraintName="FK_USER_TRAVEL_GROUP_USER"
+                                  referencedTableName="USERS"
+                                  referencedColumnNames="ID"/>
+         <addForeignKeyConstraint baseTableName="USER_TRAVEL_GROUP" baseColumnNames="TRAVEL_GROUP_ID"
+                                  constraintName="FK_USER_TRAVEL_GROUP_TRAVEL_GROUP"
+                                  referencedTableName="TRAVEL_GROUP"
+                                  referencedColumnNames="ID"/>
+     </changeSet>
 
 </databaseChangeLog>

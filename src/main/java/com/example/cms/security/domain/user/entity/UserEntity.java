@@ -1,6 +1,7 @@
 package com.example.cms.security.domain.user.entity;
 
 import com.example.cms.security.domain.role.entity.RoleEntity;
+import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,8 +44,11 @@ public class UserEntity {
     inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
     private List<RoleEntity> roles;
 
-
-
+    @ManyToMany
+    @JoinTable(name = "USER_TRAVEL_GROUP",
+    joinColumns = {@JoinColumn(name = "USER_ID")},
+    inverseJoinColumns = {@JoinColumn(name = "TRAVEL_GROUP_ID")})
+    private List<TravelGroupEntity> travelGroups;
 
 
 

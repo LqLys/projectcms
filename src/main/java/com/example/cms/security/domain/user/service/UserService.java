@@ -5,6 +5,8 @@ import com.example.cms.security.domain.role.repository.RoleRepository;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +44,10 @@ public class UserService {
     public UserEntity findUserById(Long id) {
         return userRepository.getById(id);
 
+    }
+
+    public UserEntity getAuthenticatedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         return findUserByEmail(auth.getName());
     }
 }
