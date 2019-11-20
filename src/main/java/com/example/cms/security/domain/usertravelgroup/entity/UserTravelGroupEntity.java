@@ -1,6 +1,7 @@
 package com.example.cms.security.domain.usertravelgroup.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "USER_TRAVEL_GROUP")
 public class UserTravelGroupEntity {
 

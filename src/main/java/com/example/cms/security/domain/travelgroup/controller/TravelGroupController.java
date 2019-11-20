@@ -5,6 +5,7 @@ import com.example.cms.security.domain.travelgroup.dto.TravelGroupDto;
 import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
+import io.swagger.models.Model;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -35,18 +36,20 @@ public class TravelGroupController {
         UserEntity user = userService.findUserByEmail(auth.getName());
 
         List<TravelGroupDto> travelGroups = travelGroupFacade.getTravelGroups(user.getId());
+        modelAndView.addObject("newTravelGroup", new CreateTravelGroupRequest());
         modelAndView.addObject("travelGroups", travelGroups);
         modelAndView.setViewName("group/groups");
         return modelAndView;
     }
 
-    @PostMapping(path = "/group")
+    @PostMapping(path = "")
     public ModelAndView createGroup(@Valid CreateTravelGroupRequest createTravelGroupRequest,
-                                    BindingResult bindingResult){
+                                    BindingResult bindingResult, ModelAndView modelAndView){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userService.getAuthenticatedUser();
         travelGroupFacade.createTravelGroup(createTravelGroupRequest, user);
-        return new ModelAndView();
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
     }
 
 
