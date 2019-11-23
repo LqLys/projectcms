@@ -6,6 +6,7 @@ import com.example.cms.security.domain.travelgroup.entity.GroupStatus;
 import com.example.cms.security.domain.travelgroup.entity.GroupVisibility;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.travelgroup.mapper.TravelGroupMapper;
+import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
 import com.example.cms.security.domain.travelgroup.service.TravelGroupService;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.usertravelgroup.service.UserTravelGroupService;
@@ -42,5 +43,9 @@ public class TravelGroupFacade {
 
         userTravelGroupService.createTravelGroup(user.getId(), travelGroup.getId());
 
+    }
+
+    public List<UserGroupsDto> getUserGroupRoles(Long userId){
+        return travelGroupService.gerUserGroupRoles(userId);
     }
 }

@@ -2,30 +2,132 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-inverse" th:fragment="header">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" th:href="@{/}">Home Page</a>
-		</div>
-		<ul class="nav navbar-nav">
-			<li><a th:href="@{/customers}" sec:authorize="hasAuthority('OFFICE_WORKER')">Klienci</a></li>
-			<li><a th:href="@{/services}" sec:authorize="hasAuthority('OFFICE_WORKER')">Usługi</a></li>
-			<li><a th:href="@{/employees(type='MECHANIC')}" sec:authorize="hasAuthority('OWNER')">Pracownicy</a></li>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="header">
+	<a class="navbar-brand" href="javascript:void(0)">Logo</a>
+	<button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" aria-expanded="false">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="navbar-collapse collapse" id="navb" style="">
+		<!--<ul class="navbar-nav mr-auto">-->
+			<!--<li class="nav-item">-->
+				<!--<a class="nav-link" href="javascript:void(0)">Link</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item">-->
+				<!--<a class="nav-link" href="javascript:void(0)">Link</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item">-->
+				<!--<a class="nav-link disabled" href="javascript:void(0)">Disabled</a>-->
+			<!--</li>-->
+		<!--</ul>-->
+		<ul class="navbar-nav mr-auto">
+
 		</ul>
-		<ul class="nav navbar-nav navbar-right">
-			<li sec:authorize="!isAuthenticated()"><a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-			<li sec:authorize="isAnonymous()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/group/groups}">Grupy</a></li>
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Profil</a></li>
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		<ul class="navbar-nav my-2 my-lg-0">
+			<li class="nav-item" sec:authorize="!isAuthenticated()">
+				<a class="nav-link active" th:href="@{/registration}">Sign Up</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAnonymous()">
+				<a class="nav-link" th:href="@{/login}">Login</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/friends}">Znajomi</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/expenses}">Wydatki</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/group/groups}">Grupy</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/profile}">Profil</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/logout}">Logout</a>
+			</li>
+
 		</ul>
 	</div>
 </nav>
+
+<!--<nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="header">-->
+	<!--&lt;!&ndash; Brand/logo &ndash;&gt;-->
+	<!--<a class="navbar-brand" href="#">-->
+		<!--<img src="bird.jpg" alt="logo" style="width:40px;">-->
+	<!--</a>-->
+	<!--<ul class="nav justify-content-end">-->
+		<!--<li class="nav-item" sec:authorize="!isAuthenticated()">-->
+			<!--<a class="nav-link active" th:href="@{/registration}">Sign Up</a>-->
+		<!--</li>-->
+		<!--<li class="nav-item" sec:authorize="isAnonymous()">-->
+			<!--<a class="nav-link" th:href="@{/login}">Login</a>-->
+		<!--</li>-->
+		<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+			<!--<a class="nav-link" th:href="@{/friends}">Znajomi</a>-->
+		<!--</li>-->
+		<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+			<!--<a class="nav-link" th:href="@{/expenses}">Wydatki</a>-->
+		<!--</li>-->
+		<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+			<!--<a class="nav-link" th:href="@{/group/groups}">Grupy</a>-->
+		<!--</li>-->
+		<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+			<!--<a class="nav-link" th:href="@{/profile}">Profil</a>-->
+		<!--</li>-->
+		<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+			<!--<a class="nav-link" th:href="@{/logout}">Logout</a>-->
+		<!--</li>-->
+	<!--</ul>-->
+
+	<!--&lt;!&ndash; Links &ndash;&gt;-->
+	<!--&lt;!&ndash;<ul class="navbar-nav justify-content-end">&ndash;&gt;-->
+		<!--&lt;!&ndash;<li sec:authorize="!isAuthenticated()" class="nav-item"><a th:href="@{/registration}"><span class="nav-link"></span> Sign Up</a></li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li sec:authorize="isAnonymous()" class="nav-item"><a th:href="@{/login}"><span class="nav-link"></span> Login</a></li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/friends}" class="nav-link">Znajomi</a></li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/expenses}" class="nav-link">Wydatki</a></li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/group/groups}" class="nav-link">Grupy</a></li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/profile}" class="nav-link">Profil</a></li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li sec:authorize="isAuthenticated()" class="nav-item"><a th:href="@{/logout}" class="nav-link"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>&ndash;&gt;-->
+	<!--&lt;!&ndash;</ul>&ndash;&gt;-->
+<!--</nav>-->
+<!--<nav class="navbar navbar-inverse" th:fragment="header">-->
+	<!--<div class="container-fluid">-->
+		<!--<div class="navbar-header">-->
+			<!--<a class="navbar-brand" th:href="@{/}">On The Way</a>-->
+		<!--</div>-->
+		<!--<ul class="nav navbar-nav">-->
+			<!--<li><a th:href="@{/customers}" sec:authorize="hasAuthority('OFFICE_WORKER')">Klienci</a></li>-->
+			<!--<li><a th:href="@{/services}" sec:authorize="hasAuthority('OFFICE_WORKER')">Usługi</a></li>-->
+			<!--<li><a th:href="@{/employees(type='MECHANIC')}" sec:authorize="hasAuthority('OWNER')">Pracownicy</a></li>-->
+		<!--</ul>-->
+		<!--<ul class="nav navbar-nav navbar-right">-->
+			<!--<li sec:authorize="!isAuthenticated()"><a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>-->
+			<!--<li sec:authorize="isAnonymous()"><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+			<!--<li sec:authorize="isAuthenticated()"><a th:href="@{/friends}">Znajomi</a></li>-->
+			<!--<li sec:authorize="isAuthenticated()"><a th:href="@{/expenses}">Wydatki</a></li>-->
+			<!--<li sec:authorize="isAuthenticated()"><a th:href="@{/group/groups}">Grupy</a></li>-->
+			<!--<li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Profil</a></li>-->
+			<!--<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>-->
+		<!--</ul>-->
+	<!--</div>-->
+<!--</nav>-->
 
 </body>
 </html>

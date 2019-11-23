@@ -3,6 +3,7 @@ package com.example.cms.security.domain.travelgroup.controller;
 import com.example.cms.security.domain.travelgroup.dto.CreateTravelGroupRequest;
 import com.example.cms.security.domain.travelgroup.dto.TravelGroupDto;
 import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
+import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
 import io.swagger.models.Model;
@@ -35,7 +36,7 @@ public class TravelGroupController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userService.findUserByEmail(auth.getName());
 
-        List<TravelGroupDto> travelGroups = travelGroupFacade.getTravelGroups(user.getId());
+        List<UserGroupsDto> travelGroups = travelGroupFacade.getUserGroupRoles(user.getId());
         modelAndView.addObject("newTravelGroup", new CreateTravelGroupRequest());
         modelAndView.addObject("travelGroups", travelGroups);
         modelAndView.setViewName("group/groups");
@@ -48,7 +49,7 @@ public class TravelGroupController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userService.getAuthenticatedUser();
         travelGroupFacade.createTravelGroup(createTravelGroupRequest, user);
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/group/groups");
         return modelAndView;
     }
 
