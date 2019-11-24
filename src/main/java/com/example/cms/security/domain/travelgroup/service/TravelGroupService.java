@@ -34,4 +34,12 @@ public class TravelGroupService {
     public List<GroupDetailsMembers> getGroupDetailsMembers(Long groupId) {
         return travelGroupRepository.getGroupDetailsMembers(groupId);
     }
+
+    public TravelGroupEntity findTravelGroup(Long groupId) {
+        return travelGroupRepository.getOne(groupId);
+    }
+
+    public void save(TravelGroupEntity travelGroup) {
+        travelGroupRepository.save(travelGroup);
+    }
 }

@@ -50,4 +50,8 @@ public class UserService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
          return findUserByEmail(auth.getName());
     }
+
+    public void save(UserEntity invitationTarget) {
+        userRepository.save(invitationTarget);
+    }
 }

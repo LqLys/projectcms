@@ -24,4 +24,12 @@ public class UserTravelGroupService {
                 .build();
         userTravelGroupRepository.save(userTravelGroup);
     }
+
+    public UserTravelGroupEntity getUserTravelGroupByGroupId(Long groupId) {
+        return userTravelGroupRepository.findById_TravelGroupId(groupId);
+    }
+
+    public void addUserToGroup(UserTravelGroupEntity userInGroup) {
+        userTravelGroupRepository.save(userInGroup);
+    }
 }

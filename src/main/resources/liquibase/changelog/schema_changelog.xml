@@ -121,4 +121,29 @@
                                   referencedColumnNames="ID"/>
      </changeSet>
 
+     <changeSet id="group_invitation_001" author="lq">
+         <createSequence sequenceName="SEQ_GROUP_INVITE" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="GROUP_INVITE">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_GROUP_INVITE">
+                 <constraints primaryKey="true" primaryKeyName="PK_GROUP_INVITE"/>
+             </column>
+             <column name="STATUS" type="varchar2(255)">
+                 <constraints  nullable="false"/>
+             </column>
+             <column name="INVITATION_SOURCE_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="INVITATION_TARGET_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="TRAVEL_GROUP_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+         </createTable>
+     </changeSet>
+
+
+
+
 </databaseChangeLog>

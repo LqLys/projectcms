@@ -1,5 +1,6 @@
 package com.example.cms.security.domain.user.entity;
 
+import com.example.cms.security.domain.groupinvite.entity.GroupInviteEntity;
 import com.example.cms.security.domain.role.entity.RoleEntity;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import lombok.AllArgsConstructor;
@@ -49,6 +50,12 @@ public class UserEntity {
     joinColumns = {@JoinColumn(name = "USER_ID")},
     inverseJoinColumns = {@JoinColumn(name = "TRAVEL_GROUP_ID")})
     private List<TravelGroupEntity> travelGroups;
+
+    @OneToMany(mappedBy = "invitationSource", cascade = CascadeType.ALL)
+    private List<GroupInviteEntity> sendInvitations;
+
+    @OneToMany(mappedBy = "invitationTarget", cascade = CascadeType.ALL)
+    private List<GroupInviteEntity> receivedInvitations;
 
 
 

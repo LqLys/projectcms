@@ -1,13 +1,11 @@
 package com.example.cms.security.domain.travelgroup.controller;
 
-import com.example.cms.security.domain.travelgroup.dto.CreateTravelGroupRequest;
-import com.example.cms.security.domain.travelgroup.dto.GroupDetailsMembers;
-import com.example.cms.security.domain.travelgroup.dto.TravelGroupDto;
+import com.example.cms.security.domain.groupinvite.facade.GroupInviteFacade;
+import com.example.cms.security.domain.travelgroup.dto.*;
 import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
-import io.swagger.models.Model;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,10 +24,12 @@ import java.util.List;
 public class TravelGroupController {
 
     private final TravelGroupFacade travelGroupFacade;
+    private final GroupInviteFacade groupInviteFacade;
     private final UserService userService;
 
-    public TravelGroupController(TravelGroupFacade travelGroupFacade, UserService userService) {
+    public TravelGroupController(TravelGroupFacade travelGroupFacade, GroupInviteFacade groupInviteFacade, UserService userService) {
         this.travelGroupFacade = travelGroupFacade;
+        this.groupInviteFacade = groupInviteFacade;
         this.userService = userService;
     }
 
@@ -39,7 +39,10 @@ public class TravelGroupController {
         UserEntity user = userService.findUserByEmail(auth.getName());
 
         List<UserGroupsDto> travelGroups = travelGroupFacade.getUserGroupRoles(user.getId());
+        List<GroupInviteDto> pendingInvites = groupInviteFacade.getUsersPendingInvites(user.getId());
         modelAndView.addObject("newTravelGroup", new CreateTravelGroupRequest());
+        modelAndView.addObject("pendingInvites", pendingInvites);
+        modelAndView.addObject("statusChangeRequest", new GroupInviteStatusChangeRequest());
         modelAndView.addObject("travelGroups", travelGroups);
         modelAndView.setViewName("group/groups");
         return modelAndView;
@@ -59,9 +62,29 @@ public class TravelGroupController {
     public ModelAndView getGroupDetailMembers(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
         List<GroupDetailsMembers> groupDetailsMembers = travelGroupFacade.getGroupDetailsMembers(groupId);
         modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
+        modelAndView.addObject("groupId", groupId);
+        modelAndView.addObject("groupInvitation", new GroupInviteRequest());
         modelAndView.setViewName("group/groupDetailsMembers");
         return modelAndView;
 
+    }
+
+    @PostMapping(path = "/invite")
+    public ModelAndView sendInvitation(@Valid GroupInviteRequest groupInviteRequest, BindingResult bindingResult,
+                                       ModelAndView modelAndView) {
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        travelGroupFacade.sendInvitation(authenticatedUser, groupInviteRequest);
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
+
+    @PostMapping(path = "/invite/status")
+    public ModelAndView changeInvitationStatus(@Valid GroupInviteStatusChangeRequest groupInviteStatusChangeRequest,
+                                               BindingResult bindingResult, ModelAndView modelAndView) {
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        groupInviteFacade.acceptInvitation(authenticatedUser,groupInviteStatusChangeRequest);
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
     }
 
 
