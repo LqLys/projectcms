@@ -49,7 +49,7 @@
             <table class="table">
 
                 <tbody>
-                <tr th:each="chatMessage :${messages}" style="font-size: x-large">
+                <tr th:each="chatMessage :${messages}">
 
                     <td th:text="${chatMessage.getTime().toString()}"></td>
                     <td th:text="${chatMessage.message}"></td>
@@ -60,6 +60,7 @@
             </table>
         </div>
         <div class="col-sm-4">
+            <button type="button" id="tst">Button</button>
             <div>
                 <form autocomplete="off" action="#" th:action="@{/chat/message}"
                       th:object="${newMessage}" method="post" class="form-horizontal"
@@ -92,6 +93,27 @@
     </div>
 </div>
 
+
+<script>
+
+    setInterval(function(){
+        $.get("http://localhost:8080/message/group/1", function(data, status){
+            console.log(data);
+            var tbody =  $('tbody');
+            tbody.empty();
+            for (var i = 0; i < data.length; i++) {
+                var tr = $("<tr></tr>");
+                var timeTd = $("<td></td>").text(data[i].time);
+                var msgTd = $("<td></td>").text(data[i].message);
+                tr.append(timeTd);
+                tr.append(msgTd);
+                tbody.append(tr);
+            }
+        });
+    }, 3000);
+
+
+</script>
 
 </body>
 </html>
