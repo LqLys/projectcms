@@ -74,7 +74,7 @@ public class TravelGroupController {
                                        ModelAndView modelAndView) {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
         travelGroupFacade.sendInvitation(authenticatedUser, groupInviteRequest);
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/group/groups");
         return modelAndView;
     }
 
@@ -82,8 +82,8 @@ public class TravelGroupController {
     public ModelAndView changeInvitationStatus(@Valid GroupInviteStatusChangeRequest groupInviteStatusChangeRequest,
                                                BindingResult bindingResult, ModelAndView modelAndView) {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
-        groupInviteFacade.acceptInvitation(authenticatedUser,groupInviteStatusChangeRequest);
-        modelAndView.setViewName("redirect:/");
+        Long groupId = groupInviteFacade.acceptInvitation(authenticatedUser, groupInviteStatusChangeRequest);
+        modelAndView.setViewName("redirect:/group/details/"+groupId+"/members");
         return modelAndView;
     }
 

@@ -38,7 +38,7 @@ public class GroupInviteFacade {
         return groupInviteService.getUsersPendingInvites(userId);
     }
     @Transactional
-    public void acceptInvitation(UserEntity authenticatedUser, GroupInviteStatusChangeRequest groupInviteStatusChangeRequest) {
+    public Long acceptInvitation(UserEntity authenticatedUser, GroupInviteStatusChangeRequest groupInviteStatusChangeRequest) {
         GroupInviteEntity invitation = groupInviteService.getInvitation(groupInviteStatusChangeRequest.getId());
         invitation.setStatus(GroupInvitationStatus.ACCEPTED);
         TravelGroupEntity travelGroup = invitation.getTravelGroup();
@@ -48,6 +48,7 @@ public class GroupInviteFacade {
                 .id(new UserTravelGroupId(authenticatedUser.getId(), travelGroup.getId()))
                 .build();
         userTravelGroupService.addUserToGroup(userInGroup);
+        return travelGroup.getId();
 
     }
 }
