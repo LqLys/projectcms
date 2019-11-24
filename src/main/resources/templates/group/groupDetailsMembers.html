@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Registration Form</title>
+	<!--<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />-->
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:replace="common/header :: header"> </div>
+<div class="container">
+	<div class="row">
+		<h2>Wyjazd Integracyjny</h2>
+	</div>
+	<div class="row">
+		<div>
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Szczegóły</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Planowanie</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Chat</a>
+				</li>
+				<li class="nav-item" >
+					<a class="nav-link active" href="#">Uczestnicy</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-8">
+			<h3>Moje Grupy</h3>
+			<table class="table">
+
+				<tbody>
+				<tr  th:each="member :${groupDetailsMembers}" style="font-size: x-large">
+
+					<td th:text="${member.firstName + ' ' + member.lastName}"></td>
+					<td th:text="${member.groupRole == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+
+				</tr>
+
+				</tbody>
+			</table>
+		</div>
+		<!--<div class="col-sm-4">-->
+			<!--<form autocomplete="off" action="#" th:action="@{/group}"-->
+				  <!--th:object="${newTravelGroup}" method="post" class="form-horizontal"-->
+				  <!--role="form">-->
+				<!--<h2>Nowa Grupa</h2>-->
+				<!--<div class="form-group">-->
+					<!--<div class="col-sm-9">-->
+						<!--<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
+							   <!--class="validation-message"></label>-->
+						<!--<input type="text" th:field="*{name}" placeholder="Nazwa grupy"-->
+							   <!--class="form-control" />-->
+					<!--</div>-->
+				<!--</div>-->
+
+
+
+				<!--<div class="form-group">-->
+					<!--<div class="col-sm-9">-->
+						<!--<button type="submit" class="btn btn-primary btn-block">Stwórz!</button>-->
+					<!--</div>-->
+				<!--</div>-->
+
+				<!--&lt;!&ndash;<span th:utext="${successMessage}"></span>&ndash;&gt;-->
+
+
+			<!--</form>-->
+		<!--</div>-->
+	</div>
+</div>
+
+
+</body>
+</html>

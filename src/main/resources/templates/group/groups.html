@@ -25,16 +25,20 @@
 	<div class="row">
         <div class="col-sm-8">
 			<h3>Moje Grupy</h3>
-			<table class="table table-striped table-bordered table-hover" id="dataTables-example">
-				<tr class="even gradeC">
-					<th>Nazwa Grupy</th>
-					<th>Rola</th>
+
+			<table class="table">
+
+				<tbody>
+				<tr  th:each="grp :${travelGroups}" style="font-size: x-large">
+
+					<td th:text="${grp.groupName}"></td>
+					<td th:text="${grp.groupRole == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+					<td><a class="btn btn-primary float-right" th:href="@{/group/details/{groupId}/members(groupId=${grp.groupId})}">Szczegóły</a></td>
 				</tr>
-				<tr th:each="group :${travelGroups}" class="odd gradeA">
-					<td th:text="${group.groupName}"></td>
-					<td th:text="${group.groupRole}"></td>
-				</tr>
+
+				</tbody>
 			</table>
+
 
         </div>
 		<div class="col-sm-4">

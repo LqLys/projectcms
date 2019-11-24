@@ -1,5 +1,6 @@
 package com.example.cms.security.domain.travelgroup.service;
 
+import com.example.cms.security.domain.travelgroup.dto.GroupDetailsMembers;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.travelgroup.repository.TravelGroupRepository;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
@@ -28,5 +29,9 @@ public class TravelGroupService {
 
     public List<UserGroupsDto> gerUserGroupRoles(Long userId) {
         return travelGroupRepository.getUserGroupsByUserId(userId);
+    }
+
+    public List<GroupDetailsMembers> getGroupDetailsMembers(Long groupId) {
+        return travelGroupRepository.getGroupDetailsMembers(groupId);
     }
 }

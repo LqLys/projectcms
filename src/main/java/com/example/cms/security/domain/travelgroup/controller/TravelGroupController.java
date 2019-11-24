@@ -1,6 +1,7 @@
 package com.example.cms.security.domain.travelgroup.controller;
 
 import com.example.cms.security.domain.travelgroup.dto.CreateTravelGroupRequest;
+import com.example.cms.security.domain.travelgroup.dto.GroupDetailsMembers;
 import com.example.cms.security.domain.travelgroup.dto.TravelGroupDto;
 import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,6 +53,15 @@ public class TravelGroupController {
         travelGroupFacade.createTravelGroup(createTravelGroupRequest, user);
         modelAndView.setViewName("redirect:/group/groups");
         return modelAndView;
+    }
+
+    @GetMapping(path = "/details/{groupId}/members")
+    public ModelAndView getGroupDetailMembers(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
+        List<GroupDetailsMembers> groupDetailsMembers = travelGroupFacade.getGroupDetailsMembers(groupId);
+        modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
+        modelAndView.setViewName("group/groupDetailsMembers");
+        return modelAndView;
+
     }
 
 
