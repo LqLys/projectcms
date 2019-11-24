@@ -27,7 +27,9 @@ public class TravelGroupController {
     private final GroupInviteFacade groupInviteFacade;
     private final UserService userService;
 
-    public TravelGroupController(TravelGroupFacade travelGroupFacade, GroupInviteFacade groupInviteFacade, UserService userService) {
+    public TravelGroupController(TravelGroupFacade travelGroupFacade,
+                                 GroupInviteFacade groupInviteFacade,
+                                 UserService userService) {
         this.travelGroupFacade = travelGroupFacade;
         this.groupInviteFacade = groupInviteFacade;
         this.userService = userService;
@@ -86,6 +88,7 @@ public class TravelGroupController {
         modelAndView.setViewName("redirect:/group/details/"+groupId+"/members");
         return modelAndView;
     }
+
 
 
 }

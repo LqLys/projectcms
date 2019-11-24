@@ -35,7 +35,7 @@
                     <a class="nav-link" href="#">Planowanie</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"th:href="@{/group/details/1/chat}">Chat</a>
+                    <a class="nav-link" href="#">Chat</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Uczestnicy</a>
@@ -49,10 +49,10 @@
             <table class="table">
 
                 <tbody>
-                <tr th:each="member :${groupDetailsMembers}" style="font-size: x-large">
+                <tr th:each="chatMessage :${messages}" style="font-size: x-large">
 
-                    <td th:text="${member.firstName + ' ' + member.lastName}"></td>
-                    <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                    <td th:text="${chatMessage.getTime().toString()}"></td>
+                    <td th:text="${chatMessage.message}"></td>
 
                 </tr>
 
@@ -61,15 +61,15 @@
         </div>
         <div class="col-sm-4">
             <div>
-                <form autocomplete="off" action="#" th:action="@{/group/invite}"
-                      th:object="${groupInvitation}" method="post" class="form-horizontal"
+                <form autocomplete="off" action="#" th:action="@{/chat/message}"
+                      th:object="${newMessage}" method="post" class="form-horizontal"
                       role="form">
-                    <h2>Zaproś użytkownika</h2>
+                    <h2>Wyślij wiadomość</h2>
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                            <label th:if="${#fields.hasErrors('message')}" th:errors="*{message}"
                                    class="validation-message"></label>
-                            <input type="text" th:field="*{email}" placeholder="email"
+                            <input type="text" th:field="*{message}" placeholder="wiadomość"
                                    class="form-control"/>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Zaproś!</button>
+                            <button type="submit" class="btn btn-primary btn-block">Wyślij!</button>
                         </div>
                     </div>
 

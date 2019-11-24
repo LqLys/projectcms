@@ -143,6 +143,28 @@
          </createTable>
      </changeSet>
 
+     <changeSet id="chat_message_001" author="lq">
+         <createSequence sequenceName="SEQ_CHAT_MESSAGE" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="CHAT_MESSAGE">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_CHAT_MESSAGE">
+                 <constraints primaryKey="true" primaryKeyName="PK_CHAT_MESSAGE"/>
+             </column>
+             <column name="MESSAGE" type="varchar2(1024)">
+                 <constraints  nullable="false"/>
+             </column>
+             <column name="TIME" type="timestamp">
+                 <constraints  nullable="false"/>
+             </column>
+             <column name="USER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="GROUP_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+         </createTable>
+     </changeSet>
+
 
 
 
