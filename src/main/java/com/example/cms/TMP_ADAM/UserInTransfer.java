@@ -8,4 +8,10 @@ public class UserInTransfer {
     UserEntity user;
     BigDecimal initialPayment;
     BigDecimal fraction;
+
+    public UserInTransfer(UserEntity user, BigDecimal initialPayment, BigDecimal fraction) {
+        this.user = user;
+        this.initialPayment = initialPayment;
+        this.fraction = fraction;
+    }
 }

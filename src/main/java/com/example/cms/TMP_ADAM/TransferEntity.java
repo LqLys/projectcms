@@ -15,10 +15,25 @@ public class TransferEntity {
     private UserEntity lender;
     private UserEntity borrower;
 
-    public TransferEntity(String title, LocalDateTime timestamp, TravelGroupEntity travelGroup, UserInTransfer userInTransfer) {
-        title = title;
+    public TransferEntity(String title, LocalDateTime timestamp, TravelGroupEntity travelGroup, UserEntity lender,
+                          UserEntity borrower, BigDecimal amount) {
+        this.title = title;
         dateTime = timestamp;
         travelGroupEntity = travelGroup;
+        this.lender = lender;
+        this.borrower = borrower;
+        this.amount = amount;
+    }
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public UserEntity getLender() {
+        return lender;
+    }
+
+    public UserEntity getBorrower() {
+        return borrower;
     }
 }
