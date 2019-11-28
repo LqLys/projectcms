@@ -25,8 +25,20 @@ public class TransferEntity {
         this.amount = amount;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public TravelGroupEntity getTravelGroupEntity() {
+        return travelGroupEntity;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public UserEntity getLender() {
