@@ -49,12 +49,23 @@ public class ExpenseDivider {
         }
     }
 
+    private BigDecimal oneHundredth = BigDecimal.ONE.divide(BigDecimal.valueOf(100));
+
     public List<TransferEntity> Split(String title, LocalDateTime timestamp, TravelGroupEntity travelGroup,
                                       UserInTransfer lender, BigDecimal amount, List<UserInTransfer> borrowers) {
 
-        Validation(lender, borrowers);
+        var participants = new ArrayList<>(borrowers);
+        participants.add(lender);
 
-        var sources = borrowers.stream().map(part -> {
+        var sumOfFractions = participants.stream()
+                .map(participant -> participant.fraction)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if (sumOfFractions.compareTo(BigDecimal.ONE) != 0) {
+            throw new InvalidExpenseException("Sum of fractions has to equals 1");
+        }
+
+        var sources = participants.stream().map(part -> {
             var maxAmount = amount.multiply(part.fraction);
             var clampedMaxAmount = maxAmount.setScale(2, RoundingMode.FLOOR);
             var error = clampedMaxAmount.divide(amount);
@@ -65,35 +76,19 @@ public class ExpenseDivider {
 
         var rest = SplitIntoSources(sources, amount);
 
-//        if (rest.compareTo(BigDecimal.ZERO) > 0) {
-//            sources = sources.stream().sorted(Comparator.comparing(s -> s.fractionError)).collect(Collectors.toList());
-//
-//            for (var i = 0; i < sources.size() && rest.compareTo(BigDecimal.ZERO) > 0; i++) {
-//                sources.get(i).amount = sources.get(i).amount.add(BigDecimal.valueOf(0.01f));
-//            }
-//        }
+        if (rest.compareTo(BigDecimal.ZERO) > 0) {
+            sources = sources.stream().sorted(Comparator.comparing(s -> s.fractionError)).collect(Collectors.toList());
+
+            for (var i = sources.size() - 1; i >= 0 && rest.compareTo(BigDecimal.ZERO) > 0; --i) {
+                sources.get(i).amount = sources.get(i).amount.add(oneHundredth);
+                rest = rest.subtract(oneHundredth);
+            }
+        }
 
         return sources.stream()
-                .filter(src -> src.amount.compareTo(BigDecimal.ZERO) > 0)
+                .filter(src -> src.borrower != lender.user && src.amount.compareTo(BigDecimal.ZERO) > 0)
                 .map(src -> new TransferEntity(title, timestamp, travelGroup, lender.user, src.borrower, src.amount))
                 .collect(Collectors.toList());
-    }
-
-    private void Validation(UserInTransfer lender, List<UserInTransfer> borrowers) {
-        var participants = new ArrayList<>(borrowers);
-        participants.add(lender);
-
-        if (SumOfFractionsNotEqualsOne(participants)) {
-            throw new InvalidExpenseException("Sum of fractions has to equals 1");
-        }
-    }
-
-    private boolean SumOfFractionsNotEqualsOne(List<UserInTransfer> borrowers) {
-        var sumOfFractions = borrowers.stream()
-                .map(participant -> participant.fraction)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return sumOfFractions.compareTo(BigDecimal.ONE) != 0;
     }
 
     private BigDecimal SplitIntoSources(List<Source> sources, BigDecimal amount) {
@@ -128,7 +123,7 @@ public class ExpenseDivider {
         var amountPerSource = amount.multiply(hundred).divideToIntegralValue(count).divide(hundred);
 
         if (amountPerSource.multiply(count).compareTo(amount) < 0) {
-            amountPerSource.add(BigDecimal.valueOf(0.01f));
+            amountPerSource.add(oneHundredth);
         }
 
         return amountPerSource;
