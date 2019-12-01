@@ -63,12 +63,22 @@ public class TravelGroupController {
     @GetMapping(path = "/details/{groupId}/members")
     public ModelAndView getGroupDetailMembers(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
         List<GroupDetailsMembers> groupDetailsMembers = travelGroupFacade.getGroupDetailsMembers(groupId);
+        TravelGroupDto travelGroup = travelGroupFacade.getTravelGroupById(groupId);
         modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
         modelAndView.addObject("groupId", groupId);
+        modelAndView.addObject("groupName", travelGroup.getName());
         modelAndView.addObject("groupInvitation", new GroupInviteRequest());
         modelAndView.setViewName("group/groupDetailsMembers");
         return modelAndView;
 
+    }
+
+    @GetMapping(path = "/details/{groupId}/expenses")
+    public ModelAndView getGroupDetailExpenses(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
+        modelAndView.setViewName("group/groupDetailsExpenses");
+        TravelGroupDto travelGroup = travelGroupFacade.getTravelGroupById(groupId);
+
+        return modelAndView;
     }
 
     @PostMapping(path = "/invite")

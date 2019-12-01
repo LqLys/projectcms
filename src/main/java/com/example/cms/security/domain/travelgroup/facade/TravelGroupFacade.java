@@ -36,8 +36,8 @@ public class TravelGroupFacade {
         this.groupInviteService = groupInviteService;
     }
 
-    public List<TravelGroupDto> getTravelGroups(Long id) {
-        return travelGroupMapper.mapAsList(travelGroupService.getTravelGroups(id),TravelGroupDto.class);
+    public TravelGroupDto getTravelGroupById(Long groupId) {
+        return travelGroupMapper.map(travelGroupService.getTravelGroup(groupId),TravelGroupDto.class);
     }
 
     public void createTravelGroup(CreateTravelGroupRequest createTravelGroupRequest, UserEntity user) {

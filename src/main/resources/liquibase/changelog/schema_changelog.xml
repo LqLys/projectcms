@@ -165,6 +165,29 @@
          </createTable>
      </changeSet>
 
+     <changeSet id="expense_001" author="lq">
+         <createSequence sequenceName="SEQ_EXPENSE" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="EXPENSE">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_EXPENSE">
+                 <constraints primaryKey="true" primaryKeyName="PK_EXPENSE"/>
+             </column>
+             <column name="TITLE" type="varchar2(255)">
+                 <constraints  nullable="false"/>
+             </column>
+             <column name="AMOUNT" type="decimal">
+                 <constraints  nullable="false"/>
+             </column>
+             <column name="CREATED_AT" type="timestamp">
+                 <constraints  nullable="false"/>
+             </column>
+             <column name="USER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+
+         </createTable>
+     </changeSet>
+
 
 
 

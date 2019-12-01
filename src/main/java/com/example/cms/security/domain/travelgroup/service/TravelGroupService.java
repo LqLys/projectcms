@@ -19,8 +19,8 @@ public class TravelGroupService {
     }
 
 
-    public List<TravelGroupEntity> getTravelGroups(Long id) {
-        return travelGroupRepository.findAllById(id);
+    public TravelGroupEntity getTravelGroup(Long id) {
+        return travelGroupRepository.getOne(id);
     }
 
     public void createTravelGroup(TravelGroupEntity travelGroup) {

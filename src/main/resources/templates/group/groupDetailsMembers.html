@@ -23,7 +23,7 @@
 <div th:replace="common/header :: header"></div>
 <div class="container">
     <div class="row">
-        <h2>Wyjazd Integracyjny</h2>
+        <h2 th:text="${groupName}"></h2>
     </div>
     <div class="row">
         <div>
@@ -35,7 +35,10 @@
                     <a class="nav-link" href="#">Planowanie</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"th:href="@{/group/details/1/chat}">Chat</a>
+                    <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Uczestnicy</a>
@@ -45,7 +48,7 @@
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <h3>Moje Grupy</h3>
+            <h3>Członkowie</h3>
             <table class="table">
 
                 <tbody>
