@@ -2,6 +2,7 @@ package com.example.cms.security.domain.travelgroup.entity;
 
 
 import com.example.cms.security.domain.chatmessage.entity.ChatMessageEntity;
+import com.example.cms.security.domain.expense.entity.ExpenseEntity;
 import com.example.cms.security.domain.role.entity.RoleEntity;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -60,4 +61,7 @@ public class TravelGroupEntity {
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<ChatMessageEntity> chatMessages;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private List<ExpenseEntity> expenses;
 }

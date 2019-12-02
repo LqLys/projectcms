@@ -52,6 +52,7 @@
                 <tr th:each="chatMessage :${messages}">
 
                     <td th:text="${chatMessage.getTime().toString()}"></td>
+                    <td th:text="${chatMessage.getAuthor()}"></td>
                     <td th:text="${chatMessage.message}"></td>
 
                 </tr>
@@ -104,8 +105,10 @@
             for (var i = 0; i < data.length; i++) {
                 var tr = $("<tr></tr>");
                 var timeTd = $("<td></td>").text(data[i].time);
+                var auth = $("<td></td>").text(data[i].author);
                 var msgTd = $("<td></td>").text(data[i].message);
                 tr.append(timeTd);
+                tr.append(auth);
                 tr.append(msgTd);
                 tbody.append(tr);
             }

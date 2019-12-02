@@ -1,5 +1,6 @@
 package com.example.cms.security.domain.travelgroup.controller;
 
+import com.example.cms.security.domain.expense.facade.ExpenseFacade;
 import com.example.cms.security.domain.groupinvite.facade.GroupInviteFacade;
 import com.example.cms.security.domain.travelgroup.dto.*;
 import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
@@ -26,13 +27,15 @@ public class TravelGroupController {
     private final TravelGroupFacade travelGroupFacade;
     private final GroupInviteFacade groupInviteFacade;
     private final UserService userService;
+    private final ExpenseFacade expenseFacade;
 
     public TravelGroupController(TravelGroupFacade travelGroupFacade,
                                  GroupInviteFacade groupInviteFacade,
-                                 UserService userService) {
+                                 UserService userService, ExpenseFacade expenseFacade) {
         this.travelGroupFacade = travelGroupFacade;
         this.groupInviteFacade = groupInviteFacade;
         this.userService = userService;
+        this.expenseFacade = expenseFacade;
     }
 
     @GetMapping(path = "/groups")
@@ -76,7 +79,11 @@ public class TravelGroupController {
     @GetMapping(path = "/details/{groupId}/expenses")
     public ModelAndView getGroupDetailExpenses(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
         modelAndView.setViewName("group/groupDetailsExpenses");
-        TravelGroupDto travelGroup = travelGroupFacade.getTravelGroupById(groupId);
+        Long currentUserId = userService.getAuthenticatedUser().getId();
+        TravelGroupExpensesDto travelGroup = travelGroupFacade.getTravelGroupExpensesView(groupId);
+        modelAndView.addObject("travelGroup", travelGroup);
+        modelAndView.addObject("createExpenseRequest", new CreateExpenseRequest());
+        modelAndView.addObject("currentUserId", currentUserId);
 
         return modelAndView;
     }
@@ -90,6 +97,15 @@ public class TravelGroupController {
         return modelAndView;
     }
 
+    @PostMapping(path = "/expense")
+    public ModelAndView createExpense(@Valid CreateExpenseRequest createExpenseRequest, BindingResult bindingResult,
+                                       ModelAndView modelAndView) {
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        expenseFacade.createExpense(createExpenseRequest, authenticatedUser);
+        modelAndView.setViewName("redirect:/group/groups");
+        return modelAndView;
+    }
+
     @PostMapping(path = "/invite/status")
     public ModelAndView changeInvitationStatus(@Valid GroupInviteStatusChangeRequest groupInviteStatusChangeRequest,
                                                BindingResult bindingResult, ModelAndView modelAndView) {
@@ -98,6 +114,8 @@ public class TravelGroupController {
         modelAndView.setViewName("redirect:/group/details/"+groupId+"/members");
         return modelAndView;
     }
+
+
 
 
 

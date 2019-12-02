@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service("userService")
 public class UserService {
@@ -53,5 +54,9 @@ public class UserService {
 
     public void save(UserEntity invitationTarget) {
         userRepository.save(invitationTarget);
+    }
+
+    public List<UserEntity> findAllByIdIn(List<Long> debtors) {
+        return userRepository.findAllByIdIn(debtors);
     }
 }

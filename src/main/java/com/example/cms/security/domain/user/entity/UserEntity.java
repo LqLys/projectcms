@@ -2,6 +2,7 @@ package com.example.cms.security.domain.user.entity;
 
 import com.example.cms.security.domain.chatmessage.entity.ChatMessageEntity;
 import com.example.cms.security.domain.expense.entity.ExpenseEntity;
+import com.example.cms.security.domain.expenseparticipant.entity.ExpenseParticipantEntity;
 import com.example.cms.security.domain.groupinvite.entity.GroupInviteEntity;
 import com.example.cms.security.domain.role.entity.RoleEntity;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
@@ -64,6 +65,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
     private List<ExpenseEntity> expenses;
+
+    @OneToMany(mappedBy = "debtor", cascade = CascadeType.ALL)
+    private List<ExpenseParticipantEntity> debts;
 
 
 

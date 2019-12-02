@@ -184,9 +184,38 @@
              <column name="USER_ID" type="bigint">
                  <constraints nullable="false"/>
              </column>
+             <column name="GROUP_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
 
          </createTable>
      </changeSet>
+
+     <changeSet id="expense_participant_001" author="lq">
+         <createSequence sequenceName="SEQ_EXPENSE_PARTICIPANT" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="EXPENSE_PARTICIPANT">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_EXPENSE_PARTICIPANT">
+                 <constraints primaryKey="true" primaryKeyName="PK_EXPENSE_PARTICIPANT"/>
+             </column>
+             <column name="USER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="EXPENSE_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="INITIAL_AMOUNT" type="decimal">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="PAID_AMOUNT" type="decimal">
+             </column>
+
+         </createTable>
+
+
+     </changeSet>
+
+
 
 
 

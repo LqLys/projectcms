@@ -27,7 +27,7 @@ public class ChatMessageFacade {
         return chatMessageService.findAllByGroupId(groupId).stream()
                 .map(message -> ChatMessageDto.builder()
                                 .id(message.getId())
-                                .author(message.getMessage())
+                                .author(message.getUser().getFirstName() + " " + message.getUser().getLastName())
                                 .message(message.getMessage())
                                 .time(message.getTime())
                 .build()).collect(Collectors.toList());

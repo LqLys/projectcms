@@ -1,8 +1,11 @@
 package com.example.cms.security.domain.expense.entity;
 
 
+import com.example.cms.security.domain.expenseparticipant.entity.ExpenseParticipantEntity;
+import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,11 +13,13 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "EXPENSE")
 public class ExpenseEntity {
 
@@ -37,6 +42,14 @@ public class ExpenseEntity {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private UserEntity createdBy;
+
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
+    private List<ExpenseParticipantEntity> debtors;
+
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID")
+    private TravelGroupEntity group;
+
 
 
 
