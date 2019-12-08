@@ -215,6 +215,29 @@
 
      </changeSet>
 
+     <changeSet id="relation_entity_001" author="lq">
+         <createSequence sequenceName="SEQ_RELATION" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="RELATION">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_RELATION">
+                 <constraints primaryKey="true" primaryKeyName="PK_RELATION"/>
+             </column>
+             <column name="SOURCE_USER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="TARGET_USER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="TYPE" type="varchar2(255)">
+                 <constraints nullable="false"/>
+             </column>
+
+
+         </createTable>
+
+
+     </changeSet>
+
 
 
 

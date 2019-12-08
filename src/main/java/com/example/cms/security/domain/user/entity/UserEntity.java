@@ -4,6 +4,7 @@ import com.example.cms.security.domain.chatmessage.entity.ChatMessageEntity;
 import com.example.cms.security.domain.expense.entity.ExpenseEntity;
 import com.example.cms.security.domain.expenseparticipant.entity.ExpenseParticipantEntity;
 import com.example.cms.security.domain.groupinvite.entity.GroupInviteEntity;
+import com.example.cms.security.domain.relation.entity.RelationEntity;
 import com.example.cms.security.domain.role.entity.RoleEntity;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import lombok.AllArgsConstructor;
@@ -68,6 +69,14 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "debtor", cascade = CascadeType.ALL)
     private List<ExpenseParticipantEntity> debts;
+
+    @OneToMany(mappedBy = "target", cascade = CascadeType.ALL)
+    private List<RelationEntity> relationsToMe;
+
+    @OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
+    private List<RelationEntity> relationsToOthers;
+
+
 
 
 
