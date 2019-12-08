@@ -3,113 +3,205 @@
       xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Registration Form</title>
-    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />-->
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design for Bootstrap</title>
+    <!-- MDB icon -->
+    <link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
+    <!-- DataTables JS -->
+    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
 </head>
 <body>
 <div th:replace="common/header :: header"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-8">
-            <h3>Moje Grupy</h3>
 
-            <table class="table">
+<div class="container-fluid">
+    <div class="row mx-sm-4 my-lg-0">
+        <div class="col-sm-5">
+            <!-- Material form login -->
+            <div class="card my-3">
 
-                <tbody>
-                <tr th:each="grp :${travelGroups}" style="font-size: x-large">
+                <h5 class="card-header blue darken-2 white-text text-center py-3">
+                    <strong>Nowa Grupa</strong>
+                </h5>
 
-                    <td th:text="${grp.groupName}"></td>
-                    <td th:text="${grp.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
-                    <td><a class="btn btn-primary float-right"
-                           th:href="@{/group/details/{groupId}/members(groupId=${grp.groupId})}">Szczegóły</a></td>
-                </tr>
+                <!--Card content-->
+                <div class="card-body px-lg-5 pt-0">
 
-                </tbody>
-            </table>
+                    <!-- Form -->
+                    <form class="text-center" autocomplete="off" action="#" th:action="@{/group}"
+                          th:object="${newTravelGroup}" method="post" role="form">
 
-
-        </div>
-        <div class="col-sm-4">
-            <div>
-                <form autocomplete="off" action="#" th:action="@{/group}"
-                      th:object="${newTravelGroup}" method="post" class="form-horizontal"
-                      role="form">
-                    <h2>Nowa Grupa</h2>
-                    <div class="form-group">
-                        <div class="col-sm-9">
+                        <!-- Email -->
+                        <div class="md-form">
+                            <input type="text" th:field="*{name}" class="form-control" id="groupName" placeholder="*Nazwa grupy"/>
                             <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                                   class="validation-message"></label>
-                            <input type="text" th:field="*{name}" placeholder="Nazwa grupy"
-                                   class="form-control"/>
+                                   class="validation-message" for="groupName"></label>
                         </div>
-                    </div>
 
+                        <!-- Table  -->
+                        <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
+                            <table class="table bordered table-hover mb-0" id="testTable">
+                                <!-- Table head -->
+                                <thead>
+                                <tr class="table-fixed">
+                                    <th>#</th>
+                                    <th>Imię</th>
+                                    <th>Nazwisko</th>
+                                    <th>Uczestnik</th>
+                                </tr>
+                                </thead>
+                                <!-- Table head -->
 
-                    <div class="form-group">
-                        <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Stwórz!</button>
+                                <!-- Table body -->
+                                <tbody id="members">
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Grupa 1</td>
+                                    <td>Admin</td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="1">
+                                            <label class="custom-control-label" for="1"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Grupa 1</td>
+                                    <td>Admin</td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="1">
+                                            <label class="custom-control-label" for="1"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Grupa 1</td>
+                                    <td>Admin</td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="1">
+                                            <label class="custom-control-label" for="1"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Grupa 1</td>
+                                    <td>Admin</td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="1">
+                                            <label class="custom-control-label" for="1"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Grupa 1</td>
+                                    <td>Admin</td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="1">
+                                            <label class="custom-control-label" for="1"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Grupa 1</td>
+                                    <td>Admin</td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="1">
+                                            <label class="custom-control-label" for="1"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                                <!-- Table body -->
+                            </table>
+                            <!-- Table  -->
                         </div>
-                    </div>
-
-                    <!--<span th:utext="${successMessage}"></span>-->
-
-
-                </form>
+                        <!-- Sign in button -->
+                        <button class="btn btn-blue btn-block my-4 waves-effect z-depth-0" type="submit">Utworz</button>
+                    </form>
+                    <!-- Form -->
+                </div>
             </div>
-            <div>
-                <h3>Oczekujące zaproszenia</h3>
-                <table class="table">
+            <!-- Material form login -->
+        </div>
+        <div class="col-sm-7">
+            <div class="card my-3">
 
-                    <tbody>
-                    <tr  th:each="invite :${pendingInvites}" style="font-size: small">
+                <h5 class="card-header blue darken-2 lighten-1 white-text text-center py-4">
+                    <strong>Moje grupy</strong>
+                </h5>
 
-                        <td th:text="${invite.groupName}"></td>
-                        <td th:text="${invite.invitationSourceEmail}"></td>
-                        <
-                        <td>
-                            <form autocomplete="off" action="#" th:action="@{/group/invite/status}"
-                                  th:object="${statusChangeRequest}" method="post" class="form-horizontal"
-                                  role="form">
+                <!--Card content-->
+                <div class="card-body px-lg-5 pt-0">
 
+                    <!-- Table  -->
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                        <table class="table table bordered table-hover" id="myGroups">
+                            <!-- Table head -->
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nazwa grupy</th>
+                                <th>Rola w grupie</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
 
-                                <input type="hidden" th:attr="name=id" class="form-control" th:value="${invite.id}"/>
-                                <input type="hidden" th:attr="name=status" class="form-control" th:value="${'ACCEPTED'}"/>
+                            <!-- Table body -->
+                            <tbody id="demo">
+                            <th:block th:each="grp : ${travelGroups}">
+                                <tr style="cursor: pointer" th:onclick="'window.location.href = \'' + @{/group/details/{groupId}/members(groupId=${grp.groupId})}+ '\''">
+                                    <th th:href="@{/group/details/{groupId}/members(groupId=${grp.groupId})}">1</th>
+                                    <td th:text="${grp.groupName}"></td>
+                                    <td th:text="${grp.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                    </div>
+                    <!-- Table  -->
 
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary btn-block">Przyjmij!</button>
-                                    </div>
-                                </div>
-
-                                <!--<span th:utext="${successMessage}"></span>-->
-
-
-                            </form>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
+                </div>
 
             </div>
         </div>
     </div>
 </div>
+<!-- End your project here-->
+<!-- Footer -->
+<div th:replace="common/footer :: footer"></div>
 
-
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
 </body>
 </html>

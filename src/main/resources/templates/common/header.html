@@ -2,50 +2,42 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
-	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Material Design for Bootstrap</title>
+	<!-- MDB icon -->
+	<link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+	<!-- Material Design Bootstrap -->
+	<link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+	<!-- Your custom styles (optional) -->
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
+	<!-- DataTables JS -->
+	<script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="header">
-	<a class="navbar-brand" href="javascript:void(0)">Logo</a>
-	<button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" aria-expanded="false">
+<!--Navbar -->
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark blue lighten-1" th:fragment="header">
+	<a class="navbar-brand" href="#">On The Way</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+			aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
-
-	<div class="navbar-collapse collapse" id="navb" style="">
-		<!--<ul class="navbar-nav mr-auto">-->
-			<!--<li class="nav-item">-->
-				<!--<a class="nav-link" href="javascript:void(0)">Link</a>-->
-			<!--</li>-->
-			<!--<li class="nav-item">-->
-				<!--<a class="nav-link" href="javascript:void(0)">Link</a>-->
-			<!--</li>-->
-			<!--<li class="nav-item">-->
-				<!--<a class="nav-link disabled" href="javascript:void(0)">Disabled</a>-->
-			<!--</li>-->
-		<!--</ul>-->
-		<ul class="navbar-nav mr-auto">
-
-		</ul>
-		<ul class="navbar-nav my-2 my-lg-0">
-			<li class="nav-item" sec:authorize="!isAuthenticated()">
-				<a class="nav-link active" th:href="@{/registration}">Sign Up</a>
+	<div class="collapse navbar-collapse " id="navbarSupportedContent-555">
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/}">Home
+					<span class="sr-only">(current)</span>
+				</a>
 			</li>
-			<li class="nav-item" sec:authorize="isAnonymous()">
-				<a class="nav-link" th:href="@{/login}">Login</a>
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/group/groups}">Grupy</a>
 			</li>
 			<li class="nav-item" sec:authorize="isAuthenticated()">
 				<a class="nav-link" th:href="@{/friends}">Znajomi</a>
@@ -53,19 +45,78 @@
 			<li class="nav-item" sec:authorize="isAuthenticated()">
 				<a class="nav-link" th:href="@{/expenses}">Wydatki</a>
 			</li>
-			<li class="nav-item" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/group/groups}">Grupy</a>
+			<li class="nav-item" sec:authorize="isAnonymous()">
+				<a class="nav-link" th:href="@{/login}">Zaloguj</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAnonymous()">
+				<a class="nav-link" th:href="@{/registration}">Zarejestruj</a>
 			</li>
 			<li class="nav-item" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/profile}">Profil</a>
+				<a class="nav-link" th:href="@{/logout}">Wyloguj</a>
 			</li>
-			<li class="nav-item" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/logout}">Logout</a>
+			<li class="nav-item">
+				<a class="nav-link waves-effect waves-light">1
+					<i class="fas fa-envelope"></i>
+				</a>
 			</li>
-
+			<li class="nav-item avatar">
+				<a class="nav-link p-0" th:href="@{/profile}">
+					<img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" class="rounded-circle z-depth-0"
+						 alt="avatar image" height="35">
+				</a>
+			</li>
 		</ul>
 	</div>
 </nav>
+<!--/.Navbar -->
+
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="header">-->
+	<!--<a class="navbar-brand" href="javascript:void(0)">Logo</a>-->
+	<!--<button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navb" aria-expanded="false">-->
+		<!--<span class="navbar-toggler-icon"></span>-->
+	<!--</button>-->
+
+	<!--<div class="navbar-collapse collapse" id="navb" style="">-->
+		<!--&lt;!&ndash;<ul class="navbar-nav mr-auto">&ndash;&gt;-->
+			<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+				<!--&lt;!&ndash;<a class="nav-link" href="javascript:void(0)">Link</a>&ndash;&gt;-->
+			<!--&lt;!&ndash;</li>&ndash;&gt;-->
+			<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+				<!--&lt;!&ndash;<a class="nav-link" href="javascript:void(0)">Link</a>&ndash;&gt;-->
+			<!--&lt;!&ndash;</li>&ndash;&gt;-->
+			<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+				<!--&lt;!&ndash;<a class="nav-link disabled" href="javascript:void(0)">Disabled</a>&ndash;&gt;-->
+			<!--&lt;!&ndash;</li>&ndash;&gt;-->
+		<!--&lt;!&ndash;</ul>&ndash;&gt;-->
+		<!--<ul class="navbar-nav mr-auto">-->
+
+		<!--</ul>-->
+		<!--<ul class="navbar-nav my-2 my-lg-0">-->
+			<!--<li class="nav-item" sec:authorize="!isAuthenticated()">-->
+				<!--<a class="nav-link active" th:href="@{/registration}">Sign Up</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item" sec:authorize="isAnonymous()">-->
+				<!--<a class="nav-link" th:href="@{/login}">Login</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+				<!--<a class="nav-link" th:href="@{/friends}">Znajomi</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+				<!--<a class="nav-link" th:href="@{/expenses}">Wydatki</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+				<!--<a class="nav-link" th:href="@{/group/groups}">Grupy</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+				<!--<a class="nav-link" th:href="@{/profile}">Profil</a>-->
+			<!--</li>-->
+			<!--<li class="nav-item" sec:authorize="isAuthenticated()">-->
+				<!--<a class="nav-link" th:href="@{/logout}">Logout</a>-->
+			<!--</li>-->
+
+		<!--</ul>-->
+	<!--</div>-->
+<!--</nav>-->
 
 <!--<nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="header">-->
 	<!--&lt;!&ndash; Brand/logo &ndash;&gt;-->

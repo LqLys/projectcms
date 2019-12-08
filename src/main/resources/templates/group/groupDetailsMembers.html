@@ -2,98 +2,519 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Registration Form</title>
-    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}" />-->
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design for Bootstrap</title>
+    <!-- MDB icon -->
+    <link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
+    <!-- DataTables JS -->
+    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}"></script>
 </head>
 <body>
 <div th:replace="common/header :: header"></div>
-<div class="container">
-    <div class="row">
-        <h2 th:text="${groupName}"></h2>
-    </div>
-    <div class="row">
-        <div>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Szczegóły</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Planowanie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Uczestnicy</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-8">
-            <h3>Członkowie</h3>
-            <table class="table">
 
-                <tbody>
-                <tr th:each="member :${groupDetailsMembers}" style="font-size: x-large">
-
-                    <td th:text="${member.firstName + ' ' + member.lastName}"></td>
-                    <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
-
-                </tr>
-
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-4">
-            <div>
-                <form autocomplete="off" action="#" th:action="@{/group/invite}"
-                      th:object="${groupInvitation}" method="post" class="form-horizontal"
-                      role="form">
-                    <h2>Zaproś użytkownika</h2>
-                    <div class="form-group">
-                        <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                                   class="validation-message"></label>
-                            <input type="text" th:field="*{email}" placeholder="email"
-                                   class="form-control"/>
-                        </div>
-                    </div>
-                    <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${groupId}"/>
-
-
-                    <div class="form-group">
-                        <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Zaproś!</button>
-                        </div>
-                    </div>
-
-                    <!--<span th:utext="${successMessage}"></span>-->
-
-
-                </form>
+<div class="container-fluid">
+    <div class="row mx-sm-2 my-lg-0">
+        <div class="col-12">
+            <div class="col-12">
+                <h1 th:text="${groupName}"></h1>
             </div>
+            <div class="card my-3">
+                <div class="card-header">
+                    <ul class="nav nav-pills nav-justified">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Uczestnicy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Szczegóły</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Planowanie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
+                        </li>
+                    </ul>
+                </div>
 
-        </div>
-    </div>
-</div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3">
+                                    <table class="table bordered table-hover mb-0" id="testTable">
+                                        <!-- Table head -->
+                                        <thead>
+                                        <tr class="table-fixed">
+                                            <th>Uczestnik</th>
+                                            <th>Rola</th>
+                                            <th>Usuń</th>
+                                        </tr>
+                                        </thead>
+                                        <!-- Table head -->
+
+                                        <!-- Table body -->
+                                        <tbody>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+                                        <tr th:each="member :${groupDetailsMembers}">
+                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                            <td style="padding: 0.5rem">
+                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                        <!-- Table body -->
+                                    </table>
+                                    <!-- Table  -->
+                                </div>
+                            </div>
+                            <div class="col-md-5 my-3 px-0">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card mb-3">
+                                                <h5 class="card-header blue darken-2 white-text text-center py-2">
+                                                    <strong>Zaproś nowego znajomoego</strong>
+                                                </h5>
+                                                <div class="card-body px-lg-5 py-0 ">
+                                                    <form autocomplete="off" action="#" th:action="@{/group/invite}"
+                                                          th:object="${groupInvitation}" method="post"
+                                                          class="text-center"
+                                                          role="form">
+                                                        <div class="md-form my-0">
+                                                            <label th:if="${#fields.hasErrors('email')}"
+                                                                   th:errors="*{email}"
+                                                                   class="validation-message"></label>
+                                                            <input type="text" th:field="*{email}" placeholder="*Email"
+                                                                   class="form-control"/>
+                                                            <input type="hidden" th:attr="name=groupId" class="form-control"
+                                                                   th:value="${groupId}"/>
+                                                            <div class="form-group">
+                                                                <button type="submit"
+                                                                        class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
+                                                                    Zaproś!
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="card mb-3">
+                                                <h5 class="card-header blue darken-2 white-text text-center py-2">
+                                                    <strong>Dodaj znajomego</strong>
+                                                </h5>
+                                                <div class="card-body px-lg-5 pt-0">
+                                                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
+                                                        <table class="table bordered table-hover mb-0" id="testTable">
+                                                            <!-- Table head -->
+                                                            <thead>
+                                                            <tr class="table-fixed">
+                                                                <th>Imię i Nazwisko</th>
+                                                                <th>Uczestnik</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <!-- Table head -->
+
+                                                            <!-- Table body -->
+                                                            <tbody id="members">
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imię Nazwisko</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input type="checkbox" class="custom-control-input" id="1">
+                                                                        <label class="custom-control-label" for="1"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                            <!-- Table body -->
+                                                        </table>
+                                                        <!-- Table  -->
+                                                    </div>
+                                                    <!-- Sign in button -->
+                                                    <button class="btn btn-blue btn-block m-auto waves-effect z-depth-0" type="submit">Dodaj!</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="common/footer :: footer"></div>
+
+
+            <!--<div class="container">-->
+            <!--<div class="row">-->
+            <!--<h2 th:text="${groupName}"></h2>-->
+
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--<div>-->
+            <!--<ul class="nav nav-tabs">-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link" href="#">Szczegóły</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link" href="#">Planowanie</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link active" href="#">Uczestnicy</a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-8">-->
+            <!--<h3>Członkowie</h3>-->
+            <!--<table class="table">-->
+
+            <!--<tbody>-->
+            <!--<tr th:each="member :${groupDetailsMembers}" style="font-size: x-large">-->
+
+            <!--<td th:text="${member.firstName + ' ' + member.lastName}"></td>-->
+            <!--<td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>-->
+
+            <!--</tr>-->
+
+            <!--</tbody>-->
+            <!--</table>-->
+            <!--</div>-->
+            <!--<div class="col-sm-4">-->
+            <!--<div>-->
+            <!--<form autocomplete="off" action="#" th:action="@{/group/invite}"-->
+            <!--th:object="${groupInvitation}" method="post" class="form-horizontal"-->
+            <!--role="form">-->
+            <!--<h2>Zaproś użytkownika</h2>-->
+            <!--<div class="form-group">-->
+            <!--<div class="col-sm-9">-->
+            <!--<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"-->
+            <!--class="validation-message"></label>-->
+            <!--<input type="text" th:field="*{email}" placeholder="email"-->
+            <!--class="form-control"/>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<input type="hidden" th:attr="name=groupId" class="form-control" th:value="${groupId}"/>-->
+
+
+            <!--<div class="form-group">-->
+            <!--<div class="col-sm-9">-->
+            <!--<button type="submit" class="btn btn-primary btn-block">Zaproś!</button>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash;<span th:utext="${successMessage}"></span>&ndash;&gt;-->
+
+
+            <!--</form>-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
 
 
 </body>

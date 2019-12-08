@@ -1,4 +1,16 @@
-h1 {
-    color: red;
-    border: blue 5px solid
+.my-custom-scrollbar {
+    position: relative;
+    max-height: 65vh;
+    min-height: 40vh;
+    overflow: auto;
+}
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.sm-custom-scrollbar{
+    position: relative;
+    max-height: 30vh;
+    min-height: 10vh;
+    overflow: auto;
 }
