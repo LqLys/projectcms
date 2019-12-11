@@ -30,6 +30,10 @@ public class QuestionEntity {
     @Column(name = "TEXT")
     private String text;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private QuestionStatus status;
+
     @Column(name = "END_DATE")
     private LocalDate endDate;
 

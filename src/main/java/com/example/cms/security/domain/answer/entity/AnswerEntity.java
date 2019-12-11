@@ -30,4 +30,10 @@ public class AnswerEntity {
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private QuestionEntity question;
+
+    @ManyToMany
+    @JoinTable(name = "USER_ANSWER",
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ANSWER_ID")})
+    private List<UserEntity> users;
 }

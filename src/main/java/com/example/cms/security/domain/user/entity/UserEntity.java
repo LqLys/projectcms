@@ -1,5 +1,6 @@
 package com.example.cms.security.domain.user.entity;
 
+import com.example.cms.security.domain.answer.entity.AnswerEntity;
 import com.example.cms.security.domain.chatmessage.entity.ChatMessageEntity;
 import com.example.cms.security.domain.expense.entity.ExpenseEntity;
 import com.example.cms.security.domain.expenseparticipant.entity.ExpenseParticipantEntity;
@@ -75,6 +76,10 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "source", cascade = CascadeType.ALL)
     private List<RelationEntity> relationsToOthers;
+
+    @ManyToMany(mappedBy = "users")
+    private List<AnswerEntity> answers;
+
 
 
 

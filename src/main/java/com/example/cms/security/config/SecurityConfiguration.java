@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.
                 authorizeRequests()
                 .expressionHandler(webExpressionHandler())
-                .antMatchers("/js/**", "/css/**").permitAll()
+                .antMatchers("/js/**", "/css/**","/font/**","/img/**","/scss/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()

@@ -1,18 +1,18 @@
 package com.example.cms.security.domain.relation.entity;
 
-import com.example.cms.security.domain.expense.entity.ExpenseEntity;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "RELATION")
 public class RelationEntity {
 

@@ -231,11 +231,69 @@
              <column name="TYPE" type="varchar2(255)">
                  <constraints nullable="false"/>
              </column>
+        </createTable>
+    </changeSet>
 
 
+     <changeSet id="question_entity_001" author="lq">
+         <createSequence sequenceName="SEQ_QUESTION" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="QUESTION">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_QUESTION">
+                 <constraints primaryKey="true" primaryKeyName="PK_QUESTION"/>
+             </column>
+             <column name="TEXT" type="varchar2(500)">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="STATUS" type="varchar2(255)">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="END_DATE" type="date">
+                 <constraints nullable="false"/>
+             </column>
+         </createTable>
+     </changeSet>
+
+     <changeSet id="answer_entity_001" author="lq">
+         <createSequence sequenceName="SEQ_ANSWER" startValue="1" incrementBy="1"/>
+
+         <createTable tableName="ANSWER">
+             <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_ANSWER">
+                 <constraints primaryKey="true" primaryKeyName="PK_ANSWER"/>
+             </column>
+             <column name="TEXT" type="varchar2(500)">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="QUESTION_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+         </createTable>
+     </changeSet>
+
+     <changeSet id="user_answer_001" author="lq">
+
+         <createTable tableName="USER_ANSWER">
+             <column name="USER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="ANSWER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
          </createTable>
 
+         <addPrimaryKey tableName="USER_ANSWER" columnNames="USER_ID, ANSWER_ID"/>
 
+         <addForeignKeyConstraint baseTableName="USER_ANSWER" baseColumnNames="USER_ID"
+                                  constraintName="FK_USER_ANSWER_USER" referencedTableName="USERS"
+                                  referencedColumnNames="ID"/>
+         <addForeignKeyConstraint baseTableName="USER_ANSWER" baseColumnNames="ANSWER_ID"
+                                  constraintName="FK_USER_ANSWER_AMSWERS" referencedTableName="ANSWER"
+                                  referencedColumnNames="ID"/>
+     </changeSet>
+
+     <changeSet id="relation_unique_constraint_001" author="lq">
+         <addUniqueConstraint tableName="RELATION" columnNames="SOURCE_USER_ID, TARGET_USER_ID, TYPE"
+                              constraintName="UNIQUE_RELATION_CONSTRAINT"/>
      </changeSet>
 
 
