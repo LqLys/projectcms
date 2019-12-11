@@ -70,8 +70,11 @@ public class TravelGroupController {
 
     @GetMapping(path = "/details/{groupId}/members")
     public ModelAndView getGroupDetailMembers(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
         List<GroupDetailsMembers> groupDetailsMembers = travelGroupFacade.getGroupDetailsMembers(groupId);
+        List<BaseFriendDto> friends = relationFacade.getUserFriends(authenticatedUser.getId());
         TravelGroupDto travelGroup = travelGroupFacade.getTravelGroupById(groupId);
+        modelAndView.addObject("friends", friends);
         modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
         modelAndView.addObject("groupId", groupId);
         modelAndView.addObject("groupName", travelGroup.getName());
