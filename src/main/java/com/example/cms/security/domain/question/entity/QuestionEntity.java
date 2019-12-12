@@ -39,4 +39,8 @@ public class QuestionEntity {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<AnswerEntity> answers;
+
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID")
+    private TravelGroupEntity group;
 }

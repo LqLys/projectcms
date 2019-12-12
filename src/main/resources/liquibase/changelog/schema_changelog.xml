@@ -251,6 +251,9 @@
              <column name="END_DATE" type="date">
                  <constraints nullable="false"/>
              </column>
+             <column name="GROUP_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
          </createTable>
      </changeSet>
 

@@ -2,6 +2,8 @@ package com.example.cms.security.domain.travelgroup.controller;
 
 import com.example.cms.security.domain.expense.facade.ExpenseFacade;
 import com.example.cms.security.domain.groupinvite.facade.GroupInviteFacade;
+import com.example.cms.security.domain.question.dto.PlanningQuestionDto;
+import com.example.cms.security.domain.question.facade.QuestionFacade;
 import com.example.cms.security.domain.relation.dto.BaseFriendDto;
 import com.example.cms.security.domain.relation.facade.RelationFacade;
 import com.example.cms.security.domain.travelgroup.dto.*;
@@ -31,15 +33,17 @@ public class TravelGroupController {
     private final UserService userService;
     private final ExpenseFacade expenseFacade;
     private final RelationFacade relationFacade;
+    private final QuestionFacade questionFacade;
 
     public TravelGroupController(TravelGroupFacade travelGroupFacade,
                                  GroupInviteFacade groupInviteFacade,
-                                 UserService userService, ExpenseFacade expenseFacade, RelationFacade relationFacade) {
+                                 UserService userService, ExpenseFacade expenseFacade, RelationFacade relationFacade, QuestionFacade questionFacade) {
         this.travelGroupFacade = travelGroupFacade;
         this.groupInviteFacade = groupInviteFacade;
         this.userService = userService;
         this.expenseFacade = expenseFacade;
         this.relationFacade = relationFacade;
+        this.questionFacade = questionFacade;
     }
 
     @GetMapping(path = "/groups")
@@ -128,6 +132,16 @@ public class TravelGroupController {
         modelAndView.setViewName("group/groupDetails");
         TravelGroupDto travelGroup = travelGroupFacade.getTravelGroupById(groupId);
         modelAndView.addObject("travelGroup", travelGroup);
+        return modelAndView;
+    }
+
+    @GetMapping(path = "/details/{groupId}/planning")
+    public ModelAndView getGroupDetailPlanning(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
+        List<PlanningQuestionDto> questions = questionFacade.getQuestionsByGroupId(groupId);
+        modelAndView.addObject("questions", questions);
+        modelAndView.addObject("createSurveyDto", new CreateSurveyDto());
+        modelAndView.setViewName("group/groupDetailsPlanning");
+
         return modelAndView;
     }
 

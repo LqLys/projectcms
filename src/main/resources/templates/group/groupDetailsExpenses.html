@@ -32,21 +32,21 @@
     </div>
     <div class="row">
         <div>
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-pills nav-justified">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Szczegóły</a>
+                    <a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Planowanie</a>
+                    <a class="nav-link" th:href="@{/group/details/1}">Szczegóły</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
+                    <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/group/details/1/expenses}">Wydatki</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Uczestnicy</a>
                 </li>
             </ul>
         </div>
