@@ -25,7 +25,8 @@ public class RelationRepositoryImpl implements RelationRepositoryFragment {
         return jpaQueryFactory.select(targetUser).from(sourceUser)
                 .join(relation).on(sourceUser.id.eq(relation.source.id))
                 .join(targetUser).on(relation.target.id.eq(targetUser.id))
-                .where(relation.relationType.eq(RelationType.FRIEND))
+                .where(relation.relationType.eq(RelationType.FRIEND)
+                        .and(sourceUser.id.eq(userId)))
                 .fetch();
     }
 }

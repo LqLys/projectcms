@@ -1,5 +1,6 @@
 package com.example.cms.security.domain.expense.facade;
 
+import com.example.cms.security.domain.expense.dto.UnpaidExpenseDto;
 import com.example.cms.security.domain.expense.entity.ExpenseEntity;
 import com.example.cms.security.domain.expense.service.ExpenseService;
 import com.example.cms.security.domain.expenseparticipant.entity.ExpenseParticipantEntity;
@@ -60,5 +61,12 @@ public class ExpenseFacade {
                 .paidAmount(BigDecimal.ZERO)
                 .expense(expense)
                 .build();
+    }
+
+    public List<UnpaidExpenseDto> getUsersUnpaidExpenses(UserEntity authenticatedUser) {
+//        return expenseService.getExpensesUserHasToPay(authenticatedUser);
+        return expenseService.getExpensesOthersHaveToPay(authenticatedUser);
+
+
     }
 }
