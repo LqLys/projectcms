@@ -17,6 +17,10 @@ public class QuestionService {
 
 
     public List<QuestionEntity> getQuestionsByGroupId(Long groupId) {
-        return null;
+        return questionRepository.findAllByGroup_Id(groupId);
+    }
+
+    public void createQuestion(QuestionEntity question) {
+        questionRepository.save(question);
     }
 }

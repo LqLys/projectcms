@@ -3,6 +3,7 @@ package com.example.cms.security.domain.answer.entity;
 import com.example.cms.security.domain.question.entity.QuestionEntity;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "ANSWER")
 public class AnswerEntity {
 

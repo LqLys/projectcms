@@ -6,6 +6,7 @@ import com.example.cms.security.domain.groupinvite.entity.GroupInviteEntity;
 import com.example.cms.security.domain.role.entity.RoleEntity;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "QUESTION")
 public class QuestionEntity {
 

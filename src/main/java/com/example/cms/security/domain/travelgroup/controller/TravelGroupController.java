@@ -139,7 +139,7 @@ public class TravelGroupController {
     public ModelAndView getGroupDetailPlanning(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
         List<PlanningQuestionDto> questions = questionFacade.getQuestionsByGroupId(groupId);
         modelAndView.addObject("questions", questions);
-        modelAndView.addObject("createSurveyDto", new CreateSurveyDto());
+        modelAndView.addObject("createSurveyDto", new CreateQuestionDto());
         modelAndView.setViewName("group/groupDetailsPlanning");
 
         return modelAndView;

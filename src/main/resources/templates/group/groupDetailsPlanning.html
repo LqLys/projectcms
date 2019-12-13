@@ -36,13 +36,13 @@
                 <div class="card-header">
                     <ul class="nav nav-pills nav-justified">
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/group/details/1/members}">Uczestnicy</a>
+                            <a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/group/details/1}">Szczegóły</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>
+                            <a class="nav-link active" th:href="@{/group/details/1/planning}">Planowanie</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
@@ -71,15 +71,14 @@
 
                                         <!-- Table body -->
                                         <tbody>
-                                        <tr th:each="question :${questions}">
+                                        <tr th:each="question, questionIndex :${questions}">
                                             <td th:text="${question.text}"></td>
                                             <td>
                                                 <div th:each="answer :${question.answers}">
-                                                    <span th:text="answer"></span>
+                                                    <input type="radio" th:value="${answer.id}" th:text="${answer.text}"
+                                                    th:name="${'question-answers-' + questionIndex}">
+
                                                 </div>
-                                            </td>
-                                            <td style="padding: 0.5rem">
-                                                <button class="btn btn-danger btn-sm">Usuń</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -94,7 +93,7 @@
                                         <div class="col-12">
                                             <div class="card mb-3">
                                                 <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Utwórz ankiete</strong>
+                                                    <strong>Dodaj pytanie</strong>
                                                 </h5>
                                                 <div class="card-body px-lg-5 py-0 ">
                                                     <form autocomplete="off" action="#"
@@ -106,8 +105,11 @@
                                                                    class="form-control"
                                                                    th:value="${groupId}"/>
                                                             <div class="custom-control">
-                                                                <input
-                                                                        class="form-control"/>
+                                                                <input id="questionInput"
+                                                                       type="text"
+                                                                       class="form-control"
+                                                                       placeholder="*Pytanie"
+                                                                />
                                                             </div>
                                                             <div class="custom-control">
                                                                 <input type="text"
@@ -134,7 +136,8 @@
 
                                                         </div>
                                                         <div class="form-group">
-                                                            <button type="submit"
+                                                            <button id="createQuestionBtn"
+                                                                    type="button"
                                                                     class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
                                                                 Zaproś!
                                                             </button>
@@ -144,50 +147,50 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="card mb-3">
-                                                <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Dodaj pytanie</strong>
-                                                </h5>
-                                                <div class="card-body px-lg-5 pt-0">
-                                                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
-                                                        <table class="table bordered table-hover mb-0" id="testTable">
-                                                            <!-- Table head -->
-                                                            <thead>
-                                                            <tr class="table-fixed">
-                                                                <th>Imię i Nazwisko</th>
-                                                                <th>Uczestnik</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <!-- Table head -->
+<!--                                        <div class="col-12">-->
+<!--                                            <div class="card mb-3">-->
+<!--                                                <h5 class="card-header blue darken-2 white-text text-center py-2">-->
+<!--                                                    <strong>Dodaj pytanie</strong>-->
+<!--                                                </h5>-->
+<!--                                                <div class="card-body px-lg-5 pt-0">-->
+<!--                                                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">-->
+<!--                                                        <table class="table bordered table-hover mb-0" id="testTable">-->
+<!--                                                            &lt;!&ndash; Table head &ndash;&gt;-->
+<!--                                                            <thead>-->
+<!--                                                            <tr class="table-fixed">-->
+<!--                                                                <th>Imię i Nazwisko</th>-->
+<!--                                                                <th>Uczestnik</th>-->
+<!--                                                            </tr>-->
+<!--                                                            </thead>-->
+<!--                                                            &lt;!&ndash; Table head &ndash;&gt;-->
 
-                                                            <!-- Table body -->
-                                                            <tbody id="members">
-                                                            <tr th:each="friend, index :${friends}">
-                                                                <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>
-                                                                <td>
-                                                                    <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox"
-                                                                               class="custom-control-input"
-                                                                               th:id="${index}">
-                                                                        <label class="custom-control-label"
-                                                                               th:for="${index}"></label>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+<!--                                                            &lt;!&ndash; Table body &ndash;&gt;-->
+<!--                                                            <tbody id="members">-->
+<!--                                                            <tr th:each="friend, index :${friends}">-->
+<!--                                                                <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>-->
+<!--                                                                <td>-->
+<!--                                                                    <div class="custom-control custom-checkbox">-->
+<!--                                                                        <input type="checkbox"-->
+<!--                                                                               class="custom-control-input"-->
+<!--                                                                               th:id="${index}">-->
+<!--                                                                        <label class="custom-control-label"-->
+<!--                                                                               th:for="${index}"></label>-->
+<!--                                                                    </div>-->
+<!--                                                                </td>-->
+<!--                                                            </tr>-->
 
-                                                            </tbody>
-                                                            <!-- Table body -->
-                                                        </table>
-                                                        <!-- Table  -->
-                                                    </div>
-                                                    <!-- Sign in button -->
-                                                    <button class="btn btn-blue btn-block m-auto waves-effect z-depth-0"
-                                                            type="submit">Dodaj!
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+<!--                                                            </tbody>-->
+<!--                                                            &lt;!&ndash; Table body &ndash;&gt;-->
+<!--                                                        </table>-->
+<!--                                                        &lt;!&ndash; Table  &ndash;&gt;-->
+<!--                                                    </div>-->
+<!--                                                    &lt;!&ndash; Sign in button &ndash;&gt;-->
+<!--                                                    <button class="btn btn-blue btn-block m-auto waves-effect z-depth-0"-->
+<!--                                                            type="submit">Dodaj!-->
+<!--                                                    </button>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -282,8 +285,8 @@
         const questionFormDiv = $('#questionFormDiv');
         const answers = $('.addAnswer');
         const ans0 = $(answers[0]);
-        console.log(ans0[0]);
         let cloned = ans0.clone();
+        cloned.val('');
         const ansCount = answers.length;
         cloned.attr('placeholder', '*Odpowiedź ' + (ansCount + 1));
         const wrapperDiv = $("<div class='custom-control'></div>");
@@ -291,7 +294,39 @@
         questionFormDiv.append(wrapperDiv);
     }
 
-    $('#moreAnswers').on('click', addNewAnswer)
+    $('#moreAnswers').on('click', addNewAnswer);
+
+
+    function createQuestion() {
+        const answerInputs = jQuery.makeArray($('.addAnswer'));
+        const answers = answerInputs.map(ans => ans.value);
+        const questionText = $('#questionInput').val();
+        const groupId = $('#groupId').val();
+        console.log(questionText);
+        console.log(answers);
+        const question = {
+            text: questionText,
+            answers: answers,
+            groupId: groupId,
+            endDate: '2019-01-01'
+        };
+
+        $.ajax({
+            url: 'http://localhost:8080/api/question/add',
+            data: JSON.stringify(question),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                console.log('Form sent');
+                location.reload();
+            },
+            error: function (error) {
+                console.log('Error sending form')
+            }
+        });
+
+    }
+    $('#createQuestionBtn').on('click', createQuestion);
 
 
 </script>
