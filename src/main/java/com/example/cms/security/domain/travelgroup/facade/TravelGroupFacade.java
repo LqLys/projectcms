@@ -50,6 +50,8 @@ public class TravelGroupFacade {
         travelGroupService.createTravelGroup(travelGroup);
 
         userTravelGroupService.createTravelGroup(user.getId(), travelGroup.getId());
+        createTravelGroupRequest.getFriendIds().stream().map(userService::findUserById)
+                .forEach(u -> groupInviteService.sendInvitation(user, u, travelGroup));
 
     }
 

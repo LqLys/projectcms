@@ -65,7 +65,6 @@ public class TravelGroupController {
     @PostMapping(path = "")
     public ModelAndView createGroup(@Valid CreateTravelGroupRequest createTravelGroupRequest,
                                     BindingResult bindingResult, ModelAndView modelAndView){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userService.getAuthenticatedUser();
         travelGroupFacade.createTravelGroup(createTravelGroupRequest, user);
         modelAndView.setViewName("redirect:/group/groups");

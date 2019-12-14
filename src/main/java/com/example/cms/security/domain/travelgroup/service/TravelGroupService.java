@@ -5,7 +5,6 @@ import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.travelgroup.repository.TravelGroupRepository;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class TravelGroupService {
         return travelGroupRepository.getOne(id);
     }
 
-    public void createTravelGroup(TravelGroupEntity travelGroup) {
-        travelGroupRepository.save(travelGroup);
+    public TravelGroupEntity createTravelGroup(TravelGroupEntity travelGroup) {
+        return travelGroupRepository.save(travelGroup);
     }
 
     public List<UserGroupsDto> gerUserGroupRoles(Long userId) {
