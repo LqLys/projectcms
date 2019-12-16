@@ -97,4 +97,27 @@ public class TravelGroupFacade {
                 .title(expenseEntity.getTitle())
                 .build();
     }
+
+    public void editGroup(TravelGroupDetailsDto travelGroupDetailsDto) {
+        TravelGroupEntity travelGroup = travelGroupService.findTravelGroup(travelGroupDetailsDto.getGroupId());
+        if(travelGroupDetailsDto.getDestination()!= null){
+            travelGroup.setDestination(travelGroupDetailsDto.getDestination());
+        }
+        if(travelGroupDetailsDto.getName()!= null) {
+            travelGroup.setName(travelGroupDetailsDto.getName());
+        }
+        if(travelGroupDetailsDto.getGroupStatus() != null){
+            travelGroup.setGroupStatus(travelGroupDetailsDto.getGroupStatus());
+        }
+        if(travelGroupDetailsDto.getGroupVisibility() != null){
+            travelGroup.setGroupVisibility(travelGroupDetailsDto.getGroupVisibility());
+        }
+        if(travelGroupDetailsDto.getStartDate()!= null){
+            travelGroup.setStartDate(travelGroupDetailsDto.getStartDate());
+        }
+        if(travelGroupDetailsDto.getEndDate()!= null){
+            travelGroup.setEndDate(travelGroupDetailsDto.getEndDate());
+        }
+        travelGroupService.save(travelGroup);
+    }
 }

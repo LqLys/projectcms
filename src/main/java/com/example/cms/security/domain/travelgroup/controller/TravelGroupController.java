@@ -140,8 +140,7 @@ public class TravelGroupController {
     @PostMapping(path = "/details/edit")
     public ModelAndView editGroupDetails(TravelGroupDetailsDto travelGroupDetailsDto,  ModelAndView modelAndView) {
         modelAndView.setViewName("redirect:/group/details/"+travelGroupDetailsDto.getGroupId());
-//        modelAndView.addObject("groupVisibility", GroupVisibility.values());
-//        modelAndView.addObject("travelGroupDto", travelGroupDto);
+        travelGroupFacade.editGroup(travelGroupDetailsDto);
         return modelAndView;
     }
 

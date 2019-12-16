@@ -29,4 +29,6 @@ public class TravelGroupDetailsDto {
     private GroupVisibility groupVisibility;
     private GroupStatus groupStatus;
     private BigDecimal debtLimit;
+    private BigDecimal lat;
+    private BigDecimal lon;
 }
