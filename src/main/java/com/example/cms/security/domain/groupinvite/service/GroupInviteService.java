@@ -3,6 +3,7 @@ package com.example.cms.security.domain.groupinvite.service;
 import com.example.cms.security.domain.groupinvite.entity.GroupInvitationStatus;
 import com.example.cms.security.domain.groupinvite.entity.GroupInviteEntity;
 import com.example.cms.security.domain.groupinvite.repository.GroupInviteRepository;
+import com.example.cms.security.domain.relation.service.RelationService;
 import com.example.cms.security.domain.travelgroup.dto.GroupInviteDto;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.user.entity.UserEntity;
@@ -14,22 +15,28 @@ import java.util.List;
 public class GroupInviteService {
 
     private final GroupInviteRepository groupInviteRepository;
+    private final RelationService relationService;
 
 
-    public GroupInviteService(GroupInviteRepository groupInviteRepository) {
+
+    public GroupInviteService(GroupInviteRepository groupInviteRepository, RelationService relationService) {
         this.groupInviteRepository = groupInviteRepository;
+        this.relationService = relationService;
     }
 
 
     public void sendInvitation(UserEntity authenticatedUser, UserEntity invitationTarget, TravelGroupEntity group) {
-        GroupInviteEntity build = GroupInviteEntity.builder()
-                .invitationSource(authenticatedUser)
-                .invitationTarget(invitationTarget)
-                .travelGroup(group)
-                .status(GroupInvitationStatus.PENDING)
-                .build();
+        boolean userIsBlocked = relationService.isBlockedAlready(invitationTarget, authenticatedUser.getId());
+        if(!userIsBlocked) {
+            GroupInviteEntity build = GroupInviteEntity.builder()
+                    .invitationSource(authenticatedUser)
+                    .invitationTarget(invitationTarget)
+                    .travelGroup(group)
+                    .status(GroupInvitationStatus.PENDING)
+                    .build();
 
-        groupInviteRepository.save(build);
+            groupInviteRepository.save(build);
+        }
     }
 
     public List<GroupInviteDto> getUsersPendingInvites(Long userId) {

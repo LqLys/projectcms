@@ -22,14 +22,11 @@ import java.util.List;
 public class GroupInviteFacade {
 
     private final GroupInviteService groupInviteService;
-    private final TravelGroupService travelGroupService;
-    private final UserService userService;
+
     private final UserTravelGroupService userTravelGroupService;
 
-    public GroupInviteFacade(GroupInviteService groupInviteService, TravelGroupService travelGroupService, UserService userService, UserTravelGroupService userTravelGroupService) {
+    public GroupInviteFacade(GroupInviteService groupInviteService, UserTravelGroupService userTravelGroupService) {
         this.groupInviteService = groupInviteService;
-        this.travelGroupService = travelGroupService;
-        this.userService = userService;
         this.userTravelGroupService = userTravelGroupService;
     }
 
