@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Registration Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design for Bootstrap</title>
+    <!-- MDB icon -->
+    <link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
+    <!-- DataTables JS -->
+    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
+</head>
+<body>
+
+
+<div th:replace="common/header :: header"></div>
+<div class="container">
+    <div class="row">
+        <h2 th:text="${groupName}"></h2>
+    </div>
+    <div class="row">
+        <div>
+            <ul class="nav nav-pills nav-justified">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/group/details/1}">Szczegóły</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/group/details/1/expenses}">Wydatki</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <h3>ja mam zapłacic innym</h3>
+            <table class="table">
+
+                <tbody>
+                <tr th:each="exp :${userHasToPay}" style="font-size: x-large">
+
+                    <td th:text="${exp.userId}"></td>
+                    <td th:text="${exp.getRelatedUser()}"></td>
+                    <td th:text="${exp.getAmount()}"></td>
+
+                </tr>
+
+                </tbody>
+            </table>
+            <h3>inni mają mi zapłacic</h3>
+            <table class="table">
+
+                <tbody>
+                <tr th:each="expense :${othersHaveToPay}" style="font-size: x-large">
+                    <td th:text="${expense.userId}"></td>
+                    <td th:text="${expense.getRelatedUser()}"></td>
+                    <td th:text="${expense.getAmount()}"></td>
+
+                </tr>
+
+                </tbody>
+            </table>
+            <h3>balans</h3>
+            <table class="table">
+
+                <tbody>
+                <tr th:each="balance :${finalUserBalance}" style="font-size: x-large">
+                    <td th:text="${balance.getKey()}"></td>
+                    <td th:text="${balance.getValue()}"></td>
+
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+<!--        <div class="col-sm-4">-->
+<!--            <div>-->
+<!--                <form autocomplete="off" action="#" th:action="@{/group/expense}"-->
+<!--                      th:object="${createExpenseRequest}" method="post" class="form-horizontal"-->
+<!--                      role="form">-->
+<!--                    <h2>Dodaj wydatek</h2>-->
+<!--                    <div class="form-group">-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"-->
+<!--                                   class="validation-message"></label>-->
+<!--                            <input type="text" th:field="*{title}" placeholder="tytuł"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"-->
+<!--                                   class="validation-message"></label>-->
+<!--                            <input type="text" th:field="*{amount}" placeholder="kwota"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <label>uczestnicy</label>-->
+<!--                            <th:block th:each="member : ${travelGroup.getMembers()}">-->
+<!--                                <div th:if="${currentUserId != member.id}">-->
+<!--                                    <input type="checkbox" name="debtors" th:value="${member.id}"/>-->
+<!--                                    <label th:text="${member.name}"></label>-->
+<!--                                </div>-->
+<!--                            </th:block>-->
+<!--                        </div>-->
+
+<!--                    </div>-->
+<!--                    <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${travelGroup.id}"/>-->
+<!--                    <input type="hidden" th:attr="name=authorId" class="form-control" th:value="${currentUserId}"/>-->
+
+
+<!--                    <div class="form-group">-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <button type="submit" class="btn btn-primary btn-block">Zaproś!</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash;<span th:utext="${successMessage}"></span>&ndash;&gt;-->
+
+
+<!--                </form>-->
+<!--            </div>-->
+
+<!--        </div>-->
+    </div>
+</div>
+
+
+</body>
+</html>

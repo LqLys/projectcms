@@ -14,8 +14,11 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class ExpenseFacade {
@@ -63,9 +66,41 @@ public class ExpenseFacade {
                 .build();
     }
 
-    public List<UnpaidExpenseDto> getUsersUnpaidExpenses(UserEntity authenticatedUser) {
-//        return expenseService.getExpensesUserHasToPay(authenticatedUser);
+    public List<UnpaidExpenseDto> getExpensesUserHasToPay(UserEntity authenticatedUser) {
+        return expenseService.getExpensesUserHasToPay(authenticatedUser);
+    }
+
+    public List<UnpaidExpenseDto> getExpensesOthersHaveToPay(UserEntity authenticatedUser) {
         return expenseService.getExpensesOthersHaveToPay(authenticatedUser);
+    }
+
+    public Map<Long, BigDecimal> getAggregatedUserBalance(UserEntity authenticatedUser) {
+        List<UnpaidExpenseDto> userHasToPay = expenseService.getExpensesUserHasToPay(authenticatedUser);
+        List<UnpaidExpenseDto> othersHaveToPay = expenseService.getExpensesOthersHaveToPay(authenticatedUser);
+
+        Map<Long, List<UnpaidExpenseDto>> userHasToPayAggregated = userHasToPay.stream().collect(Collectors.groupingBy(UnpaidExpenseDto::getUserId));
+        Map<Long, List<UnpaidExpenseDto>> othersHaveToPayAggregated = othersHaveToPay.stream().collect(Collectors.groupingBy(UnpaidExpenseDto::getUserId));
+
+        Map<Long, BigDecimal> userHasToPayBalance = userHasToPayAggregated.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> entry.getValue().stream().map(UnpaidExpenseDto::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add)));
+
+        Map<Long, BigDecimal> othersHaveToPayBalance = othersHaveToPayAggregated.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> entry.getValue().stream().map(UnpaidExpenseDto::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add)));
+
+        Map<Long, BigDecimal> finalUserBalance = userHasToPayBalance.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> othersHaveToPayBalance.getOrDefault(entry.getKey(),BigDecimal.ZERO).subtract(entry.getValue())));
+
+
+        othersHaveToPayBalance.entrySet().stream().forEach(entry -> {
+            if (!finalUserBalance.containsKey(entry.getKey())){
+                finalUserBalance.put(entry.getKey(), entry.getValue());
+            }
+        });
+        return finalUserBalance;
+//        List<UnpaidExpenseDto> collect = Stream.of(userHasToPay, othersHaveToPay).flatMap(Collection::stream).collect(Collectors.toList());
+
 
 
     }

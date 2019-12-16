@@ -55,18 +55,36 @@
             <div th:text="${travelGroup.endDate}"></div>
         </div>
         <div class="col-sm-4">
-            <div id="map" style="width:200px; height: 200px; margin-left: auto; margin-right: auto"></div>
+            <div id="map" style="width:500px; height: 500px; margin-left: auto; margin-right: auto"></div>
             <script th:inline="javascript">
                 var map;
+                var gmarkers = [];
                 function initMap() {
                     console.log('initMap');
+
                     map = new google.maps.Map(document.getElementById('map'), {
                         center: {lat: -34.397, lng: 150.644},
                         zoom: 8
                     });
+
+                    new google.maps.event.addListener(map, 'click', function(event) {
+                        placeMarker(event.latLng);
+                    });
+
+                    function placeMarker(location) {
+                        gmarkers = [];
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            map: map
+                        });
+                        gmarkers.push(marker);
+                    }
                 }
             </script>
-            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apikey&callback=initMap"></script>
+            <script>
+
+            </script>
+            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apiKey&callback=initMap"></script>
 
 
         </div>

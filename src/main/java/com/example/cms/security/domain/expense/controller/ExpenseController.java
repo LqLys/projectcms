@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ExpenseController {
@@ -22,10 +24,16 @@ public class ExpenseController {
     }
 
 
-    @GetMapping(path = "/expenses/unpaid")
+    @GetMapping(path = "/expenses")
     public ModelAndView getUsersExpenses(ModelAndView modelAndView) {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
-        List<UnpaidExpenseDto> unpaidExpenses = expenseFacade.getUsersUnpaidExpenses(authenticatedUser);
+        List<UnpaidExpenseDto> userHasToPay = expenseFacade.getExpensesUserHasToPay(authenticatedUser);
+        List<UnpaidExpenseDto> othersHaveToPay = expenseFacade.getExpensesOthersHaveToPay(authenticatedUser);
+        Map<Long, BigDecimal> finalUserBalance = expenseFacade.getAggregatedUserBalance(authenticatedUser);
+        modelAndView.addObject("userHasToPay", userHasToPay);
+        modelAndView.addObject("othersHaveToPay", othersHaveToPay);
+        modelAndView.addObject("finalUserBalance", finalUserBalance);
+        modelAndView.setViewName("/expense/expenses");
         return modelAndView;
 
     }

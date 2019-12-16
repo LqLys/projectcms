@@ -26,6 +26,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryFragment {
 
         List<UnpaidExpenseDto> fetch = jpaQueryFactory.select(
                 Projections.constructor(UnpaidExpenseDto.class,
+                        expense.createdBy.id,
                         expense.title,
                         participation.initialAmount,
                         user.email
@@ -47,6 +48,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryFragment {
 
         List<UnpaidExpenseDto> fetch = jpaQueryFactory.select(
                 Projections.constructor(UnpaidExpenseDto.class,
+                        participation.debtor.id,
                         expense.title,
                         participation.initialAmount,
                         user.email
