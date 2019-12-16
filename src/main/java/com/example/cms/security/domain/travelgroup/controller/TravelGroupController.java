@@ -7,6 +7,8 @@ import com.example.cms.security.domain.question.facade.QuestionFacade;
 import com.example.cms.security.domain.relation.dto.BaseFriendDto;
 import com.example.cms.security.domain.relation.facade.RelationFacade;
 import com.example.cms.security.domain.travelgroup.dto.*;
+import com.example.cms.security.domain.travelgroup.entity.GroupStatus;
+import com.example.cms.security.domain.travelgroup.entity.GroupVisibility;
 import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
@@ -129,8 +131,17 @@ public class TravelGroupController {
     @GetMapping(path = "/details/{groupId}")
     public ModelAndView getGroupDetails(@PathVariable("groupId")Long groupId,  ModelAndView modelAndView) {
         modelAndView.setViewName("group/groupDetails");
-        TravelGroupDto travelGroup = travelGroupFacade.getTravelGroupById(groupId);
-        modelAndView.addObject("travelGroup", travelGroup);
+        TravelGroupDetailsDto travelGroupDto = travelGroupFacade.getTravelGroupDetails(groupId);
+        modelAndView.addObject("groupVisibilityOptions", GroupVisibility.values());
+        modelAndView.addObject("groupStatusOptions", GroupStatus.values());
+        modelAndView.addObject("travelGroupDto", travelGroupDto);
+        return modelAndView;
+    }
+    @PostMapping(path = "/details/edit")
+    public ModelAndView editGroupDetails(TravelGroupDetailsDto travelGroupDetailsDto,  ModelAndView modelAndView) {
+        modelAndView.setViewName("redirect:/group/details/"+travelGroupDetailsDto.getGroupId());
+//        modelAndView.addObject("groupVisibility", GroupVisibility.values());
+//        modelAndView.addObject("travelGroupDto", travelGroupDto);
         return modelAndView;
     }
 

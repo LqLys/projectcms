@@ -23,76 +23,209 @@
 </head>
 <body>
 <div th:replace="common/header :: header"></div>
-<div class="container">
-    <div class="row">
-        <h2 th:text="${groupName}"></h2>
-    </div>
-    <div class="row">
-        <div>
-            <ul class="nav nav-pills nav-justified">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/group/details/1}">Szczegóły</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-8">
-            <h3>Szczegóły grupy</h3>
-            <div th:text="${travelGroup.name}"></div>
-            <div th:text="${travelGroup.destination}"></div>
-            <div th:text="${travelGroup.startDate}"></div>
-            <div th:text="${travelGroup.endDate}"></div>
-        </div>
-        <div class="col-sm-4">
-            <div id="map" style="width:500px; height: 500px; margin-left: auto; margin-right: auto"></div>
-            <script th:inline="javascript">
-                var map;
-                var gmarkers = [];
-                function initMap() {
-                    console.log('initMap');
 
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        center: {lat: -34.397, lng: 150.644},
-                        zoom: 8
-                    });
+<div class="container-fluid">
+    <div class="row mx-sm-2 my-lg-0">
+        <div class="col-12">
+            <div class="col-12">
+                <h1 th:text="${groupName}"></h1>
+            </div>
+            <div class="card my-3">
+                <div class="card-header">
+                    <ul class="nav nav-pills nav-justified">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/group/details/1}">Szczegóły</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
+                        </li>
+                    </ul>
+                </div>
 
-                    new google.maps.event.addListener(map, 'click', function(event) {
-                        placeMarker(event.latLng);
-                    });
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h5 class="card-header blue darken-2 white-text text-center py-2">
+                                    <strong>Szczegóły grupy</strong>
+                                </h5>
+                                <div class="card-body px-lg-5 py-0 ">
+                                    <form autocomplete="off" action="#" th:action="@{/group/details/edit}"
+                                          th:object="${travelGroupDto}" method="post"
+                                          class="text-center"
+                                          role="form">
+                                        <div class="md-form my-0">
+                                            <label th:if="${#fields.hasErrors('name')}"
+                                                   th:errors="*{name}"
+                                                   class="validation-message"></label>
+                                            <input type="text" th:field="*{name}" placeholder="*Nazwa"
+                                                   class="form-control"/>
+                                            <label th:if="${#fields.hasErrors('destination')}"
+                                                   th:errors="*{destination}"
+                                                   class="validation-message"></label>
+                                            <input type="text" th:field="*{destination}" placeholder="*Cel"
+                                                   class="form-control"/>
+                                            <label th:if="${#fields.hasErrors('startDate')}"
+                                                   th:errors="*{startDate}"
+                                                   class="validation-message"></label>
+                                            <input type="date" th:field="*{startDate}" class="form-control"
+                                                   th:value="${#temporals.format(travelGroupDto.startDate, 'dd/MM/yyyy')}"
+                                            />
+                                            <label th:if="${#fields.hasErrors('endDate')}"
+                                                   th:errors="*{endDate}"
+                                                   class="validation-message"></label>
+                                            <input type="date" th:field="*{endDate}" class="form-control"/>
+                                            <div th:each="visibility, visIndex :${groupVisibilityOptions}">
+                                                <input type="radio" th:value="${visibility.name()}" th:text="${visibility.name()}"
+                                                       th:name="${'groupVisibility'}" th:checked="${travelGroupDto.getGroupVisibility().equals(visibility)}">
 
-                    function placeMarker(location) {
-                        gmarkers = [];
-                        var marker = new google.maps.Marker({
-                            position: location,
-                            map: map
-                        });
-                        gmarkers.push(marker);
-                    }
-                }
-            </script>
-            <script>
+                                            </div>
+                                            <hr>
+                                            <div th:each="status :${groupStatusOptions}">
+                                                <input type="radio" th:value="${status.name()}" th:text="${status.name()}"
+                                                       th:name="${'groupStatus'}" th:checked="${travelGroupDto.getGroupStatus().equals(status)}">
 
-            </script>
-            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apiKey&callback=initMap"></script>
+                                            </div>
+                                            <input type="hidden" th:attr="name=groupId" class="form-control"
+                                                   th:value="${groupId}"/>
+                                            <div class="form-group">
+                                                <button type="submit"
+                                                        class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
+                                                    Zaproś!
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-md-5 my-3 px-0">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div id="map" style="width:500px; height: 500px; margin-left: auto; margin-right: auto"></div>
+                                            <script th:inline="javascript">
+                                                var map;
+                                                var gmarkers = [];
+                                                function initMap() {
+                                                    console.log('initMap');
+
+                                                    map = new google.maps.Map(document.getElementById('map'), {
+                                                        center: {lat: -34.397, lng: 150.644},
+                                                        zoom: 8
+                                                    });
+
+                                                    new google.maps.event.addListener(map, 'click', function(event) {
+                                                        placeMarker(event.latLng);
+                                                    });
+
+                                                    function placeMarker(location) {
+                                                        gmarkers = [];
+                                                        var marker = new google.maps.Marker({
+                                                            position: location,
+                                                            map: map
+                                                        });
+                                                        gmarkers.push(marker);
+                                                    }
+                                                }
+                                            </script>
+                                            <script>
+
+                                            </script>
+                                            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apiKey&callback=initMap"></script>
 
 
-        </div>
-    </div>
-</div>
+                                        </div>
 
-
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="common/footer :: footer"></div>
 </body>
+<!--<body>-->
+<!--<div th:replace="common/header :: header"></div>-->
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <h2 th:text="${groupName}"></h2>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--        <div>-->
+<!--            <ul class="nav nav-pills nav-justified">-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link active" th:href="@{/group/details/1}">Szczegóły</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--        <div class="col-sm-8">-->
+<!--            <h3>Szczegóły grupy</h3>-->
+<!--            <div th:text="${travelGroup.name}"></div>-->
+<!--            <div th:text="${travelGroup.destination}"></div>-->
+<!--            <div th:text="${travelGroup.startDate}"></div>-->
+<!--            <div th:text="${travelGroup.endDate}"></div>-->
+<!--        </div>-->
+<!--        <div class="col-sm-4">-->
+<!--            <div id="map" style="width:500px; height: 500px; margin-left: auto; margin-right: auto"></div>-->
+<!--            <script th:inline="javascript">-->
+<!--                var map;-->
+<!--                var gmarkers = [];-->
+<!--                function initMap() {-->
+<!--                    console.log('initMap');-->
+
+<!--                    map = new google.maps.Map(document.getElementById('map'), {-->
+<!--                        center: {lat: -34.397, lng: 150.644},-->
+<!--                        zoom: 8-->
+<!--                    });-->
+
+<!--                    new google.maps.event.addListener(map, 'click', function(event) {-->
+<!--                        placeMarker(event.latLng);-->
+<!--                    });-->
+
+<!--                    function placeMarker(location) {-->
+<!--                        gmarkers = [];-->
+<!--                        var marker = new google.maps.Marker({-->
+<!--                            position: location,-->
+<!--                            map: map-->
+<!--                        });-->
+<!--                        gmarkers.push(marker);-->
+<!--                    }-->
+<!--                }-->
+<!--            </script>-->
+<!--            <script>-->
+
+<!--            </script>-->
+<!--            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apiKey&callback=initMap"></script>-->
+
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!--</body>-->
 </html>

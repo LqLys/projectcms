@@ -39,6 +39,9 @@ public class TravelGroupFacade {
     public TravelGroupDto getTravelGroupById(Long groupId) {
         return travelGroupMapper.map(travelGroupService.getTravelGroup(groupId),TravelGroupDto.class);
     }
+    public TravelGroupDetailsDto getTravelGroupDetails(Long groupId){
+        return travelGroupMapper.map(travelGroupService.getTravelGroup(groupId),TravelGroupDetailsDto.class);
+    }
 
     public void createTravelGroup(CreateTravelGroupRequest createTravelGroupRequest, UserEntity user) {
 
