@@ -1,8 +1,6 @@
 package com.example.cms.security.domain.relation.facade;
 
-import com.example.cms.security.domain.relation.dto.AddFriendDto;
-import com.example.cms.security.domain.relation.dto.BaseFriendDto;
-import com.example.cms.security.domain.relation.dto.DeleteFriendDto;
+import com.example.cms.security.domain.relation.dto.*;
 import com.example.cms.security.domain.relation.service.RelationService;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
@@ -35,6 +33,15 @@ public class RelationFacade {
 
     }
 
+    private BaseBlockedUserDto mapToBlockedUser(UserEntity userEntity) {
+        return BaseBlockedUserDto.builder()
+                .id(userEntity.getId())
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .build();
+
+    }
+
     public void addFriend(UserEntity authenticatedUser, AddFriendDto addFriendDto) {
         UserEntity newFriend = userService.findUserByEmail(addFriendDto.getEmail());
         relationService.addFriend(authenticatedUser, newFriend);
@@ -47,5 +54,24 @@ public class RelationFacade {
 
     public boolean isFriendAlready(UserEntity authenticatedUser, Long newFriendId) {
         return relationService.isFriendAlready(authenticatedUser, newFriendId);
+    }
+
+    public boolean isBlockedAlready(UserEntity authenticatedUser, Long userToBlockId) {
+        return relationService.isBlockedAlready(authenticatedUser, userToBlockId);
+
+    }
+
+    public List<BaseBlockedUserDto> getBlockedUsers(Long userId) {
+        return relationService.getBlockedUsers(userId).stream().map(this::mapToBlockedUser).collect(Collectors.toList());
+    }
+
+    public void blockUser(UserEntity authenticatedUser, BlockUserDto blockUserDto) {
+        UserEntity userToBlock = userService.findUserByEmail(blockUserDto.getEmail());
+        relationService.blockUser(authenticatedUser, userToBlock);
+    }
+
+    public void unblockUser(UserEntity authenticatedUser, UnblockUserDto unblockUserDto) {
+        UserEntity userToUnblock = userService.findUserById(unblockUserDto.getId());
+        relationService.unblockUser(authenticatedUser,userToUnblock);
     }
 }

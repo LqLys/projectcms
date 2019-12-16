@@ -34,10 +34,10 @@
                 <div class="card-header">
                     <ul class="nav nav-pills nav-justified">
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/friends}">Znajomi</a>
+                            <a class="nav-link" th:href="@{/friends}">Znajomi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/blocked}">Zablokowani</a>
+                            <a class="nav-link active" th:href="@{/blocked}">Zablokowani</a>
                         </li>
                     </ul>
                 </div>
@@ -60,12 +60,12 @@
 
                                         <!-- Table body -->
                                         <tbody>
-                                        <tr th:each="friend :${friends}">
-                                            <td th:text="${friend.firstName}"></td>
-                                            <td th:text="${friend.lastName}"></td>
+                                        <tr th:each="blockedUser :${blockedUsers}">
+                                            <td th:text="${blockedUser.firstName}"></td>
+                                            <td th:text="${blockedUser.lastName}"></td>
                                             <td style="padding: 0.5rem">
-                                                <form autocomplete="off" action="#" th:action="@{/friends/delete}"
-                                                      th:object="${deleteFriend}" method="post"
+                                                <form autocomplete="off" action="#" th:action="@{/blocked/unblock}"
+                                                      th:object="${unblockUserDto}" method="post"
                                                       class="text-center"
                                                       role="form">
                                                     <div class="md-form my-0">
@@ -73,9 +73,9 @@
                                                         <!--                                                               th:errors="*{email}"-->
                                                         <!--                                                               class="validation-message"></label>-->
                                                         <input type="hidden" th:attr="name=id" class="form-control"
-                                                               th:value="${friend.id}"/>
+                                                               th:value="${blockedUser.id}"/>
                                                         <div class="form-group">
-                                                            <button type="submit" class="btn btn-danger btn-sm">Usuń
+                                                            <button type="submit" class="btn btn-danger btn-sm">Odblokuj
                                                             </button>
                                                         </div>
                                                     </div>
@@ -97,11 +97,11 @@
                                         <div class="col-12">
                                             <div class="card mb-3">
                                                 <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Zaproś nowego znajomoego</strong>
+                                                    <strong>Zablokuj użytkownika</strong>
                                                 </h5>
                                                 <div class="card-body px-lg-5 py-0 ">
-                                                    <form autocomplete="off" action="#" th:action="@{/friends/add}"
-                                                          th:object="${addFriendDto}" method="post"
+                                                    <form autocomplete="off" action="#" th:action="@{/blocked/add}"
+                                                          th:object="${blockUserDto}" method="post"
                                                           class="text-center"
                                                           role="form">
                                                         <div class="md-form my-0">
@@ -111,7 +111,7 @@
                                                             <div class="form-group">
                                                                 <button type="submit"
                                                                         class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
-                                                                    Zaproś!
+                                                                    Zablokuj!
                                                                 </button>
                                                             </div>
                                                         </div>

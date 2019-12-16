@@ -1,12 +1,15 @@
 package com.example.cms.security.domain.relation.service;
 
 import com.example.cms.security.domain.relation.dto.AddFriendDto;
+import com.example.cms.security.domain.relation.dto.BaseBlockedUserDto;
+import com.example.cms.security.domain.relation.dto.BlockUserDto;
 import com.example.cms.security.domain.relation.entity.RelationEntity;
 import com.example.cms.security.domain.relation.entity.RelationType;
 import com.example.cms.security.domain.relation.repository.RelationRepository;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -41,5 +44,31 @@ public class RelationService {
 
     public boolean isFriendAlready(UserEntity authenticatedUser, Long friendToAddId) {
         return relationRepository.findBySource_IdAndTarget_IdAndRelationType(authenticatedUser.getId(), friendToAddId, RelationType.FRIEND) != null;
+    }
+
+    public boolean isBlockedAlready(UserEntity authenticatedUser, Long userToBlockId) {
+        return relationRepository.findBySource_IdAndTarget_IdAndRelationType(authenticatedUser.getId(), userToBlockId, RelationType.BLOCKED) != null;
+
+    }
+
+    public List<UserEntity> getBlockedUsers(Long userId) {
+        return relationRepository.getBlockedUsers(userId);
+    }
+
+    public void blockUser(UserEntity authenticatedUser, UserEntity blockUserDto) {
+        RelationEntity relation = RelationEntity.builder()
+                .relationType(RelationType.BLOCKED)
+                .source(authenticatedUser)
+                .target(blockUserDto)
+                .build();
+        relationRepository.save(relation);
+    }
+
+    public void unblockUser(UserEntity authenticatedUser, UserEntity userToUnblock) {
+
+        RelationEntity relationToDelete = relationRepository.findBySource_IdAndTarget_IdAndRelationType(authenticatedUser.getId(),
+                userToUnblock.getId(),
+                RelationType.BLOCKED);
+        relationRepository.delete(relationToDelete);
     }
 }

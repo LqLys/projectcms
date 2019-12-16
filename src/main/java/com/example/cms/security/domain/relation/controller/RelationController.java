@@ -1,18 +1,13 @@
 package com.example.cms.security.domain.relation.controller;
 
-import com.example.cms.security.domain.relation.dto.AddFriendDto;
-import com.example.cms.security.domain.relation.dto.BaseFriendDto;
-import com.example.cms.security.domain.relation.dto.DeleteFriendDto;
+import com.example.cms.security.domain.relation.dto.*;
 import com.example.cms.security.domain.relation.facade.RelationFacade;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -40,6 +35,16 @@ public class RelationController {
         modelAndView.setViewName("friend/friends");
         return modelAndView;
     }
+    @GetMapping(path = "/blocked")
+    public ModelAndView getBlockedUsers(ModelAndView modelAndView) {
+        UserEntity user = userService.getAuthenticatedUser();
+        List<BaseBlockedUserDto> blockedUsers = relationFacade.getBlockedUsers(user.getId());
+        modelAndView.addObject("blockUserDto", new BlockUserDto());
+        modelAndView.addObject("unblockUserDto", new UnblockUserDto());
+        modelAndView.addObject("blockedUsers", blockedUsers);
+        modelAndView.setViewName("friend/blocked");
+        return modelAndView;
+    }
 
     @PostMapping(path = "/friends/add")
     public ModelAndView handleAddFriend(@Valid AddFriendDto addFriendDto, BindingResult bindingResult, ModelAndView modelAndView) {
@@ -53,8 +58,10 @@ public class RelationController {
         }
         if (bindingResult.hasErrors()) {
             List<BaseFriendDto> friends = relationFacade.getUserFriends(authenticatedUser.getId());
+            List<BaseBlockedUserDto> blockedUsers = relationFacade.getBlockedUsers(authenticatedUser.getId());
             modelAndView.addObject("friends", friends);
-            modelAndView.setViewName("friend/friends");
+            modelAndView.addObject("blockedUsers", blockedUsers);
+            modelAndView.setViewName("friend/blocked");
         }else {
             relationFacade.addFriend(authenticatedUser, addFriendDto);
             modelAndView.setViewName("redirect:/friends");
@@ -70,21 +77,33 @@ public class RelationController {
         return modelAndView;
     }
 
-//    ModelAndView modelAndView = new ModelAndView();
-//    UserEntity userExists = userService.findUserByEmail(userEntity.getEmail());
-//        if (userExists != null) {
-//        bindingResult.rejectValue("email", "error.userEntity",
-//                "There is already a user registered with the email provided");
-//    }
-//        if (bindingResult.hasErrors()) {
-//        modelAndView.setViewName("registration");
-//    } else {
-//        userService.saveUser(userEntity);
-//        modelAndView.addObject("successMessage", "User has been registered successfully");
-//        modelAndView.addObject("userEntity", new UserEntity());
-//        modelAndView.setViewName("registration");
-//
-//    }
-//        return modelAndView;
+    @PostMapping(path = "/blocked/add")
+    public ModelAndView handleBlockUser(@Valid BlockUserDto blockUserDto, BindingResult bindingResult, ModelAndView modelAndView) {
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        UserEntity uerToBlock = userService.findUserByEmail(blockUserDto.getEmail());
+        if (uerToBlock == null){
+            bindingResult.rejectValue("email", "error.addFriendDto", "user does not exist");
+        }
+        if(uerToBlock != null && relationFacade.isBlockedAlready(authenticatedUser, uerToBlock.getId())){
+            bindingResult.rejectValue("email", "error.addFriendDto", "user is already blocked");
+        }
+        if (bindingResult.hasErrors()) {
+            List<BaseBlockedUserDto> blockedUsers = relationFacade.getBlockedUsers(authenticatedUser.getId());
+            modelAndView.addObject("blockedUsers", blockedUsers);
+            modelAndView.setViewName("friend/blocked");
+        }else {
+            relationFacade.blockUser(authenticatedUser, blockUserDto);
+            modelAndView.setViewName("redirect:/blocked");
+        }
+        return modelAndView;
+    }
+
+    @PostMapping(path = "/blocked/unblock")
+    public ModelAndView handleUserUnblock(UnblockUserDto unblockUserDto,  ModelAndView modelAndView) {
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        relationFacade.unblockUser(authenticatedUser, unblockUserDto);
+        modelAndView.setViewName("redirect:/blocked");
+        return modelAndView;
+    }
 
 }

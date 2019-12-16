@@ -29,4 +29,18 @@ public class RelationRepositoryImpl implements RelationRepositoryFragment {
                         .and(sourceUser.id.eq(userId)))
                 .fetch();
     }
+
+    @Override
+    public List<UserEntity> getBlockedUsers(Long userId) {
+        QUserEntity sourceUser = new QUserEntity("sourceUser");
+        QUserEntity targetUser = new QUserEntity("targetUser");
+        QRelationEntity relation = QRelationEntity.relationEntity;
+
+        return jpaQueryFactory.select(targetUser).from(sourceUser)
+                .join(relation).on(sourceUser.id.eq(relation.source.id))
+                .join(targetUser).on(relation.target.id.eq(targetUser.id))
+                .where(relation.relationType.eq(RelationType.BLOCKED)
+                        .and(sourceUser.id.eq(userId)))
+                .fetch();
+    }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 public interface RelationRepositoryFragment {
 
     List<UserEntity> getFriends(Long userId);
+
+    List<UserEntity> getBlockedUsers(Long userId);
 }
