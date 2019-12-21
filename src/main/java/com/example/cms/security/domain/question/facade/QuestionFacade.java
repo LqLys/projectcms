@@ -65,7 +65,7 @@ public class QuestionFacade {
                 .id(a.getId())
                 .text(a.getText())
                 .checked(userAnswerIds.contains(a.getId()))
-                .answerCount(answersCount.get(a.getId()))
+                .answerCount(answersCount.getOrDefault(a.getId(), 0L))
                 .build();
     }
 
