@@ -146,9 +146,12 @@ public class TravelGroupController {
 
     @GetMapping(path = "/details/{groupId}/planning")
     public ModelAndView getGroupDetailPlanning(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
-        List<PlanningQuestionDto> questions = questionFacade.getQuestionsByGroupId(groupId);
+        final UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        List<PlanningQuestionDto> questions = questionFacade.getQuestionsByGroupId(authenticatedUser, groupId);
+
         modelAndView.addObject("questions", questions);
         modelAndView.addObject("createSurveyDto", new CreateQuestionDto());
+        modelAndView.addObject("userId", authenticatedUser.getId());
         modelAndView.setViewName("group/groupDetailsPlanning");
 
         return modelAndView;

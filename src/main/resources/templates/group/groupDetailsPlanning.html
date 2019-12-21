@@ -71,14 +71,21 @@
 
                                         <!-- Table body -->
                                         <tbody>
-                                        <tr th:each="question, questionIndex :${questions}">
+                                        <input id="userId"
+                                               type="hidden"
+                                               class="form-control"
+                                               th:value="${userId}"/>
+                                        <tr th:each="question :${questions}">
                                             <td th:text="${question.text}"></td>
-                                            <td>
+                                            <td th:onclick="'updateAnswer(\'' + ${question.id} + '\');'">
                                                 <div th:each="answer :${question.answers}">
-                                                    <input type="radio" th:value="${answer.id}" th:text="${answer.text}"
-                                                    th:name="${'question-answers-' + questionIndex}">
+                                                    <input type="checkbox" th:value="${answer.id}" th:text="${answer.text}"
+                                                    th:name="${'question-answers-' + question.id}" th:checked="${answer.checked}"
+                                                    th:class="${'question-answers-' + question.id}">
+                                                    <span th:text="${answer.answerCount}"></span>
 
                                                 </div>
+
                                             </td>
                                         </tr>
                                         </tbody>
@@ -123,17 +130,6 @@
                                                                        class="form-control addAnswer"
                                                                 />
                                                             </div>
-
-                                                            <!--                                                            <tr th:each="friend, index :${friends}">-->
-                                                            <!--                                                                <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>-->
-                                                            <!--                                                                <td>-->
-                                                            <!--                                                                    <div class="custom-control custom-checkbox">-->
-                                                            <!--                                                                        <input type="checkbox" class="custom-control-input" th:id="${index}">-->
-                                                            <!--                                                                        <label class="custom-control-label" th:for="${index}"></label>-->
-                                                            <!--                                                                    </div>-->
-                                                            <!--                                                                </td>-->
-                                                            <!--                                                            </tr>-->
-
                                                         </div>
                                                         <div class="form-group">
                                                             <button id="createQuestionBtn"
@@ -147,50 +143,6 @@
                                                 </div>
                                             </div>
                                         </div>
-<!--                                        <div class="col-12">-->
-<!--                                            <div class="card mb-3">-->
-<!--                                                <h5 class="card-header blue darken-2 white-text text-center py-2">-->
-<!--                                                    <strong>Dodaj pytanie</strong>-->
-<!--                                                </h5>-->
-<!--                                                <div class="card-body px-lg-5 pt-0">-->
-<!--                                                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">-->
-<!--                                                        <table class="table bordered table-hover mb-0" id="testTable">-->
-<!--                                                            &lt;!&ndash; Table head &ndash;&gt;-->
-<!--                                                            <thead>-->
-<!--                                                            <tr class="table-fixed">-->
-<!--                                                                <th>Imię i Nazwisko</th>-->
-<!--                                                                <th>Uczestnik</th>-->
-<!--                                                            </tr>-->
-<!--                                                            </thead>-->
-<!--                                                            &lt;!&ndash; Table head &ndash;&gt;-->
-
-<!--                                                            &lt;!&ndash; Table body &ndash;&gt;-->
-<!--                                                            <tbody id="members">-->
-<!--                                                            <tr th:each="friend, index :${friends}">-->
-<!--                                                                <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>-->
-<!--                                                                <td>-->
-<!--                                                                    <div class="custom-control custom-checkbox">-->
-<!--                                                                        <input type="checkbox"-->
-<!--                                                                               class="custom-control-input"-->
-<!--                                                                               th:id="${index}">-->
-<!--                                                                        <label class="custom-control-label"-->
-<!--                                                                               th:for="${index}"></label>-->
-<!--                                                                    </div>-->
-<!--                                                                </td>-->
-<!--                                                            </tr>-->
-
-<!--                                                            </tbody>-->
-<!--                                                            &lt;!&ndash; Table body &ndash;&gt;-->
-<!--                                                        </table>-->
-<!--                                                        &lt;!&ndash; Table  &ndash;&gt;-->
-<!--                                                    </div>-->
-<!--                                                    &lt;!&ndash; Sign in button &ndash;&gt;-->
-<!--                                                    <button class="btn btn-blue btn-block m-auto waves-effect z-depth-0"-->
-<!--                                                            type="submit">Dodaj!-->
-<!--                                                    </button>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -199,86 +151,44 @@
                 </div>
             </div>
             <div th:replace="common/footer :: footer"></div>
-
-
-            <!--<div class="container">-->
-            <!--<div class="row">-->
-            <!--<h2 th:text="${groupName}"></h2>-->
-
-            <!--</div>-->
-            <!--<div class="row">-->
-            <!--<div>-->
-            <!--<ul class="nav nav-tabs">-->
-            <!--<li class="nav-item">-->
-            <!--<a class="nav-link" href="#">Szczegóły</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-            <!--<a class="nav-link" href="#">Planowanie</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-            <!--<a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-            <!--<a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-            <!--<a class="nav-link active" href="#">Uczestnicy</a>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row">-->
-            <!--<div class="col-sm-8">-->
-            <!--<h3>Członkowie</h3>-->
-            <!--<table class="table">-->
-
-            <!--<tbody>-->
-            <!--<tr th:each="member :${groupDetailsMembers}" style="font-size: x-large">-->
-
-            <!--<td th:text="${member.firstName + ' ' + member.lastName}"></td>-->
-            <!--<td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>-->
-
-            <!--</tr>-->
-
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</div>-->
-            <!--<div class="col-sm-4">-->
-            <!--<div>-->
-            <!--<form autocomplete="off" action="#" th:action="@{/group/invite}"-->
-            <!--th:object="${groupInvitation}" method="post" class="form-horizontal"-->
-            <!--role="form">-->
-            <!--<h2>Zaproś użytkownika</h2>-->
-            <!--<div class="form-group">-->
-            <!--<div class="col-sm-9">-->
-            <!--<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"-->
-            <!--class="validation-message"></label>-->
-            <!--<input type="text" th:field="*{email}" placeholder="email"-->
-            <!--class="form-control"/>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<input type="hidden" th:attr="name=groupId" class="form-control" th:value="${groupId}"/>-->
-
-
-            <!--<div class="form-group">-->
-            <!--<div class="col-sm-9">-->
-            <!--<button type="submit" class="btn btn-primary btn-block">Zaproś!</button>-->
-            <!--</div>-->
-            <!--</div>-->
-
-            <!--&lt;!&ndash;<span th:utext="${successMessage}"></span>&ndash;&gt;-->
-
-
-            <!--</form>-->
-            <!--</div>-->
-
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
         </div>
     </div>
 </div>
 <script>
+
+    function updateAnswer(questionId) {
+        const userId = $('#userId').val();
+        const inputsName = "question-answers-" + questionId;
+        const questionAnswers = $('.'+inputsName);
+        const ansIds = [];
+        for(var i = 0; i < questionAnswers.length; i++){
+            if(questionAnswers[i].checked === true){
+                ansIds.push(questionAnswers[i].value);
+            }
+        }
+        var payload = {
+            userId: userId,
+            questionId: questionId,
+            answerIds: ansIds
+        };
+        $.ajax({
+            url: 'http://localhost:8080/api/answer/vote',
+            data: JSON.stringify(payload),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                console.log('Form sent');
+                location.reload();
+            },
+            error: function (error) {
+                location.reload();
+                console.log('Error sending form')
+            }
+        });
+
+    }
+
+
 
 
     function addNewAnswer() {

@@ -13,4 +13,6 @@ public class PlanningAnswerDto {
 
     private Long id;
     private String text;
+    private Boolean checked;
+    private Long answerCount;
 }

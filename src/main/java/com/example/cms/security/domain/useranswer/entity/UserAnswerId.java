@@ -9,10 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Data
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class UserAnswerId implements Serializable {
 
     @Column(name = "user_id")
