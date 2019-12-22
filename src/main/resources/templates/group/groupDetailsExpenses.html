@@ -21,6 +21,8 @@
     <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
     <!-- DataTables JS -->
     <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -34,19 +36,19 @@
         <div>
             <ul class="nav nav-pills nav-justified">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>
+                    <a class="nav-link" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1}">Szczegóły</a>
+                    <a class="nav-link " th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>
+                    <a class="nav-link" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/group/details/1/expenses}">Wydatki</a>
+                    <a class="nav-link active" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
+                    <a class="nav-link" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
                 </li>
             </ul>
         </div>
@@ -69,7 +71,7 @@
         </div>
         <div class="col-sm-4">
             <div>
-                <form autocomplete="off" action="#" th:action="@{/group/expense}"
+                <form autocomplete="off" action="#"
                       th:object="${createExpenseRequest}" method="post" class="form-horizontal"
                       role="form">
                     <h2>Dodaj wydatek</h2>
@@ -78,32 +80,34 @@
                             <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
                                    class="validation-message"></label>
                             <input type="text" th:field="*{title}" placeholder="tytuł"
-                                   class="form-control"/>
+                                   class="form-control" id="title"/>
                         </div>
                         <div class="col-sm-9">
                             <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
                                    class="validation-message"></label>
                             <input type="text" th:field="*{amount}" placeholder="kwota"
-                                   class="form-control"/>
+                                   class="form-control" id="totalAmount"/>
                         </div>
                         <div class="col-sm-9">
                             <label>uczestnicy</label>
                             <th:block th:each="member : ${travelGroup.getMembers()}">
                                 <div th:if="${currentUserId != member.id}">
-                                    <input type="checkbox" name="debtors" th:value="${member.id}"/>
+                                    <input type="checkbox" name="debtors" th:value="${member.id}" th:id="${'debtor-'+member.id}"/>
                                     <label th:text="${member.name}"></label>
+                                    <input th:type="number" th:placeholder="${member.name + ' kwota'}" th:id="${'amount-'+member.id}">
                                 </div>
                             </th:block>
                         </div>
 
                     </div>
-                    <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${travelGroup.id}"/>
-                    <input type="hidden" th:attr="name=authorId" class="form-control" th:value="${currentUserId}"/>
+                    <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${travelGroup.id}" id="groupId"/>
+                    <input type="hidden" th:attr="name=authorId" class="form-control" th:value="${currentUserId}" id="authorId"/>
 
 
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Zaproś!</button>
+                            <button type="button" class="btn btn-primary btn-block"
+                                    th:onclick="'createExpense(\'\');'">Zaproś!</button>
                         </div>
                     </div>
 
@@ -117,6 +121,54 @@
     </div>
 </div>
 
+<script>
+
+    function createExpense(){
+        const authorId = $('#authorId').val();
+        const groupId = $('#groupId').val();
+        const title = $('#title').val();
+        const totalAmount = $('#totalAmount').val();
+        const members = $('input[name="debtors"]');
+        const debtors = [];
+
+        for(var i = 0; i < members.length; i++){
+            if(members[i].checked === true){
+                const amount = $('#amount-'+members[i].value).val();
+                const debtor = {
+                    debtorId: members[i].value,
+                    amount: amount
+                };
+                debtors.push(debtor);
+            }
+        }
+        const expense = {
+            authorId: authorId,
+            groupId: groupId,
+            title: title,
+            totalAmount: totalAmount,
+            debtors: debtors
+        };
+        //send ajax here
+        console.log(expense);
+        $.ajax({
+            url: 'http://localhost:8080/api/expense',
+            data: JSON.stringify(expense),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                console.log('Form sent');
+                location.reload();
+            },
+            error: function (error) {
+                location.reload();
+                console.log('Error sending form')
+            }
+        });
+
+    }
+
+
+</script>
 
 </body>
 </html>

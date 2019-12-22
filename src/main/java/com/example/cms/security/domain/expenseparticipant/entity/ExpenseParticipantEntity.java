@@ -33,7 +33,11 @@ public class ExpenseParticipantEntity {
     private BigDecimal paidAmount;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "LENDER_ID")
+    private UserEntity lender;
+
+    @ManyToOne
+    @JoinColumn(name = "DEBTOR_ID")
     private UserEntity debtor;
 
     @ManyToOne

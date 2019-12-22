@@ -68,6 +68,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
     private List<ExpenseEntity> expenses;
 
+    @OneToMany(mappedBy = "lender", cascade = CascadeType.ALL)
+    private List<ExpenseParticipantEntity> lended;
+
     @OneToMany(mappedBy = "debtor", cascade = CascadeType.ALL)
     private List<ExpenseParticipantEntity> debts;
 

@@ -198,7 +198,10 @@
              <column name="ID" type="bigint" defaultValueSequenceNext="SEQ_EXPENSE_PARTICIPANT">
                  <constraints primaryKey="true" primaryKeyName="PK_EXPENSE_PARTICIPANT"/>
              </column>
-             <column name="USER_ID" type="bigint">
+             <column name="LENDER_ID" type="bigint">
+                 <constraints nullable="false"/>
+             </column>
+             <column name="DEBTOR_ID" type="bigint">
                  <constraints nullable="false"/>
              </column>
              <column name="EXPENSE_ID" type="bigint">

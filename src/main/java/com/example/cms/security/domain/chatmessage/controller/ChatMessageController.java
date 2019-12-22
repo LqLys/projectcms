@@ -35,6 +35,7 @@ public class ChatMessageController {
         List<ChatMessageDto> allMessages = chatMessageFacade.findAllByGroupId(groupId);
         modelAndView.addObject("newMessage", new SendChatMessageRequest());
         modelAndView.addObject("messages", allMessages);
+        modelAndView.addObject("groupId", groupId);
         return modelAndView;
 
     }

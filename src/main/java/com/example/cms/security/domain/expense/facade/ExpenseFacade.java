@@ -5,7 +5,9 @@ import com.example.cms.security.domain.expense.entity.ExpenseEntity;
 import com.example.cms.security.domain.expense.service.ExpenseService;
 import com.example.cms.security.domain.expenseparticipant.entity.ExpenseParticipantEntity;
 import com.example.cms.security.domain.expenseparticipant.service.ExpenseParticipantService;
+import com.example.cms.security.domain.travelgroup.dto.CreateExpenseParticipants;
 import com.example.cms.security.domain.travelgroup.dto.CreateExpenseRequest;
+import com.example.cms.security.domain.travelgroup.dto.ExpenseParticipantDto;
 import com.example.cms.security.domain.travelgroup.service.TravelGroupService;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
@@ -14,11 +16,9 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class ExpenseFacade {
@@ -53,8 +53,64 @@ public class ExpenseFacade {
         expense.setDebtors(expenseParticipants);
 
         expenseService.createExpense(expense);
+    }
+
+    public void createExpense(CreateExpenseParticipants createExpenseRequest, UserEntity authenticatedUser) {
+
+        final BigDecimal averageAmount = createExpenseRequest.getTotalAmount()
+                .divide(BigDecimal.valueOf(createExpenseRequest.getDebtors().size() + 1), RoundingMode.HALF_UP);
+        final BigDecimal debtorsInput = createExpenseRequest.getDebtors().stream()
+                .map(ExpenseParticipantDto::getAmount)
+                .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+        final BigDecimal authorsInput = createExpenseRequest.getTotalAmount().subtract(debtorsInput);
+        final List<ExpenseParticipantDto> expenseParticipantDtos = new ArrayList<>(createExpenseRequest.getDebtors());
+        expenseParticipantDtos.add(new ExpenseParticipantDto(authenticatedUser.getId(), authorsInput));
+        expenseParticipantDtos.forEach(p-> p.setAmount(averageAmount.subtract(p.getAmount())));
+        final List<Long> memberIds = expenseParticipantDtos.stream()
+                .map(ExpenseParticipantDto::getDebtorId)
+                .collect(Collectors.toList());
+        final Map<Long, UserEntity> members = userService.findAllByIdIn(memberIds).stream()
+                .collect(Collectors.toMap(UserEntity::getId, Function.identity()));
+        final List<ExpenseParticipantDto> participantsBelowAverage = expenseParticipantDtos.stream()
+                .filter(p -> p.getAmount().compareTo(BigDecimal.ZERO) == 1)
+                .collect(Collectors.toList());
+        final List<ExpenseParticipantDto> participantsAboveAverage = expenseParticipantDtos.stream()
+                .filter(p -> p.getAmount().compareTo(BigDecimal.ZERO) == -1)
+                .collect(Collectors.toList());
+        final int nrOfAbove = participantsAboveAverage.size();
 
 
+
+        ExpenseEntity expense = ExpenseEntity.builder()
+                .amount(createExpenseRequest.getTotalAmount())
+                .title(createExpenseRequest.getTitle())
+                .createdAt(LocalDateTime.now())
+                .createdBy(authenticatedUser)
+                .group(travelGroupService.findTravelGroup(createExpenseRequest.getGroupId()))
+                .build();
+
+        final List<ExpenseParticipantEntity> expenseParticipations = participantsBelowAverage.stream()
+                .map(pBelow -> participantsAboveAverage.stream()
+                        .map(pAbove -> mapToExpenseParticipant(pAbove.getDebtorId(), pBelow.getDebtorId(),
+                                getParticipationAmount(pBelow.getAmount(), nrOfAbove), expense,
+                                members)).collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
+        expense.setDebtors(expenseParticipations);
+        expenseService.createExpense(expense);
+    }
+    private BigDecimal getParticipationAmount(BigDecimal amountBelowAvg, int nrOfMembersAbove){
+        int denominator = nrOfMembersAbove > 0 ? nrOfMembersAbove : 1;
+        return amountBelowAvg.divide(BigDecimal.valueOf(denominator), RoundingMode.HALF_UP);
+    }
+
+    private ExpenseParticipantEntity mapToExpenseParticipant(Long lenderId, Long debtorId, BigDecimal amount, ExpenseEntity expense,
+                                                             Map<Long, UserEntity> members){
+        return ExpenseParticipantEntity.builder()
+                .lender(members.get(lenderId))
+                .debtor(members.get(debtorId))
+                .initialAmount(amount)
+                .paidAmount(BigDecimal.ZERO)
+                .expense(expense)
+                .build();
     }
 
     private ExpenseParticipantEntity userToExpenseParticipant(UserEntity debtor, BigDecimal participationAmount, ExpenseEntity expense) {

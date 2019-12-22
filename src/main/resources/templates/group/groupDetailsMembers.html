@@ -34,19 +34,19 @@
                 <div class="card-header">
                     <ul class="nav nav-pills nav-justified">
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/group/details/1/members}">Uczestnicy</a>
+                            <a class="nav-link active" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/1}">Szczegóły</a>
+                            <a class="nav-link" th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>
+                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/1/expenses}">Wydatki</a>
+                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>
+                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
                         </li>
                     </ul>
                 </div>

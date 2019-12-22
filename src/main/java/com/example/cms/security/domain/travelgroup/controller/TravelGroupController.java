@@ -97,6 +97,7 @@ public class TravelGroupController {
         modelAndView.addObject("travelGroup", travelGroup);
         modelAndView.addObject("createExpenseRequest", new CreateExpenseRequest());
         modelAndView.addObject("currentUserId", currentUserId);
+        modelAndView.addObject("groupId", groupId);
 
         return modelAndView;
     }
@@ -135,6 +136,7 @@ public class TravelGroupController {
         modelAndView.addObject("groupVisibilityOptions", GroupVisibility.values());
         modelAndView.addObject("groupStatusOptions", GroupStatus.values());
         modelAndView.addObject("travelGroupDto", travelGroupDto);
+        modelAndView.addObject("groupId", groupId);
         return modelAndView;
     }
     @PostMapping(path = "/details/edit")
@@ -152,6 +154,7 @@ public class TravelGroupController {
         modelAndView.addObject("questions", questions);
         modelAndView.addObject("createSurveyDto", new CreateQuestionDto());
         modelAndView.addObject("userId", authenticatedUser.getId());
+        modelAndView.addObject("groupId", groupId);
         modelAndView.setViewName("group/groupDetailsPlanning");
 
         return modelAndView;
