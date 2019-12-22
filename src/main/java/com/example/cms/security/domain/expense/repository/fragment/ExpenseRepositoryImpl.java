@@ -26,14 +26,13 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryFragment {
 
         List<UnpaidExpenseDto> fetch = jpaQueryFactory.select(
                 Projections.constructor(UnpaidExpenseDto.class,
-                        expense.createdBy.id,
-                        expense.title,
-                        participation.initialAmount,
+                        participation.lender.id,
+                        participation.initialAmount.sum(),
                         user.email
                 ))
-                .from(expense).join(participation).on(expense.id.eq(participation.expense.id))
-                .join(user).on(expense.createdBy.id.eq(user.id))
-                .where(participation.debtor.id.eq(userId))
+                .from(participation).join(user).on(user.id.eq(participation.lender.id))
+                .where(participation.lender.id.ne(userId).and(participation.debtor.id.eq(userId)))
+                .groupBy(participation.lender.id, user.email)
                 .fetch();
 
 
@@ -49,13 +48,12 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryFragment {
         List<UnpaidExpenseDto> fetch = jpaQueryFactory.select(
                 Projections.constructor(UnpaidExpenseDto.class,
                         participation.debtor.id,
-                        expense.title,
-                        participation.initialAmount,
+                        participation.initialAmount.sum(),
                         user.email
                 ))
-                .from(expense).join(participation).on(expense.id.eq(participation.expense.id))
-                .join(user).on(participation.debtor.id.eq(user.id))
-                .where(participation.debtor.id.ne(userId).and(expense.createdBy.id.eq(userId)))
+                .from(participation).join(user).on(user.id.eq(participation.debtor.id))
+                .where(participation.lender.id.eq(userId).and(participation.debtor.id.ne(userId)))
+                .groupBy(participation.debtor.id, user.email)
                 .fetch();
 
 

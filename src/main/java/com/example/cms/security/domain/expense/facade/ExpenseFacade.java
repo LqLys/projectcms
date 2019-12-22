@@ -130,7 +130,7 @@ public class ExpenseFacade {
         return expenseService.getExpensesOthersHaveToPay(authenticatedUser);
     }
 
-    public Map<Long, BigDecimal> getAggregatedUserBalance(UserEntity authenticatedUser) {
+    public List<UnpaidExpenseDto> getAggregatedUserBalance(UserEntity authenticatedUser) {
         List<UnpaidExpenseDto> userHasToPay = expenseService.getExpensesUserHasToPay(authenticatedUser);
         List<UnpaidExpenseDto> othersHaveToPay = expenseService.getExpensesOthersHaveToPay(authenticatedUser);
 
@@ -154,10 +154,13 @@ public class ExpenseFacade {
                 finalUserBalance.put(entry.getKey(), entry.getValue());
             }
         });
-        return finalUserBalance;
-//        List<UnpaidExpenseDto> collect = Stream.of(userHasToPay, othersHaveToPay).flatMap(Collection::stream).collect(Collectors.toList());
+        return finalUserBalance.entrySet().stream()
+                .map(entry -> new UnpaidExpenseDto(entry.getKey(), entry.getValue(), getUserEmail(entry.getKey()))).collect(Collectors.toList());
 
+    }
 
-
+    private String getUserEmail(Long userId) {
+        final UserEntity userById = userService.findUserById(userId);
+        return userById.getEmail();
     }
 }

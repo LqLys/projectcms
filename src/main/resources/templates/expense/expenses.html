@@ -85,9 +85,9 @@
 
                 <tbody>
                 <tr th:each="balance :${finalUserBalance}" style="font-size: x-large">
-                    <td th:text="${balance.getKey()}"></td>
-                    <td th:text="${balance.getValue()}"></td>
-
+                    <td th:text="${balance.userId}"></td>
+                    <td th:text="${balance.getRelatedUser()}"></td>
+                    <td th:text="${balance.getAmount()}"></td>
                 </tr>
 
                 </tbody>

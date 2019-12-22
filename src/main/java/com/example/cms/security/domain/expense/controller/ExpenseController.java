@@ -29,7 +29,7 @@ public class ExpenseController {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
         List<UnpaidExpenseDto> userHasToPay = expenseFacade.getExpensesUserHasToPay(authenticatedUser);
         List<UnpaidExpenseDto> othersHaveToPay = expenseFacade.getExpensesOthersHaveToPay(authenticatedUser);
-        Map<Long, BigDecimal> finalUserBalance = expenseFacade.getAggregatedUserBalance(authenticatedUser);
+        List<UnpaidExpenseDto>  finalUserBalance = expenseFacade.getAggregatedUserBalance(authenticatedUser);
         modelAndView.addObject("userHasToPay", userHasToPay);
         modelAndView.addObject("othersHaveToPay", othersHaveToPay);
         modelAndView.addObject("finalUserBalance", finalUserBalance);

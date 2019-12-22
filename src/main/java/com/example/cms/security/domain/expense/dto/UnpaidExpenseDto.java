@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 public class UnpaidExpenseDto {
 
     private Long userId;
-    private String title;
     private BigDecimal amount;
     private String relatedUser;
 }
