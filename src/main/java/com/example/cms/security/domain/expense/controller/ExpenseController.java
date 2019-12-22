@@ -1,11 +1,13 @@
 package com.example.cms.security.domain.expense.controller;
 
+import com.example.cms.security.domain.expense.dto.PayDebtDto;
 import com.example.cms.security.domain.expense.dto.UnpaidExpenseDto;
 import com.example.cms.security.domain.expense.facade.ExpenseFacade;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
@@ -30,17 +32,22 @@ public class ExpenseController {
         List<UnpaidExpenseDto> userHasToPay = expenseFacade.getExpensesUserHasToPay(authenticatedUser);
         List<UnpaidExpenseDto> othersHaveToPay = expenseFacade.getExpensesOthersHaveToPay(authenticatedUser);
         List<UnpaidExpenseDto>  finalUserBalance = expenseFacade.getAggregatedUserBalance(authenticatedUser);
+        final BigDecimal totalBalance = finalUserBalance.stream().map(UnpaidExpenseDto::getAmount).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
         modelAndView.addObject("userHasToPay", userHasToPay);
         modelAndView.addObject("othersHaveToPay", othersHaveToPay);
         modelAndView.addObject("finalUserBalance", finalUserBalance);
+        modelAndView.addObject("totalBalance", totalBalance);
+        modelAndView.addObject("payDebtDto", new PayDebtDto());
         modelAndView.setViewName("/expense/expenses");
         return modelAndView;
 
     }
 
-//    select * from cms_db.expense as e
-//    join cms_db.expense_participant as ep on e.id = ep.expense_id
-//    join cms_db.users as u on e.user_id = u.id
-//    where ep.user_id = 2
+    @PostMapping(path = "/expenses/pay")
+    public ModelAndView payDebt(PayDebtDto payDebtDto, ModelAndView modelAndView){
+        modelAndView.setViewName("redirect:/expenses");
+        return modelAndView;
+
+    }
 
 }

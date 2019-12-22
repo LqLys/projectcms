@@ -21,6 +21,8 @@
     <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
     <!-- DataTables JS -->
     <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -28,7 +30,7 @@
 <div th:replace="common/header :: header"></div>
 <div class="container">
     <div class="row">
-        <h2 th:text="${groupName}"></h2>
+        <h2 th:text="${'Total balance: ' + totalBalance}"></h2>
     </div>
     <div class="row">
         <div>
@@ -93,56 +95,49 @@
                 </tbody>
             </table>
         </div>
-<!--        <div class="col-sm-4">-->
-<!--            <div>-->
-<!--                <form autocomplete="off" action="#" th:action="@{/group/expense}"-->
-<!--                      th:object="${createExpenseRequest}" method="post" class="form-horizontal"-->
-<!--                      role="form">-->
-<!--                    <h2>Dodaj wydatek</h2>-->
-<!--                    <div class="form-group">-->
-<!--                        <div class="col-sm-9">-->
-<!--                            <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"-->
-<!--                                   class="validation-message"></label>-->
-<!--                            <input type="text" th:field="*{title}" placeholder="tytuł"-->
-<!--                                   class="form-control"/>-->
-<!--                        </div>-->
-<!--                        <div class="col-sm-9">-->
-<!--                            <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"-->
-<!--                                   class="validation-message"></label>-->
-<!--                            <input type="text" th:field="*{amount}" placeholder="kwota"-->
-<!--                                   class="form-control"/>-->
-<!--                        </div>-->
-<!--                        <div class="col-sm-9">-->
-<!--                            <label>uczestnicy</label>-->
-<!--                            <th:block th:each="member : ${travelGroup.getMembers()}">-->
-<!--                                <div th:if="${currentUserId != member.id}">-->
-<!--                                    <input type="checkbox" name="debtors" th:value="${member.id}"/>-->
-<!--                                    <label th:text="${member.name}"></label>-->
-<!--                                </div>-->
-<!--                            </th:block>-->
-<!--                        </div>-->
-
-<!--                    </div>-->
-<!--                    <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${travelGroup.id}"/>-->
-<!--                    <input type="hidden" th:attr="name=authorId" class="form-control" th:value="${currentUserId}"/>-->
+        <div class="col-sm-4">
+            <div>
+                <form autocomplete="off" action="#" th:action="@{/expenses/pay}"
+                      th:object="${payDebtDto}" method="post" class="form-horizontal"
+                      role="form">
+                    <h2>Spłać dług</h2>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <label th:if="${#fields.hasErrors('lenderEmail')}" th:errors="*{lenderEmail}"
+                                   class="validation-message"></label>
+                            <input type="text" th:field="*{lenderEmail}" placeholder="email" id="lenderEmail"
+                                   class="form-control"/>
+                        </div>
+                        <div class="col-sm-9">
+                            <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
+                                   class="validation-message"></label>
+                            <input type="text" th:field="*{amount}" placeholder="kwota" id="lenderAmount"
+                                   class="form-control"/>
+                        </div>
 
 
-<!--                    <div class="form-group">-->
-<!--                        <div class="col-sm-9">-->
-<!--                            <button type="submit" class="btn btn-primary btn-block">Zaproś!</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    &lt;!&ndash;<span th:utext="${successMessage}"></span>&ndash;&gt;-->
+                    </div>
 
 
-<!--                </form>-->
-<!--            </div>-->
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <button type="submit" class="btn btn-primary btn-block">Zapłać!</button>
+                        </div>
+                    </div>
 
-<!--        </div>-->
+                    <!--<span th:utext="${successMessage}"></span>-->
+
+
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>
 
+<script>
+
+</script>
 
 </body>
 </html>

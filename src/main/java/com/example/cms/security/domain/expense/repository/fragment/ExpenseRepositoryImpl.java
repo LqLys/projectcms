@@ -27,7 +27,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryFragment {
         List<UnpaidExpenseDto> fetch = jpaQueryFactory.select(
                 Projections.constructor(UnpaidExpenseDto.class,
                         participation.lender.id,
-                        participation.initialAmount.sum(),
+                        (participation.initialAmount.sum().subtract(participation.paidAmount.sum())),
                         user.email
                 ))
                 .from(participation).join(user).on(user.id.eq(participation.lender.id))
@@ -48,7 +48,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryFragment {
         List<UnpaidExpenseDto> fetch = jpaQueryFactory.select(
                 Projections.constructor(UnpaidExpenseDto.class,
                         participation.debtor.id,
-                        participation.initialAmount.sum(),
+                        (participation.initialAmount.sum().subtract(participation.paidAmount.sum())),
                         user.email
                 ))
                 .from(participation).join(user).on(user.id.eq(participation.debtor.id))
