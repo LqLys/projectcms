@@ -140,9 +140,13 @@
                                                         zoom: 8
                                                     });
                                                     google.maps.event.addListener(map, 'click', function(event) {
-                                                        console.log(event.latLng)
                                                         placeMarker(event.latLng);
                                                     });
+                                                    const initialmarkerCoords = {
+                                                        lat: curLat,
+                                                        lng: curLng
+                                                    };
+                                                    placeMarker(initialmarkerCoords);
 
                                                 }
                                                 function placeMarker(location) {
@@ -167,7 +171,7 @@
                                             <script>
 
                                             </script>
-                                            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apiKey&callback=initMap"></script>
+                                            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apikey&callback=initMap"></script>
 
 
                                         </div>
