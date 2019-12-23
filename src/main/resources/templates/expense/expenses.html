@@ -86,7 +86,7 @@
             <table class="table">
 
                 <tbody>
-                <tr th:each="balance :${finalUserBalance}" style="font-size: x-large">
+                <tr th:each="balance :${finalUserBalance}" style="font-size: x-large" class="balanceRow">
                     <td th:text="${balance.userId}"></td>
                     <td th:text="${balance.getRelatedUser()}"></td>
                     <td th:text="${balance.getAmount()}"></td>
@@ -105,7 +105,7 @@
                         <div class="col-sm-9">
                             <label th:if="${#fields.hasErrors('lenderEmail')}" th:errors="*{lenderEmail}"
                                    class="validation-message"></label>
-                            <input type="text" th:field="*{lenderEmail}" placeholder="email" id="lenderEmail"
+                            <input type="text" th:field="*{lenderEmail}" placeholder="email" id="lenderEmail" readonly
                                    class="form-control"/>
                         </div>
                         <div class="col-sm-9">
@@ -121,7 +121,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Zapłać!</button>
+                            <button type="submit" class="btn btn-primary btn-block" id="paybtn">Zapłać!</button>
                         </div>
                     </div>
 
@@ -137,6 +137,41 @@
 
 <script>
 
+    const balanceRows = $('.balanceRow');
+    const userBalance = [];
+    var lenderEmail = $('#lenderEmail');
+    var lenderAmount = $('#lenderAmount');
+    for(var i = 0; i < balanceRows.length; i++){
+        const row = balanceRows[i];
+        const userId = row.children[0].innerText;
+        const userEmail = row.children[1].innerText;
+        const ammount = +row.children[2].innerText;
+        userBalance[userEmail] = -ammount;
+        if(ammount < 0) {
+            balanceRows[i].addEventListener('click', function () {
+
+                lenderEmail.val(userEmail);
+                lenderEmail.text(userEmail);
+
+                lenderAmount.val(-ammount);
+                lenderAmount.text(-ammount);
+                console.log(userId);
+                console.log(userEmail);
+                console.log(ammount);
+
+            })
+        }
+    }
+    lenderAmount[0].addEventListener('input', function() {
+        var invalid = +lenderAmount.val() > +userBalance[lenderEmail.val()];
+        console.log(invalid);
+        var payBtn = $("#paybtn");
+        if(invalid){
+            payBtn.prop('disabled', true);
+        }else{
+            payBtn.removeAttr('disabled');
+        }
+    })
 </script>
 
 </body>
