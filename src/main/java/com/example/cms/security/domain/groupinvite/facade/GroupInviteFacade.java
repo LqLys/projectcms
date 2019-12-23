@@ -37,14 +37,13 @@ public class GroupInviteFacade {
     @Transactional
     public Long acceptInvitation(UserEntity authenticatedUser, GroupInviteStatusChangeRequest groupInviteStatusChangeRequest) {
         GroupInviteEntity invitation = groupInviteService.getInvitation(groupInviteStatusChangeRequest.getId());
-        invitation.setStatus(GroupInvitationStatus.ACCEPTED);
         TravelGroupEntity travelGroup = invitation.getTravelGroup();
-        groupInviteService.save(invitation);
         UserTravelGroupEntity userInGroup = UserTravelGroupEntity.builder()
                 .groupRole(GroupRole.MEMBER)
                 .id(new UserTravelGroupId(authenticatedUser.getId(), travelGroup.getId()))
                 .build();
         userTravelGroupService.addUserToGroup(userInGroup);
+        groupInviteService.delete(invitation);
         return travelGroup.getId();
 
     }

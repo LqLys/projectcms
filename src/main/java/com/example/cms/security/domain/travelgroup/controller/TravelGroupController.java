@@ -13,6 +13,7 @@ import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
+import com.example.cms.security.domain.usertravelgroup.entity.GroupRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(path = "/group")
@@ -77,8 +79,16 @@ public class TravelGroupController {
     public ModelAndView getGroupDetailMembers(@PathVariable("groupId") Long groupId, ModelAndView modelAndView) {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
         List<GroupDetailsMembers> groupDetailsMembers = travelGroupFacade.getGroupDetailsMembers(groupId);
-        List<BaseFriendDto> friends = relationFacade.getUserFriends(authenticatedUser.getId());
+        List<BaseFriendDto> friends = relationFacade.getUserFriends(authenticatedUser.getId()).stream()
+                .filter(f-> travelGroupFacade.userAlreadyInGroup(f.getId(), groupId))
+                .collect(Collectors.toList());
         TravelGroupDto travelGroup = travelGroupFacade.getTravelGroupById(groupId);
+        GroupRole browsingUserRole = groupDetailsMembers.stream()
+                .filter(user -> authenticatedUser.getId().equals(user.getUserId()))
+                .findFirst()
+                .map(GroupDetailsMembers::getGroupRole)
+                .orElseGet(() -> GroupRole.MEMBER);
+        modelAndView.addObject("browsingUserRole", browsingUserRole);
         modelAndView.addObject("friends", friends);
         modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
         modelAndView.addObject("groupId", groupId);
@@ -107,7 +117,26 @@ public class TravelGroupController {
                                        ModelAndView modelAndView) {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
         travelGroupFacade.sendInvitation(authenticatedUser, groupInviteRequest);
-        modelAndView.setViewName("redirect:/group/groups");
+        modelAndView.setViewName("redirect:/group/details/"+ groupInviteRequest.getGroupId()+"/members");
+        return modelAndView;
+    }
+
+    @PostMapping(path = "/inviteFriends")
+    public ModelAndView inviteFriends(InviteFriendsToGroupDto inviteFriendsToGroupDto, ModelAndView modelAndView) {
+        modelAndView.setViewName("redirect:/group/details/"+inviteFriendsToGroupDto.getGroupId()+"/members");
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        travelGroupFacade.inviteMultipleFriends(authenticatedUser, inviteFriendsToGroupDto);
+
+        return modelAndView;
+
+    }
+
+    @PostMapping(path = "/uninvite")
+    public ModelAndView uninvite(@Valid GroupUninviteRequest groupUninviteRequest, BindingResult bindingResult,
+                                       ModelAndView modelAndView) {
+//        UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        travelGroupFacade.uninviteUser(groupUninviteRequest);
+        modelAndView.setViewName("redirect:/group/details/"+groupUninviteRequest.getGroupId()+"/members");
         return modelAndView;
     }
 
@@ -129,6 +158,7 @@ public class TravelGroupController {
         return modelAndView;
     }
 
+
     @GetMapping(path = "/details/{groupId}")
     public ModelAndView getGroupDetails(@PathVariable("groupId")Long groupId,  ModelAndView modelAndView) {
         modelAndView.setViewName("group/groupDetails");
@@ -142,7 +172,7 @@ public class TravelGroupController {
     @PostMapping(path = "/details/edit")
     public ModelAndView editGroupDetails(TravelGroupDetailsDto travelGroupDetailsDto,  ModelAndView modelAndView) {
         modelAndView.setViewName("redirect:/group/details/"+travelGroupDetailsDto.getGroupId());
-        travelGroupFacade.editGroup(travelGroupDetailsDto);
+        travelGroupFacade.editGroupDetails(travelGroupDetailsDto);
         return modelAndView;
     }
 

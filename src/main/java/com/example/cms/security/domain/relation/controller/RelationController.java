@@ -61,7 +61,7 @@ public class RelationController {
             List<BaseBlockedUserDto> blockedUsers = relationFacade.getBlockedUsers(authenticatedUser.getId());
             modelAndView.addObject("friends", friends);
             modelAndView.addObject("blockedUsers", blockedUsers);
-            modelAndView.setViewName("friend/blocked");
+            modelAndView.setViewName("friend/friends");
         }else {
             relationFacade.addFriend(authenticatedUser, addFriendDto);
             modelAndView.setViewName("redirect:/friends");
@@ -82,10 +82,10 @@ public class RelationController {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
         UserEntity uerToBlock = userService.findUserByEmail(blockUserDto.getEmail());
         if (uerToBlock == null){
-            bindingResult.rejectValue("email", "error.addFriendDto", "user does not exist");
+            bindingResult.rejectValue("email", "error.blockUserDto", "user does not exist");
         }
         if(uerToBlock != null && relationFacade.isBlockedAlready(authenticatedUser, uerToBlock.getId())){
-            bindingResult.rejectValue("email", "error.addFriendDto", "user is already blocked");
+            bindingResult.rejectValue("email", "error.blockUserDto", "user is already blocked");
         }
         if (bindingResult.hasErrors()) {
             List<BaseBlockedUserDto> blockedUsers = relationFacade.getBlockedUsers(authenticatedUser.getId());

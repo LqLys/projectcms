@@ -73,7 +73,18 @@
                                             <td th:text="${member.firstName + ' ' + member.lastName}"></td>
                                             <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
                                             <td style="padding: 0.5rem">
-                                                <button class="btn btn-danger btn-sm">Usuń</button>
+                                                <form autocomplete="off" action="#" th:action="@{/group/uninvite}"
+                                                      th:object="${groupInvitation}" method="post"
+                                                      class="text-center"
+                                                      role="form">
+                                                    <input type="hidden" th:attr="name=userId" class="form-control"
+                                                           th:value="${member.userId}"/>
+                                                    <input type="hidden" th:attr="name=groupId" class="form-control"
+                                                           th:value="${groupId}"/>
+                                                    <button th:if="${member.groupRole.name() != 'OWNER' && browsingUserRole.name() == 'OWNER'}"
+                                                            class="btn btn-danger btn-sm">Usuń
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
 
@@ -103,7 +114,8 @@
                                                                    class="validation-message"></label>
                                                             <input type="text" th:field="*{email}" placeholder="*Email"
                                                                    class="form-control"/>
-                                                            <input type="hidden" th:attr="name=groupId" class="form-control"
+                                                            <input type="hidden" th:attr="name=groupId"
+                                                                   class="form-control"
                                                                    th:value="${groupId}"/>
                                                             <div class="form-group">
                                                                 <button type="submit"
@@ -122,36 +134,55 @@
                                                     <strong>Dodaj znajomego</strong>
                                                 </h5>
                                                 <div class="card-body px-lg-5 pt-0">
-                                                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
-                                                        <table class="table bordered table-hover mb-0" id="testTable">
-                                                            <!-- Table head -->
-                                                            <thead>
-                                                            <tr class="table-fixed">
-                                                                <th>Imię i Nazwisko</th>
-                                                                <th>Uczestnik</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <!-- Table head -->
+                                                    <form autocomplete="off" action="#"
+                                                          th:action="@{/group/inviteFriends}"
+                                                          th:object="${groupInvitation}" method="post"
+                                                          class="text-center"
+                                                          role="form">
+                                                        <input type="hidden" th:attr="name=groupId"
+                                                               class="form-control"
+                                                               th:value="${groupId}"/>
+                                                        <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
+                                                            <table class="table bordered table-hover mb-0"
+                                                                   id="testTable">
+                                                                <!-- Table head -->
+                                                                <thead>
+                                                                <tr class="table-fixed">
+                                                                    <th>Imię i Nazwisko</th>
+                                                                    <th>Uczestnik</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <!-- Table head -->
 
-                                                            <!-- Table body -->
-                                                            <tbody id="members">
-                                                            <tr th:each="friend, index :${friends}">
-                                                                <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>
-                                                                <td>
-                                                                    <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox" class="custom-control-input" th:id="${index}">
-                                                                        <label class="custom-control-label" th:for="${index}"></label>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                                <!-- Table body -->
+                                                                <tbody id="members">
 
-                                                            </tbody>
-                                                            <!-- Table body -->
-                                                        </table>
-                                                        <!-- Table  -->
-                                                    </div>
-                                                    <!-- Sign in button -->
-                                                    <button class="btn btn-blue btn-block m-auto waves-effect z-depth-0" type="submit">Dodaj!</button>
+                                                                <tr th:each="friend, index :${friends}">
+                                                                    <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>
+                                                                    <td>
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox"
+                                                                                   class="custom-control-input"
+                                                                                   th:id="${index}"
+                                                                                   th:name="'friendIds'"
+                                                                                   th:value="${friend.id}">
+                                                                            <label class="custom-control-label"
+                                                                                   th:for="${index}"></label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+
+                                                                </tbody>
+                                                                <!-- Table body -->
+                                                            </table>
+                                                            <!-- Table  -->
+                                                        </div>
+                                                        <!-- Sign in button -->
+                                                        <button class="btn btn-blue btn-block m-auto waves-effect z-depth-0"
+                                                                type="submit">Dodaj!
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

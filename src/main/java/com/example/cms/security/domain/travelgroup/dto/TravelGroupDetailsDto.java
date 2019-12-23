@@ -30,5 +30,5 @@ public class TravelGroupDetailsDto {
     private GroupStatus groupStatus;
     private BigDecimal debtLimit;
     private BigDecimal lat;
-    private BigDecimal lon;
+    private BigDecimal lng;
 }

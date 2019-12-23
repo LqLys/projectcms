@@ -69,8 +69,11 @@ public class TravelGroupFacade {
     public void sendInvitation(UserEntity authenticatedUser, GroupInviteRequest groupInviteRequest) {
         UserEntity invitationTarget = userService.findUserByEmail(groupInviteRequest.getEmail());
         TravelGroupEntity group = travelGroupService.findTravelGroup(groupInviteRequest.getGroupId());
+        boolean userAlreadyInGroup = userTravelGroupService.userAlreadyInGroup(invitationTarget.getId(), group.getId());
+        if(!userAlreadyInGroup){
+            groupInviteService.sendInvitation(authenticatedUser, invitationTarget, group);
+        }
 
-        groupInviteService.sendInvitation(authenticatedUser, invitationTarget, group);
 
     }
 
@@ -98,13 +101,37 @@ public class TravelGroupFacade {
                 .build();
     }
 
-    public void editGroup(TravelGroupDetailsDto travelGroupDetailsDto) {
+    public void uninviteUser(GroupUninviteRequest groupUninviteRequest) {
+        userTravelGroupService.uninviteUser(groupUninviteRequest);
+    }
+
+    public void inviteMultipleFriends(UserEntity authenticatedUser, InviteFriendsToGroupDto inviteFriendsToGroupDto) {
+        TravelGroupEntity travelGroup = travelGroupService.findTravelGroup(inviteFriendsToGroupDto.getGroupId());
+
+        inviteFriendsToGroupDto.getFriendIds().stream().map(userService::findUserById)
+                .filter(u ->!userTravelGroupService.userAlreadyInGroup(u.getId(), travelGroup.getId()))
+                .forEach(u -> groupInviteService.sendInvitation(authenticatedUser, u, travelGroup));
+
+
+    }
+
+    public boolean userAlreadyInGroup(Long userId, Long groupId) {
+        return !userTravelGroupService.userAlreadyInGroup(userId, groupId);
+    }
+
+    public void editGroupDetails(TravelGroupDetailsDto travelGroupDetailsDto) {
         TravelGroupEntity travelGroup = travelGroupService.findTravelGroup(travelGroupDetailsDto.getGroupId());
-        if(travelGroupDetailsDto.getDestination()!= null){
+        if(travelGroupDetailsDto.getName() != null){
+            travelGroup.setName(travelGroupDetailsDto.getName());
+        }
+        if(travelGroupDetailsDto.getDestination() != null){
             travelGroup.setDestination(travelGroupDetailsDto.getDestination());
         }
-        if(travelGroupDetailsDto.getName()!= null) {
-            travelGroup.setName(travelGroupDetailsDto.getName());
+        if(travelGroupDetailsDto.getStartDate() != null){
+            travelGroup.setStartDate(travelGroupDetailsDto.getStartDate());
+        }
+        if(travelGroupDetailsDto.getEndDate() != null){
+            travelGroup.setEndDate(travelGroupDetailsDto.getEndDate());
         }
         if(travelGroupDetailsDto.getGroupStatus() != null){
             travelGroup.setGroupStatus(travelGroupDetailsDto.getGroupStatus());
@@ -112,12 +139,15 @@ public class TravelGroupFacade {
         if(travelGroupDetailsDto.getGroupVisibility() != null){
             travelGroup.setGroupVisibility(travelGroupDetailsDto.getGroupVisibility());
         }
-        if(travelGroupDetailsDto.getStartDate()!= null){
-            travelGroup.setStartDate(travelGroupDetailsDto.getStartDate());
+        if(travelGroupDetailsDto.getLat()!= null){
+            travelGroup.setLat(travelGroupDetailsDto.getLat());
         }
-        if(travelGroupDetailsDto.getEndDate()!= null){
-            travelGroup.setEndDate(travelGroupDetailsDto.getEndDate());
+        if(travelGroupDetailsDto.getLng() != null){
+            travelGroup.setLng(travelGroupDetailsDto.getLng());
         }
+
         travelGroupService.save(travelGroup);
+
+
     }
 }

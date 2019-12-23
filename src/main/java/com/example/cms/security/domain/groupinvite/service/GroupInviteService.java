@@ -27,7 +27,9 @@ public class GroupInviteService {
 
     public void sendInvitation(UserEntity authenticatedUser, UserEntity invitationTarget, TravelGroupEntity group) {
         boolean userIsBlocked = relationService.isBlockedAlready(invitationTarget, authenticatedUser.getId());
-        if(!userIsBlocked) {
+        boolean invitationExists = groupInviteRepository.findByInvitationSource_IdAndInvitationTarget_IdAndTravelGroup_id(
+                authenticatedUser.getId(), invitationTarget.getId(), group.getId()).isPresent();
+        if(!userIsBlocked && !invitationExists) {
             GroupInviteEntity build = GroupInviteEntity.builder()
                     .invitationSource(authenticatedUser)
                     .invitationTarget(invitationTarget)
@@ -49,5 +51,9 @@ public class GroupInviteService {
 
     public void save(GroupInviteEntity invitation) {
         groupInviteRepository.save(invitation);
+    }
+
+    public void delete(GroupInviteEntity invitation) {
+        groupInviteRepository.delete(invitation);
     }
 }

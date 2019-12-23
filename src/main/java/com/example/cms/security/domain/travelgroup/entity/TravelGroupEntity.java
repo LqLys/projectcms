@@ -57,6 +57,12 @@ public class TravelGroupEntity {
     @Column(name = "DEBT_LIMIT")
     private BigDecimal debtLimit;
 
+    @Column(name = "LAT")
+    private BigDecimal lat;
+
+    @Column(name = "LNG")
+    private BigDecimal lng;
+
     @ManyToMany(mappedBy = "travelGroups")
     private List<UserEntity> users;
 
@@ -68,4 +74,6 @@ public class TravelGroupEntity {
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<QuestionEntity> questions;
+
+
 }

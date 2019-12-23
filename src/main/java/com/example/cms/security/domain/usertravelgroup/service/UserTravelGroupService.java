@@ -1,5 +1,6 @@
 package com.example.cms.security.domain.usertravelgroup.service;
 
+import com.example.cms.security.domain.travelgroup.dto.GroupUninviteRequest;
 import com.example.cms.security.domain.usertravelgroup.entity.GroupRole;
 import com.example.cms.security.domain.usertravelgroup.entity.UserTravelGroupEntity;
 import com.example.cms.security.domain.usertravelgroup.entity.UserTravelGroupId;
@@ -31,5 +32,15 @@ public class UserTravelGroupService {
 
     public void addUserToGroup(UserTravelGroupEntity userInGroup) {
         userTravelGroupRepository.save(userInGroup);
+    }
+
+    public void uninviteUser(GroupUninviteRequest request) {
+        var userTravelGroup = userTravelGroupRepository.getOne(new UserTravelGroupId(request.getUserId(), request.getGroupId()));
+        userTravelGroupRepository.delete(userTravelGroup);
+
+    }
+
+    public boolean userAlreadyInGroup(Long userId, Long groupId) {
+        return userTravelGroupRepository.findById(new UserTravelGroupId(userId, groupId)).isPresent();
     }
 }

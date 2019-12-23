@@ -93,6 +93,12 @@
              </column>
              <column name="DEBT_LIMIT" type="decimal">
              </column>
+
+             <column name="LAT" type="decimal">
+             </column>
+
+             <column name="LNG" type="decimal">
+             </column>
          </createTable>
      </changeSet>
 
