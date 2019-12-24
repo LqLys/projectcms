@@ -81,7 +81,9 @@
                                                 <div th:each="answer :${question.answers}">
                                                     <input type="checkbox" th:value="${answer.id}" th:text="${answer.text}"
                                                     th:name="${'question-answers-' + question.id}" th:checked="${answer.checked}"
-                                                    th:class="${'question-answers-' + question.id}">
+                                                    th:class="${'question-answers-' + question.id}"
+                                                           th:disabled="${!question.isActive}"
+                                                    >
                                                     <span th:text="${answer.answerCount}"></span>
 
                                                 </div>
@@ -114,6 +116,13 @@
                                                             <div class="custom-control">
                                                                 <input id="questionInput"
                                                                        type="text"
+                                                                       class="form-control"
+                                                                       placeholder="*Pytanie"
+                                                                />
+                                                            </div>
+                                                            <div class="custom-control">
+                                                                <input id="endDate"
+                                                                       type="date"
                                                                        class="form-control"
                                                                        placeholder="*Pytanie"
                                                                 />
@@ -212,13 +221,14 @@
         const answers = answerInputs.map(ans => ans.value);
         const questionText = $('#questionInput').val();
         const groupId = $('#groupId').val();
+        const endDate = $('#endDate').val();
         console.log(questionText);
         console.log(answers);
         const question = {
             text: questionText,
             answers: answers,
             groupId: groupId,
-            endDate: '2019-01-01'
+            endDate: endDate
         };
 
         $.ajax({

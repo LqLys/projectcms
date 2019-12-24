@@ -16,5 +16,6 @@ public class PlanningQuestionDto {
     private Long id;
     private String text;
     private List<PlanningAnswerDto> answers;
+    private Boolean isActive;
 
 }

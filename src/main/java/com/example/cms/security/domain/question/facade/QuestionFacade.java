@@ -16,6 +16,7 @@ import com.example.cms.security.domain.useranswer.entity.UserAnswerEntity;
 import com.example.cms.security.domain.useranswer.repository.UserAnswerRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class QuestionFacade {
         return PlanningQuestionDto.builder()
                 .id(q.getId())
                 .text(q.getText())
+                .isActive(!q.getEndDate().isBefore(LocalDate.now()))
                 .answers(q.getAnswers().stream().map(a-> answerToPlanningAnswer(a, userAnswerIds, answersCount))
                         .collect(Collectors.toList()))
                 .build();
