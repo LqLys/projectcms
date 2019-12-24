@@ -3,6 +3,7 @@ package com.example.cms.security.domain.travelgroup.facade;
 import com.example.cms.security.domain.expense.dto.ExpenseDto;
 import com.example.cms.security.domain.expense.entity.ExpenseEntity;
 import com.example.cms.security.domain.groupinvite.service.GroupInviteService;
+import com.example.cms.security.domain.relation.service.RelationService;
 import com.example.cms.security.domain.travelgroup.dto.*;
 import com.example.cms.security.domain.travelgroup.entity.GroupStatus;
 import com.example.cms.security.domain.travelgroup.entity.GroupVisibility;
@@ -27,20 +28,23 @@ public class TravelGroupFacade {
     private final UserTravelGroupService userTravelGroupService;
     private final UserService userService;
     private final GroupInviteService groupInviteService;
+    private final RelationService relationService;
 
-    public TravelGroupFacade(TravelGroupService travelGroupService, TravelGroupMapper travelGroupMapper, UserTravelGroupService userTravelGroupService, UserService userService, GroupInviteService groupInviteService) {
+    public TravelGroupFacade(TravelGroupService travelGroupService, TravelGroupMapper travelGroupMapper, UserTravelGroupService userTravelGroupService, UserService userService, GroupInviteService groupInviteService, RelationService relationService) {
         this.travelGroupService = travelGroupService;
         this.travelGroupMapper = travelGroupMapper;
         this.userTravelGroupService = userTravelGroupService;
         this.userService = userService;
         this.groupInviteService = groupInviteService;
+        this.relationService = relationService;
     }
 
     public TravelGroupDto getTravelGroupById(Long groupId) {
-        return travelGroupMapper.map(travelGroupService.getTravelGroup(groupId),TravelGroupDto.class);
+        return travelGroupMapper.map(travelGroupService.getTravelGroup(groupId), TravelGroupDto.class);
     }
-    public TravelGroupDetailsDto getTravelGroupDetails(Long groupId){
-        return travelGroupMapper.map(travelGroupService.getTravelGroup(groupId),TravelGroupDetailsDto.class);
+
+    public TravelGroupDetailsDto getTravelGroupDetails(Long groupId) {
+        return travelGroupMapper.map(travelGroupService.getTravelGroup(groupId), TravelGroupDetailsDto.class);
     }
 
     public void createTravelGroup(CreateTravelGroupRequest createTravelGroupRequest, UserEntity user) {
@@ -58,7 +62,7 @@ public class TravelGroupFacade {
 
     }
 
-    public List<UserGroupsDto> getUserGroupRoles(Long userId){
+    public List<UserGroupsDto> getUserGroupRoles(Long userId) {
         return travelGroupService.gerUserGroupRoles(userId);
     }
 
@@ -70,7 +74,7 @@ public class TravelGroupFacade {
         UserEntity invitationTarget = userService.findUserByEmail(groupInviteRequest.getEmail());
         TravelGroupEntity group = travelGroupService.findTravelGroup(groupInviteRequest.getGroupId());
         boolean userAlreadyInGroup = userTravelGroupService.userAlreadyInGroup(invitationTarget.getId(), group.getId());
-        if(!userAlreadyInGroup){
+        if (!userAlreadyInGroup) {
             groupInviteService.sendInvitation(authenticatedUser, invitationTarget, group);
         }
 
@@ -109,7 +113,7 @@ public class TravelGroupFacade {
         TravelGroupEntity travelGroup = travelGroupService.findTravelGroup(inviteFriendsToGroupDto.getGroupId());
 
         inviteFriendsToGroupDto.getFriendIds().stream().map(userService::findUserById)
-                .filter(u ->!userTravelGroupService.userAlreadyInGroup(u.getId(), travelGroup.getId()))
+                .filter(u -> !userTravelGroupService.userAlreadyInGroup(u.getId(), travelGroup.getId()))
                 .forEach(u -> groupInviteService.sendInvitation(authenticatedUser, u, travelGroup));
 
 
@@ -121,28 +125,33 @@ public class TravelGroupFacade {
 
     public void editGroupDetails(TravelGroupDetailsDto travelGroupDetailsDto) {
         TravelGroupEntity travelGroup = travelGroupService.findTravelGroup(travelGroupDetailsDto.getGroupId());
-        if(travelGroupDetailsDto.getName() != null){
+        if (travelGroupDetailsDto.getName() != null) {
             travelGroup.setName(travelGroupDetailsDto.getName());
         }
-        if(travelGroupDetailsDto.getDestination() != null){
+        if (travelGroupDetailsDto.getDestination() != null) {
             travelGroup.setDestination(travelGroupDetailsDto.getDestination());
         }
-        if(travelGroupDetailsDto.getStartDate() != null){
+        if (travelGroupDetailsDto.getStartDate() != null) {
             travelGroup.setStartDate(travelGroupDetailsDto.getStartDate());
         }
-        if(travelGroupDetailsDto.getEndDate() != null){
+        if (travelGroupDetailsDto.getEndDate() != null) {
             travelGroup.setEndDate(travelGroupDetailsDto.getEndDate());
         }
-        if(travelGroupDetailsDto.getGroupStatus() != null){
+        if (travelGroupDetailsDto.getGroupStatus() != null) {
+            if (GroupStatus.CREATED == travelGroup.getGroupStatus() &&
+                    GroupStatus.ACTIVE == travelGroupDetailsDto.getGroupStatus()) {
+                relationService.addGroupMembersToFriends(travelGroup);
+            }
+
             travelGroup.setGroupStatus(travelGroupDetailsDto.getGroupStatus());
         }
-        if(travelGroupDetailsDto.getGroupVisibility() != null){
+        if (travelGroupDetailsDto.getGroupVisibility() != null) {
             travelGroup.setGroupVisibility(travelGroupDetailsDto.getGroupVisibility());
         }
-        if(travelGroupDetailsDto.getLat()!= null){
+        if (travelGroupDetailsDto.getLat() != null) {
             travelGroup.setLat(travelGroupDetailsDto.getLat());
         }
-        if(travelGroupDetailsDto.getLng() != null){
+        if (travelGroupDetailsDto.getLng() != null) {
             travelGroup.setLng(travelGroupDetailsDto.getLng());
         }
 

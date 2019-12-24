@@ -1,15 +1,12 @@
 package com.example.cms.security.domain.relation.service;
 
-import com.example.cms.security.domain.relation.dto.AddFriendDto;
-import com.example.cms.security.domain.relation.dto.BaseBlockedUserDto;
-import com.example.cms.security.domain.relation.dto.BlockUserDto;
 import com.example.cms.security.domain.relation.entity.RelationEntity;
 import com.example.cms.security.domain.relation.entity.RelationType;
 import com.example.cms.security.domain.relation.repository.RelationRepository;
+import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -70,5 +67,12 @@ public class RelationService {
                 userToUnblock.getId(),
                 RelationType.BLOCKED);
         relationRepository.delete(relationToDelete);
+    }
+
+    public void addGroupMembersToFriends(TravelGroupEntity travelGroup) {
+        List<UserEntity> members = travelGroup.getUsers();
+        members.forEach(m1 -> members.stream()
+                .filter(m2 -> !m2.equals(m1))
+                .filter(m2 -> !isFriendAlready(m1,m2.getId())).forEach(m2-> addFriend(m1,m2)));
     }
 }
