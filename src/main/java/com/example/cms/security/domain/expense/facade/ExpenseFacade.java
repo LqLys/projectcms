@@ -163,4 +163,8 @@ public class ExpenseFacade {
         final UserEntity userById = userService.findUserById(userId);
         return userById.getEmail();
     }
+
+    public void payDebt(UserEntity lender, UserEntity debtor, BigDecimal amount) {
+        expenseService.payDebt(lender, debtor, amount);
+    }
 }

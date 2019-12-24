@@ -2,6 +2,7 @@ package com.example.cms.security.domain.expense.repository.fragment;
 
 import com.example.cms.security.domain.expense.dto.UnpaidExpenseDto;
 import com.example.cms.security.domain.expense.entity.QExpenseEntity;
+import com.example.cms.security.domain.expenseparticipant.entity.ExpenseParticipantEntity;
 import com.example.cms.security.domain.expenseparticipant.entity.QExpenseParticipantEntity;
 import com.example.cms.security.domain.user.entity.QUserEntity;
 import com.querydsl.core.types.Projections;
@@ -58,5 +59,16 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryFragment {
 
 
         return fetch;
+    }
+
+    @Override
+    public List<ExpenseParticipantEntity> getUnpaidExpenses(Long lenderId, Long debtorId) {
+        QExpenseParticipantEntity participation = QExpenseParticipantEntity.expenseParticipantEntity;
+        return jpaQueryFactory.select(participation)
+                .from(participation)
+                .where(participation.lender.id.eq(lenderId)
+                        .and(participation.debtor.id.eq(debtorId))
+                        .and(participation.paidAmount.lt(participation.initialAmount)))
+                .fetch();
     }
 }

@@ -46,6 +46,9 @@ public class ExpenseController {
     @PostMapping(path = "/expenses/pay")
     public ModelAndView payDebt(PayDebtDto payDebtDto, ModelAndView modelAndView){
         modelAndView.setViewName("redirect:/expenses");
+        final UserEntity lender = userService.findUserByEmail(payDebtDto.getLenderEmail());
+        final UserEntity debtor = userService.getAuthenticatedUser();
+        expenseFacade.payDebt(lender, debtor, payDebtDto.getAmount());
         return modelAndView;
 
     }
