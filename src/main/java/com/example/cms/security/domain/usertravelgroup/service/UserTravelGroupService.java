@@ -1,11 +1,14 @@
 package com.example.cms.security.domain.usertravelgroup.service;
 
 import com.example.cms.security.domain.travelgroup.dto.GroupUninviteRequest;
+import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.usertravelgroup.entity.GroupRole;
 import com.example.cms.security.domain.usertravelgroup.entity.UserTravelGroupEntity;
 import com.example.cms.security.domain.usertravelgroup.entity.UserTravelGroupId;
 import com.example.cms.security.domain.usertravelgroup.repository.UserTravelGroupRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserTravelGroupService {
@@ -42,5 +45,10 @@ public class UserTravelGroupService {
 
     public boolean userAlreadyInGroup(Long userId, Long groupId) {
         return userTravelGroupRepository.findById(new UserTravelGroupId(userId, groupId)).isPresent();
+    }
+
+    public boolean viewerIsOrganizer(UserEntity authenticatedUser, Long travelGroupId) {
+        return userTravelGroupRepository.findById(new UserTravelGroupId(authenticatedUser.getId(), travelGroupId))
+                .map(groupMember -> GroupRole.OWNER == groupMember.getGroupRole()).orElse(false);
     }
 }

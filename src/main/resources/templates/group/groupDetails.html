@@ -70,43 +70,58 @@
                                                    th:errors="*{name}"
                                                    class="validation-message"></label>
                                             <input type="text" th:field="*{name}" placeholder="*Nazwa"
+                                                   th:disabled="${!viewerIsOrganizer}"
                                                    class="form-control"/>
                                             <label th:if="${#fields.hasErrors('destination')}"
                                                    th:errors="*{destination}"
                                                    class="validation-message"></label>
                                             <input type="text" th:field="*{destination}" placeholder="*Cel"
+                                                   th:disabled="${!viewerIsOrganizer}"
                                                    class="form-control"/>
                                             <label th:if="${#fields.hasErrors('startDate')}"
                                                    th:errors="*{startDate}"
                                                    class="validation-message"></label>
                                             <input type="date" th:field="*{startDate}" class="form-control"
+                                                   th:disabled="${!viewerIsOrganizer}"
                                                    th:value="${#temporals.format(travelGroupDto.startDate, 'dd/MM/yyyy')}"
                                             />
                                             <label th:if="${#fields.hasErrors('endDate')}"
                                                    th:errors="*{endDate}"
                                                    class="validation-message"></label>
-                                            <input type="date" th:field="*{endDate}" class="form-control"/>
+                                            <input type="date" th:field="*{endDate}"
+                                                   th:disabled="${!viewerIsOrganizer}"
+                                                   class="form-control"/>
                                             <div th:each="visibility, visIndex :${groupVisibilityOptions}">
                                                 <input type="radio" th:value="${visibility.name()}" th:text="${visibility.name()}"
-                                                       th:name="${'groupVisibility'}" th:checked="${travelGroupDto.getGroupVisibility().equals(visibility)}">
+                                                       th:name="${'groupVisibility'}" th:checked="${travelGroupDto.getGroupVisibility().equals(visibility)}"
+                                                       th:disabled="${!viewerIsOrganizer}"
+                                                >
 
                                             </div>
                                             <hr>
                                             <div th:each="status :${groupStatusOptions}">
                                                 <input type="radio" th:value="${status.name()}" th:text="${status.name()}"
-                                                       th:name="${'groupStatus'}" th:checked="${travelGroupDto.getGroupStatus().equals(status)}">
+                                                       th:name="${'groupStatus'}" th:checked="${travelGroupDto.getGroupStatus().equals(status)}"
+                                                       th:disabled="${!viewerIsOrganizer}"
+                                                >
 
                                             </div>
                                             <input type="hidden" th:attr="name=groupId" class="form-control"
-                                                   th:value="${groupId}"/>
+                                                   th:value="${groupId}"
+                                                   th:disabled="${!viewerIsOrganizer}"
+                                            />
                                             <input type="hidden" th:attr="name=lat" class="form-control" id="groupLat"
+                                                   th:disabled="${!viewerIsOrganizer}"
                                                    th:value="${travelGroupDto.lat}"/>
                                             <input type="hidden" th:attr="name=lng" class="form-control" id="groupLng"
+                                                   th:disabled="${!viewerIsOrganizer}"
                                                    th:value="${travelGroupDto.lng}"/>
                                             <div class="form-group">
                                                 <button type="submit"
+                                                        th:disabled="${!viewerIsOrganizer}"
+                                                        th:hidden="${!viewerIsOrganizer}"
                                                         class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
-                                                    Zaproś!
+                                                    Zapisz zmiany!
                                                 </button>
                                             </div>
                                         </div>

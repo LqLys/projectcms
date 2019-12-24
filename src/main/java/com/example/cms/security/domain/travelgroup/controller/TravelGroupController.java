@@ -162,11 +162,14 @@ public class TravelGroupController {
     @GetMapping(path = "/details/{groupId}")
     public ModelAndView getGroupDetails(@PathVariable("groupId")Long groupId,  ModelAndView modelAndView) {
         modelAndView.setViewName("group/groupDetails");
+        UserEntity authenticatedUser = userService.getAuthenticatedUser();
         TravelGroupDetailsDto travelGroupDto = travelGroupFacade.getTravelGroupDetails(groupId);
+        boolean viewerIsOrganizer = travelGroupFacade.viewerIsOrganizer(authenticatedUser, groupId);
         modelAndView.addObject("groupVisibilityOptions", GroupVisibility.values());
         modelAndView.addObject("groupStatusOptions", GroupStatus.values());
         modelAndView.addObject("travelGroupDto", travelGroupDto);
         modelAndView.addObject("groupId", groupId);
+        modelAndView.addObject("viewerIsOrganizer", viewerIsOrganizer);
         return modelAndView;
     }
     @PostMapping(path = "/details/edit")

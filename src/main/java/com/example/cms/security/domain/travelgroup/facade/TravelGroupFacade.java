@@ -159,4 +159,8 @@ public class TravelGroupFacade {
 
 
     }
+
+    public boolean viewerIsOrganizer(UserEntity authenticatedUser, Long travelGroupId) {
+        return  userTravelGroupService.viewerIsOrganizer(authenticatedUser, travelGroupId);
+    }
 }
