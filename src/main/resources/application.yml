@@ -1,1 +1,21 @@
-
+spring:
+  datasource:
+    hikari:
+      schema: "cms_db"
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.xml
+    enabled: true
+  queries:
+    users-query: "select email, password, active from users where email=?"
+    roles-query: "select u.email, r.name from users u inner join user_role ur on(u.id=ur.user_id) inner join roles r on(ur.role_id=r.id) where u.email=?"

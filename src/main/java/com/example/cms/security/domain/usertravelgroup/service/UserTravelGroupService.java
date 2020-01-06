@@ -38,7 +38,7 @@ public class UserTravelGroupService {
     }
 
     public void uninviteUser(GroupUninviteRequest request) {
-        var userTravelGroup = userTravelGroupRepository.getOne(new UserTravelGroupId(request.getUserId(), request.getGroupId()));
+        final UserTravelGroupEntity userTravelGroup = userTravelGroupRepository.getOne(new UserTravelGroupId(request.getUserId(), request.getGroupId()));
         userTravelGroupRepository.delete(userTravelGroup);
 
     }

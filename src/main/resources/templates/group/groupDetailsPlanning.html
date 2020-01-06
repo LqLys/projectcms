@@ -164,7 +164,8 @@
         </div>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
+    var apiBase = /*[[${apiBase}]]*/ "";
 
     function updateAnswer(questionId) {
         const userId = $('#userId').val();
@@ -182,7 +183,7 @@
             answerIds: ansIds
         };
         $.ajax({
-            url: 'http://localhost:8080/api/answer/vote',
+            url: apiBase + '/api/answer/vote',
             data: JSON.stringify(payload),
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
@@ -233,7 +234,7 @@
         };
 
         $.ajax({
-            url: 'http://localhost:8080/api/question/add',
+            url: apiBase + '/api/question/add',
             data: JSON.stringify(question),
             type: 'POST',
             contentType: 'application/json; charset=utf-8',

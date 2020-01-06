@@ -14,6 +14,7 @@ import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
 import com.example.cms.security.domain.usertravelgroup.entity.GroupRole;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,9 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping(path = "/group")
 public class TravelGroupController {
+
+    @Value("${api.base-url}")
+    private String API_BASE;
 
     private final TravelGroupFacade travelGroupFacade;
     private final GroupInviteFacade groupInviteFacade;
@@ -108,6 +112,7 @@ public class TravelGroupController {
         modelAndView.addObject("createExpenseRequest", new CreateExpenseRequest());
         modelAndView.addObject("currentUserId", currentUserId);
         modelAndView.addObject("groupId", groupId);
+        modelAndView.addObject("apiBase", API_BASE);
 
         return modelAndView;
     }
@@ -188,6 +193,7 @@ public class TravelGroupController {
         modelAndView.addObject("createSurveyDto", new CreateQuestionDto());
         modelAndView.addObject("userId", authenticatedUser.getId());
         modelAndView.addObject("groupId", groupId);
+        modelAndView.addObject("apiBase", API_BASE);
         modelAndView.setViewName("group/groupDetailsPlanning");
 
         return modelAndView;

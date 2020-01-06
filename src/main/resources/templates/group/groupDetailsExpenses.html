@@ -121,8 +121,8 @@
     </div>
 </div>
 
-<script>
-
+<script th:inline="javascript">
+    var apiBase = /*[[${apiBase}]]*/ "";
 
 
 
@@ -157,7 +157,7 @@
         //send ajax here
         console.log(expense);
         $.ajax({
-            url: 'http://localhost:8080/api/expense',
+            url: apiBase + '/api/expense',
             data: JSON.stringify(expense),
             type: 'POST',
             contentType: 'application/json; charset=utf-8',

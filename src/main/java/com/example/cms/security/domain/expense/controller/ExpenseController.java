@@ -38,7 +38,7 @@ public class ExpenseController {
         modelAndView.addObject("finalUserBalance", finalUserBalance);
         modelAndView.addObject("totalBalance", totalBalance);
         modelAndView.addObject("payDebtDto", new PayDebtDto());
-        modelAndView.setViewName("/expense/expenses");
+        modelAndView.setViewName("expense/expenses");
         return modelAndView;
 
     }

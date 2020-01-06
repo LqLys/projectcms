@@ -22,3 +22,6 @@ spring:
   queries:
     users-query: "select email, password, active from users where email=?"
     roles-query: "select u.email, r.name from users u inner join user_role ur on(u.id=ur.user_id) inner join roles r on(ur.role_id=r.id) where u.email=?"
+
+api:
+  base-url: "http://localhost:8080"

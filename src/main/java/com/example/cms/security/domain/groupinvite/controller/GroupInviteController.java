@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 public class GroupInviteController {
-    
+
     private final GroupInviteFacade groupInviteFacade;
     private final UserService userService;
 
@@ -26,7 +26,7 @@ public class GroupInviteController {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
         List<GroupInviteDto> pendingInvites = groupInviteFacade.getUsersPendingInvites(authenticatedUser.getId());
         modelAndView.addObject("pendingInvites", pendingInvites);
-        modelAndView.setViewName("/notification/invitations");
+        modelAndView.setViewName("notification/invitations");
         return modelAndView;
     }
 }

@@ -5,6 +5,7 @@ import com.example.cms.security.domain.chatmessage.dto.SendChatMessageRequest;
 import com.example.cms.security.domain.chatmessage.facade.ChatMessageFacade;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,9 @@ import java.util.List;
 
 @Controller
 public class ChatMessageController {
+
+    @Value("${api.base-url}")
+    private String API_BASE;
 
 
     private final ChatMessageFacade chatMessageFacade;
@@ -36,6 +40,7 @@ public class ChatMessageController {
         modelAndView.addObject("newMessage", new SendChatMessageRequest());
         modelAndView.addObject("messages", allMessages);
         modelAndView.addObject("groupId", groupId);
+        modelAndView.addObject("apiBase", API_BASE);
         return modelAndView;
 
     }
