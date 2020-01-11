@@ -23,64 +23,52 @@
     <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
 </head>
 <body>
-<form th:action="@{/}" method="get">
-    <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>
-</form>
+<div th:replace="common/header :: header"></div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <form autocomplete="off" action="#" th:action="@{/registration}"
-                  th:object="${userEntity}" method="post" class="form-horizontal"
-                  role="form">
-                <h2>Registration Form</h2>
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
-                               class="validation-message"></label>
-                        <input type="text" th:field="*{firstName}" placeholder="First Name"
-                               class="form-control" />
+<div class="container h-100">
+    <div class="row justify-content-center align-middle">
+        <div class="col-md-6 mt-5">
+            <form th:action="@{/registration}" th:object="${userEntity}" method="POST" class="jumbotron text-center border border-light p-5 justify-content-center" action="#!">
+
+                <p class="h4 mb-4">Rejestracja</p>
+
+                <div class="form-row mb-4">
+                    <div class="col">
+                        <!-- First name -->
+                        <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="validation-message"></label>
+                        <input type="text" th:field="*{firstName}" placeholder="Imię" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <!-- Last name -->
+                        <label	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message"></label>
+                        <input type="text" th:field="*{lastName}" placeholder="Nazwisko" class="form-control" />
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <label	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
-                                  class="validation-message"></label>
-                        <input type="text" th:field="*{lastName}"
-                               placeholder="Last Name" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <input type="text" th:field="*{email}" placeholder="Email"
-                               class="form-control" /> <label
-                            th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                            class="validation-message"></label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <input type="password" th:field="*{password}"
-                               placeholder="Password" class="form-control" /> <label
-                            th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-                            class="validation-message"></label>
-                    </div>
-                </div>
+                <!-- E-mail -->
+                <input type="email" th:field="*{email}" placeholder="E-mail" class="form-control mb-4" />
+                <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" lass="validation-message"></label>
 
-                <div class="form-group">
-                    <div class="col-sm-9">
-                        <button type="submit" class="btn btn-primary btn-block">Register User</button>
-                    </div>
+                <!-- Password -->
+                <input type="password" th:field="*{password}" placeholder="Hasło" class="form-control" />
+                <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
+
+                <!-- Sign up button -->
+                <button class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
+
+                <hr>
+
+                <!-- Terms of service -->
+                <div>
+                    <a th:href="@{/login}">Posadasz już konto, zaloguj się</a>
                 </div>
-
-                <span th:utext="${successMessage}"></span>
-
-
             </form>
+            <span th:utext="${successMessage}"></span>
         </div>
     </div>
 </div>
+
+<div th:replace="common/footer :: footer"></div>
 
 </body>
 </html>
