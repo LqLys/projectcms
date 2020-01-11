@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Material Design for Bootstrap</title>
+    <title>Home</title>
     <!-- MDB icon -->
     <link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
     <!-- Font Awesome -->
@@ -20,30 +20,46 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
     <!-- DataTables JS -->
-    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
+    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}"></script>
 </head>
 
 <body>
-<form th:action="@{/registration}" method="get">
-    <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
-</form>
+<div th:replace="common/header :: header"></div>
 
-<div class="container">
-    <!--<img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo" />-->
-    <form th:action="@{/login}" method="POST" class="form-signin">
-        <h3 class="form-signin-heading" th:text="Welcome"></h3>
-        <br/>
+<div class="container h-100">
+    <div class="row justify-content-center align-middle">
+        <div class="col-md-6 mt-5">
+            <form th:action="@{/login}" method="POST"
+                  class="jumbotron text-center border border-light p-5 justify-content-center" action="#!">
 
-        <input type="text" id="email" name="email"  th:placeholder="Email"
-               class="form-control" /> <br/>
-        <input type="password"  th:placeholder="Password"
-               id="password" name="password" class="form-control" /> <br />
+                <p class="h4 mb-4">On The Way</p>
 
-        <!--<div align="center" th:if="${param.error}">-->
-            <!--<p style="font-size: 20; color: #FF1C19;">Email or Password invalid, please verify</p>-->
-        <!--</div>-->
-        <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
-    </form>
+                <!-- Email -->
+                <input type="email" id="email" name="email" th:placeholder="Email" class="form-control mb-4">
+
+                <!-- Password -->
+                <input type="password" id="password" name="password" class="form-control mb-4" th:placeholder="Hasło">
+
+                <!-- Sign in button -->
+                <button class="btn btn-info btn-block my-4" type="submit">Zaloguj</button>
+
+
+                <div class="d-flex justify-content-around">
+                    <div>
+                        <!-- Forgot password -->
+                        <a href="">Zapomniałeś hasła?</a>
+                    </div>
+                    <div>
+                        <!-- Forgot password -->
+                        <a href="">Zarejestruj</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
 </div>
+<div th:replace="common/footer :: footer"></div>
+
 </body>
 </html>
