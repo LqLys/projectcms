@@ -101,39 +101,25 @@
                                         <div class="col-12">
                                             <div class="card mb-3">
                                                 <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Zaproś nowego znajomoego</strong>
+                                                    <strong>Zaproś znajomych</strong>
                                                 </h5>
                                                 <div class="card-body px-lg-5 py-0 ">
-                                                    <form autocomplete="off" action="#" th:action="@{/group/invite}"
+                                                    <hr class="m-4">
+                                                    <form action="#" th:action="@{/group/invite}"
                                                           th:object="${groupInvitation}" method="post"
                                                           class="text-center"
                                                           role="form">
-                                                        <div class="md-form my-0">
-                                                            <label th:if="${#fields.hasErrors('email')}"
-                                                                   th:errors="*{email}"
-                                                                   class="validation-message"></label>
-                                                            <input type="text" th:field="*{email}" placeholder="*Email"
-                                                                   class="form-control"/>
-                                                            <input type="hidden" th:attr="name=groupId"
-                                                                   class="form-control"
-                                                                   th:value="${groupId}"/>
-                                                            <div class="form-group">
-                                                                <button type="submit"
-                                                                        class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
-                                                                    Zaproś!
-                                                                </button>
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" placeholder="E-mail nowego znajomego" th:field="*{email}" class="form-control"/>
+                                                            <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${groupId}"/>
+                                                            <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
+
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-md blue text-white m-0 px-3" type="button" id="MaterialButton-addon2">Zaproś</button>
                                                             </div>
                                                         </div>
                                                     </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="card mb-3">
-                                                <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Dodaj znajomego</strong>
-                                                </h5>
-                                                <div class="card-body px-lg-5 pt-0">
+                                                    <hr class="m-4">
                                                     <form autocomplete="off" action="#"
                                                           th:action="@{/group/inviteFriends}"
                                                           th:object="${groupInvitation}" method="post"
@@ -143,8 +129,7 @@
                                                                class="form-control"
                                                                th:value="${groupId}"/>
                                                         <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
-                                                            <table class="table bordered table-hover mb-0"
-                                                                   id="testTable">
+                                                            <table class="table bordered table-hover mb-0">
                                                                 <!-- Table head -->
                                                                 <thead>
                                                                 <tr class="table-fixed">
@@ -179,7 +164,7 @@
                                                             <!-- Table  -->
                                                         </div>
                                                         <!-- Sign in button -->
-                                                        <button class="btn btn-blue btn-block m-auto waves-effect z-depth-0"
+                                                        <button class="btn btn-blue btn-block waves-effect z-depth-0 mb-5"
                                                                 type="submit">Dodaj!
                                                         </button>
                                                     </form>
@@ -193,6 +178,8 @@
                     </div>
                 </div>
             </div>
-            <div th:replace="common/footer :: footer"></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
