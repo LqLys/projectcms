@@ -2,10 +2,10 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
+	<title>Home</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>Zaloguj</title>
 	<!-- MDB icon -->
 	<link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
 	<!-- Font Awesome -->
@@ -20,61 +20,78 @@
 	<link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
 	<!-- DataTables JS -->
 	<script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+
 <div th:replace="common/header :: header"> </div>
 
-<div sec:authorize="isAuthenticated()">
-	<a class="btn btn-success"th:href="@{/dashboard}">Dashboard</a>
+<div id="carousel-example-2" class="carousel slide carousel-fade z-depth-1-half" data-ride="carousel">
+	<div class="carousel-inner" style="max-height: 350px !important;" role="listbox">
+		<div class="carousel-item active">
+			<video class="video-fluid" autoplay loop muted>
+				<source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4"/>
+			</video>
+			<div class="carousel-caption pb-5" style="top: 5rem !important; text-align: left">
+				<h1 class="h1-responsive">On The Way</h1>
+				<p>Zaplanuj... wszystko</p>
+			</div>
+		</div>
+	</div>
 </div>
 
-<!--<div sec:authorize="isAnonymous()">-->
-	<!--<a class="btn btn-success" th:href="@{/login}">Login</a>-->
-	<!--<a class="btn btn-primary" th:href="@{/register}">Register</a>-->
+<!--<div sec:authorize="isAuthenticated()">-->
+	<!--<a class="btn btn-success"th:href="@{/dashboard}">Dashboard</a>-->
 <!--</div>-->
-<!--<div sec:authentication="name">-->
-	<!--The value of the "name" property of the authentication object should appear here.-->
+
+<!--&lt;!&ndash;<div sec:authorize="isAnonymous()">&ndash;&gt;-->
+	<!--&lt;!&ndash;<a class="btn btn-success" th:href="@{/login}">Login</a>&ndash;&gt;-->
+	<!--&lt;!&ndash;<a class="btn btn-primary" th:href="@{/register}">Register</a>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div sec:authentication="name">&ndash;&gt;-->
+	<!--&lt;!&ndash;The value of the "name" property of the authentication object should appear here.&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
+	<!--<div class="col-md-10 col-md-offset-2">-->
+		<!--<h2>siema</h2>-->
+	<!--</div>-->
 <!--</div>-->
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-	<div class="col-md-10 col-md-offset-2">
-		<h2>siema</h2>
-	</div>
-</div>
-<div sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">
-	<p>MAKA PAKA</p>
-</div>
+<!--<div sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">-->
+	<!--<p>MAKA PAKA</p>-->
+<!--</div>-->
 
 
-<div class="row" sec:authorize="hasAuthority('ADMIN')">
-	<div class="col-md-10 col-md-offset-2">
-		<h2>User Has Authority Admin</h2>
-	</div>
-</div>
-<div class="row" sec:authorize="hasAuthority('OWNER')">
-	<div class="col-md-10 col-md-offset-2">
-		<h2>siema owner</h2>
-	</div>
-</div>
-<div sec:authorize="isAuthenticated()">
-	<p>USER IS AUTHENTICATED</p>
-</div>
+<!--<div class="row" sec:authorize="hasAuthority('ADMIN')">-->
+	<!--<div class="col-md-10 col-md-offset-2">-->
+		<!--<h2>User Has Authority Admin</h2>-->
+	<!--</div>-->
+<!--</div>-->
+<!--<div class="row" sec:authorize="hasAuthority('OWNER')">-->
+	<!--<div class="col-md-10 col-md-offset-2">-->
+		<!--<h2>siema owner</h2>-->
+	<!--</div>-->
+<!--</div>-->
+<!--<div sec:authorize="isAuthenticated()">-->
+	<!--<p>USER IS AUTHENTICATED</p>-->
+<!--</div>-->
 
-<div sec:authorize="!isAuthenticated()">
-	<p>USER IS NOT AUTHENTICATED</p>
-</div>
+<!--<div sec:authorize="!isAuthenticated()">-->
+	<!--<p>USER IS NOT AUTHENTICATED</p>-->
+<!--</div>-->
 
-<div sec:authorize="hasRole('USER')">Text visible to user.</div>
-<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
-<div sec:authorize="isAuthenticated()">
-	Text visible only to authenticated users.
-</div>
-Authenticated username:
-<div sec:authentication="name"></div>
-Authenticated user roles:
-<th:block th:each="r, iter:${#authentication.getAuthorities()}">
-	<span th:text="${r}"></span>
-	<th:block th:if="${!iter.last}">, </th:block>
-</th:block>
+<!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>-->
+<!--<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
+<!--<div sec:authorize="isAuthenticated()">-->
+	<!--Text visible only to authenticated users.-->
+<!--</div>-->
+<!--Authenticated username:-->
+<!--<div sec:authentication="name"></div>-->
+<!--Authenticated user roles:-->
+<!--<th:block th:each="r, iter:${#authentication.getAuthorities()}">-->
+	<!--<span th:text="${r}"></span>-->
+	<!--<th:block th:if="${!iter.last}">, </th:block>-->
+<!--</th:block>-->
 
 <div th:replace="common/footer :: footer"></div>
 

@@ -1,6 +1,6 @@
 .my-custom-scrollbar {
     position: relative;
-    max-height: 65vh;
+    max-height: 10rem;
     min-height: 40vh;
     overflow: auto;
 }
@@ -10,7 +10,11 @@
 
 .sm-custom-scrollbar{
     position: relative;
-    max-height: 30vh;
-    min-height: 10vh;
+    max-height: 10rem;
+    min-height: 10rem;
     overflow: auto;
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
 }

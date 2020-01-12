@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Material Design for Bootstrap</title>
     <!-- MDB icon -->
     <link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
     <!-- Font Awesome -->
@@ -26,8 +25,108 @@
 </head>
 <body>
 
-
 <div th:replace="common/header :: header"></div>
+
+
+<div class="container-fluid">
+    <div class="row mx-sm-4 my-lg-0">
+        <div class="col-sm-7">
+            <!-- Material form login -->
+            <div class="card my-3">
+
+                <h5 class="card-header blue darken-2 white-text text-center py-3">
+                    <strong>Znajomi bilans</strong>
+                </h5>
+
+                <div class="card-body px-lg-5 pt-0">
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                        <table class="table table bordered table-hover" id="myGroups">
+                            <thead>
+                            <tr>
+                                <th>Znajomy</th>
+                                <th>Bilans</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody id="demo">
+                            <th:block th:each="balance :${finalUserBalance}">
+                                <tr style="cursor: pointer">
+                                    <td th:text="${balance.getRelatedUser()}"></td>
+                                    <td>
+                                       <h5 th:classappend="${balance.getAmount() >= 0} ? text-info : text-danger" th:text="${balance.getAmount() + ' zł'}"></h5>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="card my-3">
+                <h5 class="card-header text-white text-center py-3" th:classappend="${totalBalance >= 0} ? green : red">
+                    <strong th:text="${'BILANS OGÓLNY:  ' + totalBalance + ' zł'}"></strong>
+                </h5>
+            </div>
+            <!-- Material form login -->
+            <div class="card my-3">
+
+                <h5 class="card-header blue darken-2 white-text text-center py-3">
+                    <strong>Nowy Wydatek</strong>
+                </h5>
+
+                <div class="card-body px-lg-5 pt-0">
+                    <div class="form-row mb-4 pt-4">
+                        <div class="col">
+                            <!-- First name -->
+                            <input type="text" placeholder="Tytuł" class="form-control" />
+                        </div>
+                        <div class="col">
+                            <!-- Last name -->
+                            <input type="text"  placeholder="Kwota" class="form-control" />
+                        </div>
+                    </div>
+                    <input placeholder="Opis" class="form-control mb-4" />
+                    <hr>
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
+                        <table class="table bordered table-hover mb-0" id="testTable">
+                            <!-- Table head -->
+                            <thead>
+                            <tr class="table-fixed">
+                                <th>Znajomy</th>
+                                <th>Uczestnik Wydatku</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody id="members">
+                            <tr>
+                                <td >Jacek Placek</td>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="defaultChecked2" checked>
+                                        <label class="custom-control-label" for="defaultChecked2"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
+                    </div>
+                    <button class="btn btn-blue btn-block my-4 waves-effect z-depth-0" type="submit">Utworz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="container">
     <div class="row">
         <h2 th:text="${'Total balance: ' + totalBalance}"></h2>
