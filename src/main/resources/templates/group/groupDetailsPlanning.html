@@ -29,12 +29,10 @@
 <div class="container-fluid">
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
-            <div class="col-12">
-                <h1 th:text="${groupName}"></h1>
-            </div>
             <div class="card my-3">
                 <div class="card-header">
                     <ul class="nav nav-pills nav-justified">
+                        <h3 class="pr-5 mb-0 mr-5" th:text="${groupName}"></h3>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
                         </li>

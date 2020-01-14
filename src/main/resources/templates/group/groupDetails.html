@@ -29,12 +29,10 @@
 <div class="container-fluid">
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
-            <div class="col-12">
-                <h1 th:text="${groupName}"></h1>
-            </div>
             <div class="card my-3">
                 <div class="card-header">
                     <ul class="nav nav-pills nav-justified">
+                        <h3 class="pr-5 mb-0 mr-5" th:text="${groupName}"></h3>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
                         </li>
@@ -53,17 +51,14 @@
                     </ul>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body pb-0 pt-0">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-7">
-                                <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                    <strong>Szczegóły grupy</strong>
-                                </h5>
-                                <div class="card-body px-lg-5 py-0 ">
+                                <div class="jumbotron m-4 p-4">
                                     <form autocomplete="off" action="#" th:action="@{/group/details/edit}"
                                           th:object="${travelGroupDto}" method="post"
-                                          class="text-center"
+                                          class="p-4"
                                           role="form">
                                         <div class="md-form my-0">
                                             <label th:if="${#fields.hasErrors('name')}"
@@ -117,7 +112,7 @@
                                                    th:disabled="${!viewerIsOrganizer}"
                                                    th:value="${travelGroupDto.lng}"/>
                                             <div class="form-group">
-                                                <button type="submit"
+                                                <button type="submit "
                                                         th:disabled="${!viewerIsOrganizer}"
                                                         th:hidden="${!viewerIsOrganizer}"
                                                         class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
@@ -128,77 +123,73 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-md-5 my-3 px-0">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div id="map" style="width:500px; height: 500px; margin-left: auto; margin-right: auto"></div>
-                                            <script th:inline="javascript">
-                                                var map;
-                                                var marker;
-                                                function initMap() {
-                                                    console.log('initMap');
-                                                    let curLat = [[${travelGroupDto.lat}]] ;
-                                                    let curLng = [[${travelGroupDto.lng}]];
-                                                    if(!curLat){
-                                                        curLat = 52.237049
-                                                    }
-                                                    if(!curLng){
-                                                        curLng = 21.017532
-                                                    }
-                                                    console.log(curLat);
-                                                    console.log(curLng);
-                                                    map = new google.maps.Map(document.getElementById('map'), {
-                                                        center: {
-                                                            lat: curLat,
-                                                            lng: curLng},
-                                                        zoom: 8
-                                                    });
-                                                    google.maps.event.addListener(map, 'click', function(event) {
-                                                        placeMarker(event.latLng);
-                                                    });
-                                                    const initialmarkerCoords = {
-                                                        lat: curLat,
-                                                        lng: curLng
-                                                    };
-                                                    placeMarker(initialmarkerCoords);
+                            <div class="col-md-5">
+                                <div id="map" style="width: 500px; height: 480px;" class="jumbotron m-4"></div>
+                                <script th:inline="javascript">
+                                    var map;
+                                    var marker;
+                                    function initMap() {
+                                        console.log('initMap');
+                                        let curLat = [[${travelGroupDto.lat}]];
+                                        let curLng = [[${travelGroupDto.lng}]];
+                                        if (!curLat) {
+                                            curLat = 52.237049
+                                        }
+                                        if (!curLng) {
+                                            curLng = 21.017532
+                                        }
+                                        console.log(curLat);
+                                        console.log(curLng);
+                                        map = new google.maps.Map(document.getElementById('map'), {
+                                            center: {
+                                                lat: curLat,
+                                                lng: curLng
+                                            },
+                                            zoom: 8
+                                        });
+                                        google.maps.event.addListener(map, 'click', function (event) {
+                                            placeMarker(event.latLng);
+                                        });
+                                        const initialmarkerCoords = {
+                                            lat: curLat,
+                                            lng: curLng
+                                        };
+                                        placeMarker(initialmarkerCoords);
 
-                                                }
-                                                function placeMarker(location) {
-                                                    if ( marker ) {
-                                                        marker.setPosition(location);
-                                                    } else {
-                                                        marker = new google.maps.Marker({
-                                                            position: location,
-                                                            map: map
-                                                        });
-                                                    }
-                                                    const selectedLat = marker.getPosition().lat();
-                                                    const selectedLng = marker.getPosition().lng();
-                                                    $('#groupLat').val(selectedLat);
-                                                    $('#groupLng').val(selectedLng);
-                                                    console.log(selectedLat);
-                                                    console.log(selectedLng);
-                                                }
+                                    }
 
-
-                                            </script>
-                                            <script>
-
-                                            </script>
-                                            <script th:inline="javascript" async="async" defer="defer" src="https://maps.googleapis.com/maps/api/js?key=apikey&callback=initMap"></script>
+                                    function placeMarker(location) {
+                                        if (marker) {
+                                            marker.setPosition(location);
+                                        } else {
+                                            marker = new google.maps.Marker({
+                                                position: location,
+                                                map: map
+                                            });
+                                        }
+                                        const selectedLat = marker.getPosition().lat();
+                                        const selectedLng = marker.getPosition().lng();
+                                        $('#groupLat').val(selectedLat);
+                                        $('#groupLng').val(selectedLng);
+                                        console.log(selectedLat);
+                                        console.log(selectedLng);
+                                    }
 
 
-                                        </div>
+                                </script>
+                                <script>
 
-                                    </div>
-                                </div>
+                                </script>
+                                <script th:inline="javascript" async="async" defer="defer"
+                                        src="https://maps.googleapis.com/maps/api/js?key=apikey&callback=initMap"></script>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div th:replace="common/footer :: footer"></div>
+        </div>
+    </div>
+</div>
 </body>
 <!--<body>-->
 <!--<div th:replace="common/header :: header"></div>-->
