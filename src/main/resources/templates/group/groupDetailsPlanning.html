@@ -55,37 +55,28 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-7">
-                                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3">
-                                    <table class="table bordered table-hover mb-0" id="testTable">
-                                        <!-- Table head -->
-                                        <thead>
-                                        <tr class="table-fixed">
-                                            <th>Uczestnik</th>
-                                            <th>Rola</th>
-                                            <th>Usuń</th>
-                                        </tr>
-                                        </thead>
-                                        <!-- Table head -->
-
-                                        <!-- Table body -->
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3" style="max-height: 70vh">
+                                    <table class="table bordered mb-0" id="testTable">
                                         <tbody>
                                         <input id="userId"
                                                type="hidden"
                                                class="form-control"
                                                th:value="${userId}"/>
                                         <tr th:each="question :${questions}">
-                                            <td th:text="${question.text}"></td>
-                                            <td th:onclick="'updateAnswer(\'' + ${question.id} + '\');'">
-                                                <div th:each="answer :${question.answers}">
-                                                    <input type="checkbox" th:value="${answer.id}" th:text="${answer.text}"
-                                                    th:name="${'question-answers-' + question.id}" th:checked="${answer.checked}"
-                                                    th:class="${'question-answers-' + question.id}"
-                                                           th:disabled="${!question.isActive}"
-                                                    >
-                                                    <span th:text="${answer.answerCount}"></span>
+                                            <td>
+                                                <div class="jumbotron m-4 p-4 text-center">
+                                                    <h3 th:text="${question.text}"></h3>
+                                                    <canvas id="horizontalBar"></canvas>
+                                                    <div th:each="answer :${question.answers}">
+                                                        <input type="checkbox" th:value="${answer.id}" th:text="${answer.text}"
+                                                               th:name="${'question-answers-' + question.id}" th:checked="${answer.checked}"
+                                                               th:class="${'question-answers-' + question.id}"
+                                                               th:disabled="${!question.isActive}"
+                                                        >
+                                                        <span th:text="${answer.answerCount}"></span>
 
+                                                    </div>
                                                 </div>
-
                                             </td>
                                         </tr>
                                         </tbody>
@@ -100,54 +91,65 @@
                                         <div class="col-12">
                                             <div class="card mb-3">
                                                 <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Dodaj pytanie</strong>
+                                                    <strong>Nowa Ankieta</strong>
                                                 </h5>
                                                 <div class="card-body px-lg-5 py-0 ">
                                                     <form autocomplete="off" action="#"
                                                           class="text-center"
                                                           role="form">
-                                                        <div class="md-form my-0" id="questionFormDiv">
-                                                            <input id="groupId"
-                                                                   type="hidden"
-                                                                   class="form-control"
-                                                                   th:value="${groupId}"/>
-                                                            <div class="custom-control">
-                                                                <input id="questionInput"
-                                                                       type="text"
+                                                        <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3" style="max-height: 10vh">
+                                                            <div class="md-form my-0" id="questionFormDiv">
+                                                                <input id="groupId"
+                                                                       type="hidden"
                                                                        class="form-control"
-                                                                       placeholder="*Pytanie"
-                                                                />
+                                                                       th:value="${groupId}"/>
+                                                                <div class="custom-control py-2">
+                                                                    <input id="questionInput"
+                                                                           type="text"
+                                                                           class="form-control"
+                                                                           placeholder="*Temat"
+                                                                    />
+                                                                </div>
+                                                                <div class="custom-control py-2">
+                                                                    <input id="endDate"
+                                                                           type="text"
+                                                                           class="form-control"
+                                                                           placeholder="*Aktywne do"
+                                                                           onfocus="(this.type='date')"
+                                                                    />
+                                                                </div>
+                                                                <div class="custom-control py-2">
+                                                                    <input type="text"
+                                                                           placeholder="*Propozycja 1"
+                                                                           class="form-control addAnswer"
+                                                                    />
+                                                                </div>
+                                                                <div class="custom-control py-2">
+                                                                    <input type="text"
+                                                                           placeholder="*Propozycja 2"
+                                                                           class="form-control addAnswer"
+                                                                    />
+                                                                </div>
                                                             </div>
-                                                            <div class="custom-control">
-                                                                <input id="endDate"
-                                                                       type="text"
-                                                                       class="form-control"
-                                                                       placeholder="*Aktywne do"
-                                                                       onfocus="(this.type='date')"
-                                                                />
-                                                            </div>
-                                                            <div class="custom-control">
-                                                                <input type="text"
-                                                                       placeholder="*Odpowiedź 1"
-                                                                       class="form-control addAnswer"
-                                                                />
-                                                            </div>
-                                                            <div class="custom-control">
-                                                                <input type="text"
-                                                                       placeholder="*Odpowiedź 2"
-                                                                       class="form-control addAnswer"
-                                                                />
-                                                            </div>
+
                                                         </div>
-                                                        <div class="form-group">
-                                                            <button id="createQuestionBtn"
-                                                                    type="button"
-                                                                    class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
-                                                                Zaproś!
-                                                            </button>
+                                                        <div class="form-row pb-3">
+                                                            <div class="col">
+                                                                <button id="createQuestionBtn"
+                                                                        type="button"
+                                                                        class="btn btn-blue btn-block my-2 waves-effect z-depth-0">
+                                                                    Utwórz ankietę
+                                                                </button>
+                                                            </div>
+                                                            <div class="col">
+                                                                <button id="moreAnswers"
+                                                                        type="button"
+                                                                        class="btn btn-amber btn-block my-2 waves-effect z-depth-0">
+                                                                    Dodaj propozycję
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </form>
-                                                    <button id="moreAnswers">More answers</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,6 +163,13 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script rel="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <script th:inline="javascript">
     var apiBase = /*[[${apiBase}]]*/ "";
 
@@ -195,9 +204,34 @@
         });
 
     }
-
-
-
+    new Chart(document.getElementById("horizontalBar"), {
+        "type": "horizontalBar",
+        "data": {
+            "labels": ["Red", "Orange", "Yellow","Red", "Orange", "Yellow"],
+            "datasets": [{
+                "label": null,
+                "data": [22, 33, 55, 12, 86, 23, 14, 54, 56, 67],
+                "fill": true,
+                "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
+                    "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)",
+                    "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
+                ],
+                "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
+                    "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"
+                ],
+                "borderWidth": 1
+            }]
+        },
+        "options": {
+            "scales": {
+                "xAxes": [{
+                    "ticks": {
+                        "beginAtZero": true
+                    }
+                }]
+            }
+        }
+    });
 
     function addNewAnswer() {
         const questionFormDiv = $('#questionFormDiv');
@@ -206,8 +240,8 @@
         let cloned = ans0.clone();
         cloned.val('');
         const ansCount = answers.length;
-        cloned.attr('placeholder', '*Odpowiedź ' + (ansCount + 1));
-        const wrapperDiv = $("<div class='custom-control'></div>");
+        cloned.attr('placeholder', '*Propozycja ' + (ansCount + 1));
+        const wrapperDiv = $("<div class='custom-control py-2'></div>");
         wrapperDiv.append(cloned[0]);
         questionFormDiv.append(wrapperDiv);
     }
