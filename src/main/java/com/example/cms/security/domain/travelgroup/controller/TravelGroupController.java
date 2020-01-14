@@ -91,11 +91,13 @@ public class TravelGroupController {
                 .filter(user -> authenticatedUser.getId().equals(user.getUserId()))
                 .findFirst()
                 .map(GroupDetailsMembers::getGroupRole)
-                .orElseGet(() -> GroupRole.MEMBER);
+                .orElse(GroupRole.MEMBER);
+        modelAndView.addObject("browsingUserId", authenticatedUser.getId());
         modelAndView.addObject("browsingUserRole", browsingUserRole);
         modelAndView.addObject("friends", friends);
         modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
         modelAndView.addObject("groupId", groupId);
+        modelAndView.addObject("groupStatus", travelGroup.getGroupStatus());
         modelAndView.addObject("groupName", travelGroup.getName());
         modelAndView.addObject("groupInvitation", new GroupInviteRequest());
         modelAndView.setViewName("group/groupDetailsMembers");

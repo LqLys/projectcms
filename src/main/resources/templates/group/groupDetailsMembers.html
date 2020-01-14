@@ -81,8 +81,12 @@
                                                            th:value="${member.userId}"/>
                                                     <input type="hidden" th:attr="name=groupId" class="form-control"
                                                            th:value="${groupId}"/>
-                                                    <button th:if="${member.groupRole.name() != 'OWNER' && browsingUserRole.name() == 'OWNER'}"
+                                                    <button th:if="${member.groupRole.name() != 'OWNER' && browsingUserRole.name() == 'OWNER'
+                                                    && member.userId != browsingUserId}"
                                                             class="btn btn-danger btn-sm">Usuń
+                                                    </button>
+                                                    <button th:if="${member.userId == browsingUserId && groupStatus.name() == 'CREATED'}"
+                                                            class="btn btn-danger btn-sm">Opuść
                                                     </button>
                                                 </form>
                                             </td>
