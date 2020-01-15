@@ -87,7 +87,7 @@
                                                    th:disabled="${!viewerIsOrganizer}"
                                                    class="form-control"/>
                                             <div th:each="visibility, visIndex :${groupVisibilityOptions}">
-                                                <input type="radio" th:value="${visibility.name()}" th:text="${visibility.name()}"
+                                                <input type="radio" th:value="${visibility.name()}" th:text="${visibility.name() == 'PUBLIC' ? 'Publiczna' : 'Prywatna'}"
                                                        th:name="${'groupVisibility'}" th:checked="${travelGroupDto.getGroupVisibility().equals(visibility)}"
                                                        th:disabled="${!viewerIsOrganizer}"
                                                 >
@@ -95,7 +95,7 @@
                                             </div>
                                             <hr>
                                             <div th:each="status :${groupStatusOptions}">
-                                                <input type="radio" th:value="${status.name()}" th:text="${status.name()}"
+                                                <input type="radio" th:value="${status.name()}" th:text="${status.name() == 'CREATED' ? 'Utworzona' : (status.name() == 'ACTIVE' ? 'W toku' : 'Zakończona')}"
                                                        th:name="${'groupStatus'}" th:checked="${travelGroupDto.getGroupStatus().equals(status)}"
                                                        th:disabled="${!viewerIsOrganizer}"
                                                 >
