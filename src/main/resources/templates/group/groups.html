@@ -66,126 +66,18 @@
 
                                 <!-- Table body -->
                                 <tbody id="members">
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                    th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <th scope="row">1</th>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr th:each="friend, index: ${userFriends}">
+                                        <th scope="row">1</th>
+                                        <td th:text="${friend.firstName}"></td>
+                                        <td th:text="${friend.lastName}"></td>
+                                        <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
+                                                        th:value="${friend.id}" name="friendIds">
+                                                <label class="custom-control-label" th:for="${'friend-'+index}"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                                 <!-- Table body -->
                             </table>
