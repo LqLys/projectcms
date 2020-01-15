@@ -62,19 +62,20 @@
                                                type="hidden"
                                                class="form-control"
                                                th:value="${userId}"/>
-                                        <tr th:each="question :${questions}">
-                                            <td>
+                                        <tr th:each="question, iter :${questions}" th:id="${'question-row-'+iter.index}" th:class="question-row">
+                                            <td th:onclick="'updateAnswer(\'' + ${question.id} + '\');'">
                                                 <div class="jumbotron m-4 p-4 text-center">
                                                     <h3 th:text="${question.text}"></h3>
-                                                    <canvas id="horizontalBar"></canvas>
+                                                    <canvas th:id="${'pieChart-' + iter.index}"></canvas>
+
                                                     <div th:each="answer :${question.answers}">
-                                                        <input type="checkbox" th:value="${answer.id}" th:text="${answer.text}"
+                                                        <input type="checkbox" th:value="${answer.id}"
                                                                th:name="${'question-answers-' + question.id}" th:checked="${answer.checked}"
                                                                th:class="${'question-answers-' + question.id}"
                                                                th:disabled="${!question.isActive}"
                                                         >
+                                                        <span th:text="${answer.text}"></span>
                                                         <span th:text="${answer.answerCount}"></span>
-
                                                     </div>
                                                 </div>
                                             </td>
@@ -204,34 +205,63 @@
         });
 
     }
-    new Chart(document.getElementById("horizontalBar"), {
-        "type": "horizontalBar",
-        "data": {
-            "labels": ["Red", "Orange", "Yellow","Red", "Orange", "Yellow"],
-            "datasets": [{
-                "label": null,
-                "data": [22, 33, 55, 12, 86, 23, 14, 54, 56, 67],
-                "fill": true,
-                "backgroundColor": ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
-                    "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)",
-                    "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
-                ],
-                "borderColor": ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
-                    "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"
-                ],
-                "borderWidth": 1
-            }]
-        },
-        "options": {
-            "scales": {
-                "xAxes": [{
-                    "ticks": {
-                        "beginAtZero": true
-                    }
-                }]
-            }
-        }
+    const charts = [];
+    $('.question-row').each(function(i,e){
+        const chartData = getChartData(i);
+        drawChart(chartData);
     });
+
+    function getChartData(questionIndex){
+        const question = $('#question-row-'+ questionIndex);
+        const questionText = question.find('h3').text();
+        const questionAnswers =  jQuery.makeArray(question.find('input')).map(a => a.parentNode);
+        const answerLabels = questionAnswers.map(q => q.children[1].innerHTML);
+        const answerCounts = questionAnswers.map(q => +q.children[2].innerHTML);
+
+        const allBackgroundColors = ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)",
+            "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
+        ];
+        const backgroundColors = allBackgroundColors.slice(0, answerCounts.length);
+        const allBorderColor = ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
+            "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"
+        ];
+        const borderColors = allBorderColor.slice(0, answerCounts.length);
+
+        const chartData = {
+            "questionIndex": questionIndex,
+            "labels": answerLabels,
+            "datasets": [{
+                "title": questionText,
+                "answerCounts": answerCounts,
+                "backgroundColor": backgroundColors,
+                "borderColor": borderColors
+            }]
+        };
+        return chartData;
+    }
+
+
+    function drawChart(chartData){
+
+        const ctxP = document.getElementById("pieChart-" +chartData.questionIndex).getContext('2d');
+        const myPieChart = new Chart(ctxP, {
+            type: 'pie',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    data: chartData.datasets[0].answerCounts,
+                    backgroundColor: chartData.datasets[0].backgroundColor,
+                    hoverBackgroundColor: chartData.datasets[0].borderColor
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+        charts.push(myPieChart);
+    };
+
 
     function addNewAnswer() {
         const questionFormDiv = $('#questionFormDiv');
