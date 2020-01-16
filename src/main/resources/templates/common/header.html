@@ -20,6 +20,8 @@
 	<link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
 	<!-- DataTables JS -->
 	<script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
 
 </head>
@@ -57,7 +59,7 @@
 				<a class="nav-link" th:href="@{/logout}">Wyloguj</a>
 			</li>
 			<li class="nav-item" sec:authorize="isAuthenticated()">
-				<a class="nav-link waves-effect waves-light" th:href="@{/notification/invitations}">1
+				<a id="invites-count"class="nav-link waves-effect waves-light" th:href="@{/notification/invitations}">0
 					<i class="fas fa-envelope"></i>
 				</a>
 			</li>
@@ -69,7 +71,26 @@
 			</li>
 		</ul>
 	</div>
+	<div sec:authentication="name" hidden id="user-email"></div>
+	<div th:text="${ADDED_API}" hidden id="api-url"></div>
+	<script>
+		$(document).ready(function(){
+			const username = $('#user-email')[0].innerText;
+			const apiUrl = $('#api-url')[0].innerText;
+
+			function getInvitesCount(){
+				$.get(apiUrl +'/notification/pending/' + username, function(data, status){
+					console.log(data);
+					var invitesCountLink =  $($('#invites-count')[0]);
+					invitesCountLink.text(data);
+				});
+			}
+			getInvitesCount();
+			setInterval(getInvitesCount, 3000);
+		})
+	</script>
 </nav>
+
 <!--/.Navbar -->
 
 <!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="header">-->
@@ -181,6 +202,5 @@
 		<!--</ul>-->
 	<!--</div>-->
 <!--</nav>-->
-
 </body>
 </html>

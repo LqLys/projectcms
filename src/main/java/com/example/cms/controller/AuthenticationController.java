@@ -29,15 +29,13 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value={"/login"}, method = RequestMethod.GET)
-    public ModelAndView login(){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView login(ModelAndView modelAndView){
         modelAndView.setViewName("login");
         return modelAndView;
     }
 
     @RequestMapping(path="/", method= RequestMethod.GET)
-    public ModelAndView homepage(){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView homepage(ModelAndView modelAndView){
         modelAndView.setViewName("index");
 
         return modelAndView;
@@ -45,8 +43,7 @@ public class AuthenticationController {
 
 
     @RequestMapping(value="/registration", method = RequestMethod.GET)
-    public ModelAndView registration(){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView registration(ModelAndView modelAndView){
         UserEntity userEntity = new UserEntity();
         modelAndView.addObject("userEntity", userEntity);
 
@@ -55,8 +52,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid UserEntity userEntity, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView createNewUser(@Valid UserEntity userEntity, BindingResult bindingResult, ModelAndView modelAndView) {
         UserEntity userExists = userService.findUserByEmail(userEntity.getEmail());
         if (userExists != null) {
             bindingResult.rejectValue("email", "error.userEntity",
@@ -75,8 +71,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value="/admin/home", method = RequestMethod.GET)
-    public ModelAndView home(){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView home(ModelAndView modelAndView){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userService.findUserByEmail(auth.getName());
         modelAndView.addObject("userName", "Welcome  (" + user.getEmail() + ")");
@@ -86,8 +81,7 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/profile")
-    public ModelAndView getProfile(){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView getProfile(ModelAndView modelAndView){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userService.findUserByEmail(auth.getName());
         modelAndView.addObject("userEntity", userEntity);
@@ -97,16 +91,14 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/change-password")
-    public ModelAndView changePassword(){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView changePassword(ModelAndView modelAndView){
         modelAndView.addObject("changePasswordDto", new ChangePasswordDto());
         modelAndView.setViewName("change-password");
         return modelAndView;
     }
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-    public ModelAndView changePassword(@Valid ChangePasswordDto changePasswordDto, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView changePassword(@Valid ChangePasswordDto changePasswordDto, BindingResult bindingResult, ModelAndView modelAndView) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userService.findUserByEmail(auth.getName());
         if (!encoder.matches(changePasswordDto.getOldPassword(), userEntity.getPassword())) {

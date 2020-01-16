@@ -1,12 +1,10 @@
 package com.example.cms.security.domain.groupinvite.facade;
 
-import com.example.cms.security.domain.groupinvite.entity.GroupInvitationStatus;
 import com.example.cms.security.domain.groupinvite.entity.GroupInviteEntity;
 import com.example.cms.security.domain.groupinvite.service.GroupInviteService;
 import com.example.cms.security.domain.travelgroup.dto.GroupInviteDto;
 import com.example.cms.security.domain.travelgroup.dto.GroupInviteStatusChangeRequest;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
-import com.example.cms.security.domain.travelgroup.service.TravelGroupService;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
 import com.example.cms.security.domain.usertravelgroup.entity.GroupRole;
@@ -22,12 +20,13 @@ import java.util.List;
 public class GroupInviteFacade {
 
     private final GroupInviteService groupInviteService;
-
     private final UserTravelGroupService userTravelGroupService;
+    private final UserService userService;
 
-    public GroupInviteFacade(GroupInviteService groupInviteService, UserTravelGroupService userTravelGroupService) {
+    public GroupInviteFacade(GroupInviteService groupInviteService, UserTravelGroupService userTravelGroupService, UserService userService) {
         this.groupInviteService = groupInviteService;
         this.userTravelGroupService = userTravelGroupService;
+        this.userService = userService;
     }
 
 
@@ -46,5 +45,10 @@ public class GroupInviteFacade {
         groupInviteService.delete(invitation);
         return travelGroup.getId();
 
+    }
+
+    public Long getNumberOfPendingInvitations(String username) {
+        final UserEntity userByEmail = userService.findUserByEmail(username);
+        return (long) getUsersPendingInvites(userByEmail.getId()).size();
     }
 }
