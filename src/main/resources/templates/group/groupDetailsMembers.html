@@ -56,6 +56,20 @@
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3">
+                                    <div th:if="${!browsingIsMember}">
+                                        <form autocomplete="off" action="#" th:action="@{/group/__${groupId}__/join}"
+                                              th:object="${joinGroupDto}" method="post"
+                                              class="text-center"
+                                              role="form">
+                                            <input type="hidden" th:attr="name=browsingUserId" class="form-control"
+                                                   th:value="${browsingUserId}"/>
+                                            <input type="hidden" th:attr="name=groupId" class="form-control"
+                                                   th:value="${groupId}"/>
+                                            <button class="btn btn-danger btn-sm">Dołącz
+                                            </button>
+
+                                        </form>
+                                    </div>
                                     <table class="table bordered table-hover mb-0" id="testTable">
                                         <!-- Table head -->
                                         <thead>

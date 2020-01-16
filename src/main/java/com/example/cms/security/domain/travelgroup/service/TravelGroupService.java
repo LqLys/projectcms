@@ -6,6 +6,7 @@ import com.example.cms.security.domain.travelgroup.entity.GroupVisibility;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.travelgroup.repository.TravelGroupRepository;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
+import com.example.cms.security.domain.user.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

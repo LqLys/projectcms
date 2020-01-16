@@ -1,6 +1,7 @@
 package com.example.cms.security.domain.usertravelgroup.service;
 
 import com.example.cms.security.domain.travelgroup.dto.GroupUninviteRequest;
+import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.usertravelgroup.entity.GroupRole;
 import com.example.cms.security.domain.usertravelgroup.entity.UserTravelGroupEntity;
@@ -50,5 +51,10 @@ public class UserTravelGroupService {
     public boolean viewerIsOrganizer(UserEntity authenticatedUser, Long travelGroupId) {
         return userTravelGroupRepository.findById(new UserTravelGroupId(authenticatedUser.getId(), travelGroupId))
                 .map(groupMember -> GroupRole.OWNER == groupMember.getGroupRole()).orElse(false);
+    }
+
+    public void joinGroup(UserEntity authenticatedUser, TravelGroupEntity travelGroup) {
+        userTravelGroupRepository.save(new UserTravelGroupEntity(new UserTravelGroupId(authenticatedUser.getId(),
+                travelGroup.getId()), GroupRole.MEMBER));
     }
 }

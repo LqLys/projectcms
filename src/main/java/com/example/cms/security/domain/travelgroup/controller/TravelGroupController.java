@@ -92,15 +92,29 @@ public class TravelGroupController {
                 .findFirst()
                 .map(GroupDetailsMembers::getGroupRole)
                 .orElse(GroupRole.MEMBER);
+        boolean browsingIsMember = groupDetailsMembers.stream()
+                .map(GroupDetailsMembers::getUserId)
+                .anyMatch(id -> id.equals(authenticatedUser.getId()));
         modelAndView.addObject("browsingUserId", authenticatedUser.getId());
         modelAndView.addObject("browsingUserRole", browsingUserRole);
+        modelAndView.addObject("browsingIsMember", browsingIsMember);
         modelAndView.addObject("friends", friends);
         modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
         modelAndView.addObject("groupId", groupId);
         modelAndView.addObject("groupStatus", travelGroup.getGroupStatus());
         modelAndView.addObject("groupName", travelGroup.getName());
         modelAndView.addObject("groupInvitation", new GroupInviteRequest());
+        modelAndView.addObject("joinGroupDto", new JoinGroupDto());
         modelAndView.setViewName("group/groupDetailsMembers");
+        return modelAndView;
+
+    }
+
+    @PostMapping(path = "/{groupId}/join")
+    public ModelAndView joinGroup(@Valid JoinGroupDto joinGroupDto,  ModelAndView modelAndView){
+        modelAndView.setViewName("redirect:/group/details/" + joinGroupDto.getGroupId() + "/members");
+        final UserEntity authenticatedUser = userService.getAuthenticatedUser();
+        travelGroupFacade.joinGroup(authenticatedUser, joinGroupDto.getGroupId());
         return modelAndView;
 
     }
@@ -141,7 +155,6 @@ public class TravelGroupController {
     @PostMapping(path = "/uninvite")
     public ModelAndView uninvite(@Valid GroupUninviteRequest groupUninviteRequest, BindingResult bindingResult,
                                        ModelAndView modelAndView) {
-//        UserEntity authenticatedUser = userService.getAuthenticatedUser();
         travelGroupFacade.uninviteUser(groupUninviteRequest);
         modelAndView.setViewName("redirect:/group/details/"+groupUninviteRequest.getGroupId()+"/members");
         return modelAndView;

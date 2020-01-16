@@ -167,4 +167,9 @@ public class TravelGroupFacade {
     public List<TravelGroupDto> getAllAvailableTravelGroups() {
         return travelGroupMapper.mapAsList(travelGroupService.getAllAvailableTravelGroups(), TravelGroupDto.class);
     }
+
+    public void joinGroup(UserEntity authenticatedUser, Long groupId) {
+        final TravelGroupEntity travelGroup = travelGroupService.findTravelGroup(groupId);
+        userTravelGroupService.joinGroup(authenticatedUser, travelGroup);
+    }
 }
