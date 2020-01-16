@@ -29,12 +29,11 @@
 
 <div th:replace="common/header :: header"></div>
 <div class="container">
-    <div class="row">
-        <h2 th:text="${groupName}"></h2>
-    </div>
+
     <div class="row">
         <div>
             <ul class="nav nav-pills nav-justified">
+                <h3 class="pr-5 mb-0 mr-5" th:text="${travelGroup.name}"></h3>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
                 </li>

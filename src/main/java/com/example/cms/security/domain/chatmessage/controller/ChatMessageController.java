@@ -3,6 +3,7 @@ package com.example.cms.security.domain.chatmessage.controller;
 import com.example.cms.security.domain.chatmessage.dto.ChatMessageDto;
 import com.example.cms.security.domain.chatmessage.dto.SendChatMessageRequest;
 import com.example.cms.security.domain.chatmessage.facade.ChatMessageFacade;
+import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,20 +26,23 @@ public class ChatMessageController {
 
     private final ChatMessageFacade chatMessageFacade;
     private final UserService userService;
+    private final TravelGroupFacade travelGroupFacade;
 
-    public ChatMessageController(ChatMessageFacade chatMessageFacade, UserService userService) {
+    public ChatMessageController(ChatMessageFacade chatMessageFacade, UserService userService, TravelGroupFacade travelGroupFacade) {
         this.chatMessageFacade = chatMessageFacade;
         this.userService = userService;
+        this.travelGroupFacade = travelGroupFacade;
     }
 
 
     @GetMapping(path = "/group/details/{groupId}/chat")
     public ModelAndView getGroupDetailsChat(@PathVariable("groupId") Long groupId, ModelAndView modelAndView){
         modelAndView.setViewName("group/groupDetailsChat");
-
+        String groupName = travelGroupFacade.getTravelGroupById(groupId).getName();
         List<ChatMessageDto> allMessages = chatMessageFacade.findAllByGroupId(groupId);
         modelAndView.addObject("newMessage", new SendChatMessageRequest());
         modelAndView.addObject("messages", allMessages);
+        modelAndView.addObject("groupName", groupName);
         modelAndView.addObject("groupId", groupId);
         modelAndView.addObject("apiBase", API_BASE);
         return modelAndView;
