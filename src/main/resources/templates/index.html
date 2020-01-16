@@ -25,7 +25,7 @@
 </head>
 <body>
 
-<div th:replace="common/header :: header"> </div>
+<div th:replace="common/header :: header"> </div>t
 
 <div id="carousel-example-2" class="carousel slide carousel-fade z-depth-1-half" data-ride="carousel">
 	<div class="carousel-inner" style="max-height: 350px !important;" role="listbox">
@@ -40,7 +40,12 @@
 		</div>
 	</div>
 </div>
-
+<div>
+    <div th:each="group: ${availableTravelGroups}">
+		<a th:text="${group.id + ' ' + group.name + ' ' + group.destination + ' ' + group.startDate + ' ' + group.endDate}"
+		   th:href="@{/group/details/__${group.id}__}"></a>
+	</div>
+</div>
 <!--<div sec:authorize="isAuthenticated()">-->
 	<!--<a class="btn btn-success"th:href="@{/dashboard}">Dashboard</a>-->
 <!--</div>-->

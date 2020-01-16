@@ -1,9 +1,9 @@
 package com.example.cms.controller;
+import com.example.cms.security.domain.travelgroup.dto.TravelGroupDto;
+import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.user.dto.ChangePasswordDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
-import io.swagger.models.Model;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,17 +15,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class AuthenticationController {
 
     private final UserService userService;
-
     private final BCryptPasswordEncoder encoder;
+    private final TravelGroupFacade travelGroupFacade;
 
-    public AuthenticationController(UserService userService, BCryptPasswordEncoder encoder) {
+    public AuthenticationController(UserService userService, BCryptPasswordEncoder encoder, TravelGroupFacade travelGroupFacade) {
         this.userService = userService;
         this.encoder = encoder;
+        this.travelGroupFacade = travelGroupFacade;
     }
 
     @RequestMapping(value={"/login"}, method = RequestMethod.GET)
@@ -37,6 +39,8 @@ public class AuthenticationController {
     @RequestMapping(path="/", method= RequestMethod.GET)
     public ModelAndView homepage(ModelAndView modelAndView){
         modelAndView.setViewName("index");
+        List<TravelGroupDto> availablePublicGroups = travelGroupFacade.getAllAvailableTravelGroups();
+        modelAndView.addObject("availableTravelGroups", availablePublicGroups);
 
         return modelAndView;
     }

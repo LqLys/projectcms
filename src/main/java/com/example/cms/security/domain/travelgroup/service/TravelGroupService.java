@@ -1,6 +1,8 @@
 package com.example.cms.security.domain.travelgroup.service;
 
 import com.example.cms.security.domain.travelgroup.dto.GroupDetailsMembers;
+import com.example.cms.security.domain.travelgroup.entity.GroupStatus;
+import com.example.cms.security.domain.travelgroup.entity.GroupVisibility;
 import com.example.cms.security.domain.travelgroup.entity.TravelGroupEntity;
 import com.example.cms.security.domain.travelgroup.repository.TravelGroupRepository;
 import com.example.cms.security.domain.travelgroup.repository.UserGroupsDto;
@@ -40,5 +42,9 @@ public class TravelGroupService {
 
     public void save(TravelGroupEntity travelGroup) {
         travelGroupRepository.save(travelGroup);
+    }
+
+    public List<TravelGroupEntity> getAllAvailableTravelGroups() {
+        return travelGroupRepository.findAllByGroupStatusAndGroupVisibility(GroupStatus.CREATED, GroupVisibility.PUBLIC);
     }
 }
