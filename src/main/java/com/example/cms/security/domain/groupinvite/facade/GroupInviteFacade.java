@@ -48,7 +48,13 @@ public class GroupInviteFacade {
     }
 
     public Long getNumberOfPendingInvitations(String username) {
-        final UserEntity userByEmail = userService.findUserByEmail(username);
-        return (long) getUsersPendingInvites(userByEmail.getId()).size();
+        Long notifications = 0L;
+        if(!username.equals("anonymousUser")){
+            final UserEntity userByEmail = userService.findUserByEmail(username);
+            List<GroupInviteDto> usersPendingInvites = getUsersPendingInvites(userByEmail.getId());
+            notifications = Long.valueOf(usersPendingInvites.size());
+        }
+        return notifications;
+
     }
 }

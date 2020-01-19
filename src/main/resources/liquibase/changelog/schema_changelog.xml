@@ -308,6 +308,12 @@
                               constraintName="UNIQUE_RELATION_CONSTRAINT"/>
      </changeSet>
 
+     <changeSet id="add_avatar_url_to_user_001" author="lq">
+         <addColumn tableName="USERS" >
+             <column name="AVATAR_URL" type="varchar2(500)"/>
+         </addColumn>
+     </changeSet>
+
 
 
 

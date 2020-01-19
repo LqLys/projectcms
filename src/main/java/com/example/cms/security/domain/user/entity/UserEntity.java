@@ -44,6 +44,9 @@ public class UserEntity {
     @Column(name = "ACTIVE")
     private Boolean active;
 
+    @Column(name = "AVATAR_URL")
+    private String avatarUrl;
+
     @ManyToMany
     @JoinTable(name = "USER_ROLE",
     joinColumns = {@JoinColumn(name = "USER_ID")},

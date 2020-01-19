@@ -20,6 +20,9 @@ public class ContextInterceptor extends HandlerInterceptorAdapter {
         if(modelAndView != null){
             modelAndView.addObject("ADDED_API", API_BASE);
         }
+        if(request.getRequestURI().equals("/login")){
+
+        }
     }
 
 }
