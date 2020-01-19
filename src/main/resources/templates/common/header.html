@@ -65,7 +65,7 @@
 			</li>
 			<li class="nav-item avatar" sec:authorize="isAuthenticated()">
 				<a class="nav-link p-0" th:href="@{/profile}">
-					<img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" class="rounded-circle z-depth-0"
+					<img th:src="${AVATAR_URL != null ? AVATAR_URL : 'https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg'}"class="rounded-circle z-depth-0"
 						 alt="avatar image" height="35">
 				</a>
 			</li>
@@ -79,14 +79,20 @@
 			const apiUrl = $('#api-url')[0].innerText;
 
 			function getInvitesCount(){
-				$.get(apiUrl +'/notification/pending/' + username, function(data, status){
-					console.log(data);
-					var invitesCountLink =  $($('#invites-count')[0]);
-					invitesCountLink.text(data);
-				});
+				console.log(username);
+
+					$.get(apiUrl + '/notification/pending/' + username, function (data, status) {
+						console.log(data);
+						var invitesCountLink = $($('#invites-count')[0]);
+						invitesCountLink.text(data);
+					});
+
 			}
-			getInvitesCount();
-			setInterval(getInvitesCount, 3000);
+			if (username !== 'anonymousUser'){
+				getInvitesCount();
+				setInterval(getInvitesCount, 3000);
+			}
+
 		})
 	</script>
 </nav>

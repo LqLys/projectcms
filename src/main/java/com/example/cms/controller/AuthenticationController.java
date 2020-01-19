@@ -2,6 +2,7 @@ package com.example.cms.controller;
 import com.example.cms.security.domain.travelgroup.dto.TravelGroupDto;
 import com.example.cms.security.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.security.domain.user.dto.ChangePasswordDto;
+import com.example.cms.security.domain.user.dto.EditProfileDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -10,10 +11,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -42,6 +45,14 @@ public class AuthenticationController {
         List<TravelGroupDto> availablePublicGroups = travelGroupFacade.getAllAvailableTravelGroups();
         modelAndView.addObject("availableTravelGroups", availablePublicGroups);
 
+        return modelAndView;
+    }
+
+    @GetMapping(path = "/setContext")
+    public ModelAndView setContext(ModelAndView modelAndView, HttpServletRequest request){
+        modelAndView.setViewName("redirect:/");
+        final String avatarUrl = userService.getAuthenticatedUser().getAvatarUrl();
+        request.getSession().setAttribute("AVATAR_URL", avatarUrl);
         return modelAndView;
     }
 
@@ -88,10 +99,38 @@ public class AuthenticationController {
     public ModelAndView getProfile(ModelAndView modelAndView){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userEntity", userEntity);
+        final EditProfileDto editProfileDto = userEntityToProfileDto(userEntity);
+        modelAndView.addObject("editProfileDto", editProfileDto);
         modelAndView.setViewName("profile");
         return modelAndView;
 
+    }
+
+    private EditProfileDto userEntityToProfileDto(UserEntity userEntity) {
+        return EditProfileDto.builder()
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .avatarUrl(userEntity.getAvatarUrl())
+                .build();
+    }
+
+    @PostMapping(value = "/edit-profile")
+    public ModelAndView editProfile(@Valid EditProfileDto editProfileDto, BindingResult bindingResult, ModelAndView modelAndView, HttpServletRequest request) {
+        final UserEntity authenticatedUser = userService.getAuthenticatedUser();
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("profile");
+            final EditProfileDto editProfileDto1 = userEntityToProfileDto(authenticatedUser);
+            modelAndView.addObject("editProfileDto", editProfileDto1);
+        } else {
+            request.getSession().setAttribute("AVATAR_URL", editProfileDto.getAvatarUrl());
+            userService.editUser(authenticatedUser, editProfileDto);
+            modelAndView.addObject("successMessage", "User has been registered successfully");
+
+            modelAndView.setViewName("profile");
+
+        }
+        return modelAndView;
     }
 
     @GetMapping(value = "/change-password")

@@ -2,6 +2,7 @@ package com.example.cms.security.domain.user.service;
 
 import com.example.cms.security.domain.role.entity.RoleEntity;
 import com.example.cms.security.domain.role.repository.RoleRepository;
+import com.example.cms.security.domain.user.dto.EditProfileDto;
 import com.example.cms.security.domain.user.entity.UserEntity;
 import com.example.cms.security.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,12 @@ public class UserService {
 
     public List<UserEntity> findAllByIdIn(List<Long> debtors) {
         return userRepository.findAllByIdIn(debtors);
+    }
+
+    public void editUser(UserEntity authenticatedUser, EditProfileDto editProfileDto) {
+        authenticatedUser.setAvatarUrl(editProfileDto.getAvatarUrl());
+        authenticatedUser.setFirstName(editProfileDto.getFirstName());
+        authenticatedUser.setLastName(editProfileDto.getLastName());
+        userRepository.save(authenticatedUser);
     }
 }
