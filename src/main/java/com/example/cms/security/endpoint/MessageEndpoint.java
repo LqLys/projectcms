@@ -1,11 +1,15 @@
 package com.example.cms.security.endpoint;
 
+import com.example.cms.security.domain.chatmessage.dto.ChatMessage;
 import com.example.cms.security.domain.chatmessage.dto.ChatMessageDto;
 import com.example.cms.security.domain.chatmessage.facade.ChatMessageFacade;
-import com.example.cms.security.domain.user.entity.UserEntity;
-import com.example.cms.security.domain.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,5 +29,12 @@ public class MessageEndpoint {
     @GetMapping(path = "/group/{groupId}")
     public List<ChatMessageDto> getGroupMessages(@PathVariable("groupId") Long groupId) {
         return chatMessageFacade.findAllByGroupId(groupId);
+    }
+
+    @MessageMapping("/chat/{groupId}")
+    @SendTo("/topic/messages/{groupId}")
+    public ChatMessage get(@DestinationVariable("groupId") Long groupId, ChatMessage chatMessage) {
+        chatMessageFacade.saveMessage(chatMessage, groupId);
+        return chatMessage;
     }
 }

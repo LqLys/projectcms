@@ -23,6 +23,8 @@
     <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/js/js.js"></script>
+    <script src="/js/stomp.js"></script>
 </head>
 <body>
 <div th:replace="common/header :: header"></div>
@@ -54,75 +56,95 @@
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <h3>Moje Grupy</h3>
-            <table class="table">
+            <h3 th:text="${groupName + ' czat'}"></h3>
+            <div>
+                <!--<label>User:</label>-->
+                <!--<input id="user" type="text"/><br>-->
 
-                <tbody>
-                <tr th:each="chatMessage :${messages}">
+                <label>You message:</label>
+                <input id="messageToSend" type="text"/><br>
 
-                    <td th:text="${chatMessage.getTime().toString()}"></td>
-                    <td th:text="${chatMessage.getAuthor()}"></td>
-                    <td th:text="${chatMessage.message}"></td>
-
-                </tr>
-
-                </tbody>
-            </table>
+                <button id="sendBtn">Send</button>
+                <div id="all-messages">
+                    <p th:each="msg: ${messages}" th:text="${msg.author + ': ' + msg.message}"></p>
+                </div>
+            </div>
         </div>
         <div class="col-sm-4">
-            <div>
-                <form autocomplete="off" action="#" th:action="@{/chat/message}"
-                      th:object="${newMessage}" method="post" class="form-horizontal"
-                      role="form">
-                    <h2>Wyślij wiadomość</h2>
-                    <div class="form-group">
-                        <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('message')}" th:errors="*{message}"
-                                   class="validation-message"></label>
-                            <input type="text" th:field="*{message}" placeholder="wiadomość"
-                                   class="form-control"/>
-                        </div>
-                    </div>
-                    <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${groupId}"/>
-
-
-                    <div class="form-group">
-                        <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Wyślij!</button>
-                        </div>
-                    </div>
-
-                    <!--<span th:utext="${successMessage}"></span>-->
-
-
-                </form>
-            </div>
 
         </div>
     </div>
 </div>
+
 <div th:replace="common/footer :: footer"></div>
 
 
 <script th:inline="javascript">
-    var apiBase = /*[[${apiBase}]]*/ "";
-    setInterval(function(){
-        $.get(apiBase +"/message/group/1", function(data, status){
-            console.log(data);
-            var tbody =  $('tbody');
-            tbody.empty();
-            for (var i = 0; i < data.length; i++) {
-                var tr = $("<tr></tr>");
-                var timeTd = $("<td></td>").text(data[i].time);
-                var auth = $("<td></td>").text(data[i].author);
-                var msgTd = $("<td></td>").text(data[i].message);
-                tr.append(timeTd);
-                tr.append(auth);
-                tr.append(msgTd);
-                tbody.append(tr);
+    $( document ).ready(function(){
+        var grId = /*[[${groupId}]]*/ "";
+        var username =/*[[${username}]]*/ "";
+
+        var client = null;
+        var color;
+
+        function showMessage(value, user, userColor) {
+            var newResponse = document.createElement('p');
+            newResponse.style.color = userColor;
+            newResponse.appendChild(document.createTextNode(user));
+            newResponse.appendChild(document.createTextNode(": "));
+            newResponse.appendChild(document.createTextNode(value));
+            var respone = document.getElementById('all-messages');
+            respone.appendChild(newResponse);
+        }
+        function connect(id) {
+            client = Stomp.client('ws://localhost:8080/chat');
+            color = getRandomColor();
+            client.connect({}, function (frame) {
+                client.subscribe("/topic/messages/"+id, function(message){
+                    showMessage(JSON.parse(message.body).value, JSON.parse(message.body).user, JSON.parse(message.body).userColor)
+                });
+            })
+        }
+        function sendMessage() {
+            var messageToSend = document.getElementById('messageToSend').value;
+            // var user = document.getElementById('user').value;
+            client.send("/app/chat/"+grId, {}, JSON.stringify({'value': messageToSend, 'user': username, 'userColor': color}) );
+            document.getElementById('messageToSend').value = "";
+        }
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
             }
-        });
-    }, 3000);
+            return color;
+        }
+        $('#sendBtn').on('click', sendMessage);
+        connect(grId);
+    })
+
+
+
+    // var apiBase = /*[[${apiBase}]]*/ "";
+    // setInterval(function(){
+    //     $.get(apiBase +"/message/group/1", function(data, status){
+    //         console.log(data);
+    //         var tbody =  $('tbody');
+    //         tbody.empty();
+    //         for (var i = 0; i < data.length; i++) {
+    //             var tr = $("<tr></tr>");
+    //             var timeTd = $("<td></td>").text(data[i].time);
+    //             var auth = $("<td></td>").text(data[i].author);
+    //             var msgTd = $("<td></td>").text(data[i].message);
+    //             tr.append(timeTd);
+    //             tr.append(auth);
+    //             tr.append(msgTd);
+    //             tbody.append(tr);
+    //         }
+    //     });
+    // }, 3000);
+
+
 
 
 </script>

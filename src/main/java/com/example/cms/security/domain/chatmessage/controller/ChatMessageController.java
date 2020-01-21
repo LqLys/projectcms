@@ -40,8 +40,10 @@ public class ChatMessageController {
         modelAndView.setViewName("group/groupDetailsChat");
         String groupName = travelGroupFacade.getTravelGroupById(groupId).getName();
         List<ChatMessageDto> allMessages = chatMessageFacade.findAllByGroupId(groupId);
+        final String username = userService.getAuthenticatedUser().getEmail();
         modelAndView.addObject("newMessage", new SendChatMessageRequest());
         modelAndView.addObject("messages", allMessages);
+        modelAndView.addObject("username", username);
         modelAndView.addObject("groupName", groupName);
         modelAndView.addObject("groupId", groupId);
         modelAndView.addObject("apiBase", API_BASE);
