@@ -102,6 +102,7 @@ public class TravelGroupController {
         modelAndView.addObject("groupDetailsMembers", groupDetailsMembers);
         modelAndView.addObject("groupId", groupId);
         modelAndView.addObject("groupStatus", travelGroup.getGroupStatus());
+        modelAndView.addObject("groupVisibility", travelGroup.getGroupVisibility());
         modelAndView.addObject("groupName", travelGroup.getName());
         modelAndView.addObject("groupInvitation", new GroupInviteRequest());
         modelAndView.addObject("joinGroupDto", new JoinGroupDto());
