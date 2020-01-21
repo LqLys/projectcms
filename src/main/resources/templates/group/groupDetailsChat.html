@@ -83,7 +83,9 @@
     $( document ).ready(function(){
         var grId = /*[[${groupId}]]*/ "";
         var username =/*[[${username}]]*/ "";
-
+        var apiBase = /*[[${apiBase}]]*/ "";
+        var indexOfUrl = apiBase.indexOf('/');
+        var wsUrl = apiBase.slice(indexOfUrl);
         var client = null;
         var color;
 
@@ -97,7 +99,8 @@
             respone.appendChild(newResponse);
         }
         function connect(id) {
-            client = Stomp.client('ws://localhost:8080/chat');
+
+            client = Stomp.client('ws:'+ wsUrl + '/chat');
             color = getRandomColor();
             client.connect({}, function (frame) {
                 client.subscribe("/topic/messages/"+id, function(message){
