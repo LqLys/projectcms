@@ -82,3 +82,9 @@ body {
 .clamp-width{
     max-width: 1200px;
 }
+
+.nav-item
+{
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
