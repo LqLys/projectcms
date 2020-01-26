@@ -85,10 +85,11 @@
                                         <!-- Table body -->
                                         <tbody>
                                         <tr th:each="member :${groupDetailsMembers}">
-                                            <td>
-                                                <!--                                                <img th:src="${friend.avatarUrl}"  onError="this.onerror=null;this.src='/img/default-avatar.png'"-->
-                                                <!--                                                     class="rounded-circle z-depth-0"-->
-                                                <!--                                                     alt="avatar image" height="2em" width="2em">-->
+                                            <td class="p-1">
+                                                <img th:src="${member.avatarUrl}"
+                                                     onError="this.onerror=null;this.src='/img/default-avatar.png'"
+                                                     class="rounded-circle z-depth-0"
+                                                     alt="avatar image" height="50" width="50">
                                             </td>
                                             <td th:text="${member.firstName + ' ' + member.lastName}"></td>
                                             <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
@@ -119,7 +120,8 @@
                                     <!-- Table  -->
                                 </div>
                             </div>
-                            <div th:if="${groupVisibility.name() == 'PUBLIC' || browsingUserRole.name() == 'OWNER'}" class="col-md-5 my-3 px-0">
+                            <div th:if="${groupVisibility.name() == 'PUBLIC' || browsingUserRole.name() == 'OWNER'}"
+                                 class="col-md-5 my-3 px-0">
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-12">

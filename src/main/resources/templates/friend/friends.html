@@ -64,10 +64,11 @@
                                         <!-- Table body -->
                                         <tbody>
                                         <tr th:each="friend :${friends}">
-                                            <td>
-<!--                                                <img th:src="${friend.avatarUrl}"  onError="this.onerror=null;this.src='/img/default-avatar.png'"-->
-<!--                                                     class="rounded-circle z-depth-0"-->
-<!--                                                     alt="avatar image" height="2em" width="2em">-->
+                                            <td class="p-1">
+                                                <img th:src="${friend.avatarUrl}"
+                                                     onError="this.onerror=null;this.src='/img/default-avatar.png'"
+                                                     class="rounded-circle z-depth-0"
+                                                     alt="avatar image" height="50" width="50">
                                             </td>
                                             <td th:text="${friend.firstName}"></td>
                                             <td th:text="${friend.lastName}"></td>

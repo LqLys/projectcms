@@ -68,22 +68,24 @@
 
                                 <!-- Table body -->
                                 <tbody id="members">
-                                    <tr th:each="friend, index: ${userFriends}">
-                                        <td>
-                                            <!--                                                <img th:src="${friend.avatarUrl}"  onError="this.onerror=null;this.src='/img/default-avatar.png'"-->
-                                            <!--                                                     class="rounded-circle z-depth-0"-->
-                                            <!--                                                     alt="avatar image" height="2em" width="2em">-->
-                                        </td>
-                                        <td th:text="${friend.firstName}"></td>
-                                        <td th:text="${friend.lastName}"></td>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" th:id="${'friend-'+index}"
-                                                        th:value="${friend.id}" name="friendIds">
-                                                <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <tr th:each="friend, index: ${userFriends}">
+                                    <td class="p-1">
+                                        <img th:src="${friend.avatarUrl}"
+                                             onError="this.onerror=null;this.src='/img/default-avatar.png'"
+                                             class="rounded-circle z-depth-0"
+                                             alt="avatar image" height="50" width="50">
+                                    </td>
+                                    <td th:text="${friend.firstName}"></td>
+                                    <td th:text="${friend.lastName}"></td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                   th:id="${'friend-'+index}"
+                                                   th:value="${friend.id}" name="friendIds">
+                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tbody>
                                 <!-- Table body -->
                             </table>

@@ -33,28 +33,6 @@
         <h2>Wyjazd Integracyjny</h2>
     </div>
     <div class="row">
-        <div>
-            <ul class="nav nav-pills nav-justified">
-                <h3 class="pr-5 mb-0 mr-5" th:text="${groupName}"></h3>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active"  th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-sm-8">
             <h3 th:text="${groupName + ' czat'}"></h3>
             <div>
