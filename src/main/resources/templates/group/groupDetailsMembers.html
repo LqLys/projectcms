@@ -74,6 +74,7 @@
                                         <!-- Table head -->
                                         <thead>
                                         <tr class="table-fixed">
+                                            <th>Avatar</th>
                                             <th>Uczestnik</th>
                                             <th>Rola</th>
                                             <th>Usuń</th>
@@ -84,6 +85,11 @@
                                         <!-- Table body -->
                                         <tbody>
                                         <tr th:each="member :${groupDetailsMembers}">
+                                            <td>
+                                                <!--                                                <img th:src="${friend.avatarUrl}"  onError="this.onerror=null;this.src='/img/default-avatar.png'"-->
+                                                <!--                                                     class="rounded-circle z-depth-0"-->
+                                                <!--                                                     alt="avatar image" height="2em" width="2em">-->
+                                            </td>
                                             <td th:text="${member.firstName + ' ' + member.lastName}"></td>
                                             <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
                                             <td style="padding: 0.5rem">

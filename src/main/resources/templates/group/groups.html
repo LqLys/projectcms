@@ -58,7 +58,7 @@
                                 <!-- Table head -->
                                 <thead>
                                 <tr class="table-fixed">
-                                    <th>#</th>
+                                    <th>Avatar</th>
                                     <th>Imię</th>
                                     <th>Nazwisko</th>
                                     <th>Uczestnik</th>
@@ -69,7 +69,11 @@
                                 <!-- Table body -->
                                 <tbody id="members">
                                     <tr th:each="friend, index: ${userFriends}">
-                                        <th scope="row">1</th>
+                                        <td>
+                                            <!--                                                <img th:src="${friend.avatarUrl}"  onError="this.onerror=null;this.src='/img/default-avatar.png'"-->
+                                            <!--                                                     class="rounded-circle z-depth-0"-->
+                                            <!--                                                     alt="avatar image" height="2em" width="2em">-->
+                                        </td>
                                         <td th:text="${friend.firstName}"></td>
                                         <td th:text="${friend.lastName}"></td>
                                         <td>
