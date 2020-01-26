@@ -71,13 +71,13 @@ public class AuthenticationController {
         UserEntity userExists = userService.findUserByEmail(userEntity.getEmail());
         if (userExists != null) {
             bindingResult.rejectValue("email", "error.userEntity",
-                            "There is already a user registered with the email provided");
+                            "Użytkownik o takim adresie email został już zarejestrowany");
         }
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
             userService.saveUser(userEntity);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
+            modelAndView.addObject("successMessage", "Użytkownik pomyślnie zarejestrowany");
             modelAndView.addObject("userEntity", new UserEntity());
             modelAndView.setViewName("registration");
 
@@ -90,7 +90,7 @@ public class AuthenticationController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = userService.findUserByEmail(auth.getName());
         modelAndView.addObject("userName", "Welcome  (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
+        modelAndView.addObject("adminMessage","Odmowa dostępu: wymagane uprawnienia administratora");
         modelAndView.setViewName("admin/home");
         return modelAndView;
     }
@@ -125,7 +125,7 @@ public class AuthenticationController {
         } else {
             request.getSession().setAttribute("AVATAR_URL", editProfileDto.getAvatarUrl());
             userService.editUser(authenticatedUser, editProfileDto);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
+            modelAndView.addObject("successMessage", "");
 
             modelAndView.setViewName("profile");
 
@@ -146,17 +146,18 @@ public class AuthenticationController {
         UserEntity userEntity = userService.findUserByEmail(auth.getName());
         if (!encoder.matches(changePasswordDto.getOldPassword(), userEntity.getPassword())) {
             bindingResult.rejectValue("oldPassword", "error.changePasswordDto",
-                    "Wrong old password");
+                    "Błędne stare hasło");
         }
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("change-password");
         } else {
             userEntity.setPassword(changePasswordDto.getNewPassword());
             userService.saveUser(userEntity);
-            modelAndView.addObject("successMessage", "Password Changed");
-            modelAndView.addObject("changePasswordDto", new ChangePasswordDto());
-            modelAndView.setViewName("change-password");
-
+            modelAndView.addObject("successMessage", "Hasło zmienione na nowe");
+            final UserEntity authenticatedUser = userService.getAuthenticatedUser();
+            final EditProfileDto editProfileDto = userEntityToProfileDto(authenticatedUser);
+            modelAndView.addObject("editProfileDto", editProfileDto);
+            modelAndView.setViewName("profile");
         }
         return modelAndView;
     }

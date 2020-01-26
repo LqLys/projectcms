@@ -98,3 +98,13 @@ nav {
     -webkit-text-stroke-color: indianred;
     letter-spacing: 0.04em;
 }
+
+.invalid-feedback{
+    display: block;
+    font-size: 1.3em;
+}
+
+.valid-feedback{
+    display: block;
+    font-size: 1.3em;
+}
