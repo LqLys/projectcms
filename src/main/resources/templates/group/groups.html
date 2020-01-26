@@ -47,7 +47,7 @@
                         <!-- Email -->
                         <div class="md-form">
                             <input type="text" th:field="*{name}" class="form-control" id="groupName"
-                                   placeholder="*Nazwa grupy"/>
+                                   placeholder="*Nazwa grupy" required/>
                             <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
                                    class="validation-message" for="groupName"></label>
                         </div>
