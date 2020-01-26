@@ -61,10 +61,10 @@
                 <!--<label>User:</label>-->
                 <!--<input id="user" type="text"/><br>-->
 
-                <label>You message:</label>
+                <label>Wpisz wiadomość:</label>
                 <input id="messageToSend" type="text"/><br>
 
-                <button id="sendBtn">Send</button>
+                <button id="sendBtn">Wyślij</button>
                 <div id="all-messages">
                     <p th:each="msg: ${messages}" th:text="${msg.author + ': ' + msg.message}"></p>
                 </div>

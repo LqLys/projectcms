@@ -88,7 +88,7 @@
                                    class="form-control" id="totalAmount"/>
                         </div>
                         <div class="col-sm-9">
-                            <label>uczestnicy</label>
+                            <label>Dodaj osoby, które uczestniczyły w wydatku.</label>
                             <th:block th:each="member : ${travelGroup.getMembers()}">
                                 <div th:if="${currentUserId != member.id}">
                                     <input type="checkbox" name="debtors" th:value="${member.id}" th:id="${'debtor-'+member.id}"/>
@@ -106,7 +106,7 @@
                     <div class="form-group">
                         <div class="col-sm-9">
                             <button type="button" class="btn btn-primary btn-block"
-                                    th:onclick="'createExpense(\'\');'">Zaproś!</button>
+                                    th:onclick="'createExpense(\'\');'">Dodaj</button>
                         </div>
                     </div>
 
