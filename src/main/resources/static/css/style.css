@@ -46,9 +46,9 @@ body {
 
 .public-group-cell {
     padding: 0.5em;
-    border: solid 0.2em #42a5f5;
-    background: azure;
-    border-radius: 0.5em;
+    border: solid 0.2em #c3e4ff;
+    background: #ffffff;
+    border-radius: 0.2em;
 }
 
 .public-group-cell:visited {
@@ -61,7 +61,7 @@ body {
 
 .public-group-cell:hover {
     text-decoration: none;
-    background: darkturquoise;
+    background: #b0f4ff;
 }
 
 .public-group-cell-destination {
@@ -79,12 +79,16 @@ body {
     margin-bottom: 1em;
 }
 
-.clamp-width{
+.clamp-width {
     max-width: 1200px;
 }
 
-.nav-item
-{
+.nav-item {
     margin-left: 0.2em;
     margin-right: 0.2em;
+}
+
+nav {
+    -webkit-text-stroke-width: thin;
+    letter-spacing: 0.1em;
 }
