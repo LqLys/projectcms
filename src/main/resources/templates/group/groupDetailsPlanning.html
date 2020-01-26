@@ -64,14 +64,14 @@
                                                th:value="${userId}"/>
                                         <tr th:each="question, iter :${questions}" th:id="${'question-row-'+iter.index}" th:class="question-row">
                                             <td th:onclick="'updateAnswer(\'' + ${question.id} + '\');'">
-                                                <div class="jumbotron m-4 p-4 text-center">
+                                                <div th:class="${'jumbotron m-4 p-4 text-center question-' + (question.isActive ? 'active' : 'disabled')}">
                                                     <h3 th:text="${question.text}"></h3>
                                                     <canvas th:id="${'pieChart-' + iter.index}"></canvas>
 
                                                     <div th:each="answer :${question.answers}">
                                                         <input type="checkbox" th:value="${answer.id}"
                                                                th:name="${'question-answers-' + question.id}" th:checked="${answer.checked}"
-                                                               th:class="${'question-answers-' + question.id}"
+                                                               th:class="${'question-answers-' + question.id + (question.isActive ? '' : ' d-none')}"
                                                                th:disabled="${!question.isActive}"
                                                         >
                                                         <span th:text="${answer.text}"></span>
