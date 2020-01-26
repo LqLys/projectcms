@@ -25,4 +25,5 @@ public class TravelGroupDto {
     private GroupVisibility groupVisibility;
     private GroupStatus groupStatus;
     private BigDecimal debtLimit;
+    private String imgUrl;
 }

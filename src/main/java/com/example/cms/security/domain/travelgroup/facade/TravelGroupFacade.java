@@ -154,6 +154,9 @@ public class TravelGroupFacade {
         if (travelGroupDetailsDto.getLng() != null) {
             travelGroup.setLng(travelGroupDetailsDto.getLng());
         }
+        if(travelGroupDetailsDto.getImgUrl() != null) {
+            travelGroup.setImgUrl(travelGroupDetailsDto.getImgUrl());
+        }
 
         travelGroupService.save(travelGroup);
 

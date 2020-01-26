@@ -31,4 +31,5 @@ public class TravelGroupDetailsDto {
     private BigDecimal debtLimit;
     private BigDecimal lat;
     private BigDecimal lng;
+    private String imgUrl;
 }

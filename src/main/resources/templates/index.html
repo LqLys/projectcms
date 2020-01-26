@@ -54,7 +54,10 @@
                 <h3 class="h3" th:text="${group.name}"></h3>
                 <h5 class="h4 public-group-cell-destination" th:text="${(group.destination != '' ? group.destination : '?')}"></h5>
                 <figure class="public-group-cell-image">
-                    <img src="https://placeimg.com/640/480/nature" class="w-100">
+                    <img th:src="${group.imgUrl}"
+                         onError="this.onerror=null;this.src='/img/map.png'"
+                         class="w-100"
+                         alt="avatar image">
                 </figure>
                 <div class="row mt-auto">
                     <div class="col-6" th:text="${(group.startDate != null ? group.startDate : '????-??-??')}"></div>

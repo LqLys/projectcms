@@ -314,6 +314,13 @@
          </addColumn>
      </changeSet>
 
+     <changeSet id="add_img_to_group_001" author="lq">
+         <addColumn tableName="TRAVEL_GROUP">
+             <column name="IMG_URL" type="varchar2(500)">
+             </column>
+         </addColumn>
+     </changeSet>
+
 
 
 

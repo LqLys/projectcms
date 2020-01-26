@@ -75,5 +75,8 @@ public class TravelGroupEntity {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<QuestionEntity> questions;
 
+    @Column(name = "IMG_URL")
+    private String imgUrl;
+
 
 }

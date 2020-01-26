@@ -101,6 +101,17 @@
                                                 >
 
                                             </div>
+                                            <hr>
+                                            <img th:src="${travelGroupDto.imgUrl}"
+                                                 onError="this.onerror=null;this.src='/img/map.png'"
+                                                 class="rounded-circle z-depth-0"
+                                                 alt="avatar image" height="50" width="50">
+                                            <label th:if="${#fields.hasErrors('imgUrl')}"
+                                                   th:errors="*{imgUrl}"
+                                                   class="validation-message"></label>
+                                            <input type="text" th:field="*{imgUrl}" placeholder="*Link obrazka"
+                                                   th:disabled="${!viewerIsOrganizer}"
+                                                   class="form-control"/>
                                             <input type="hidden" th:attr="name=groupId" class="form-control"
                                                    th:value="${groupId}"
                                                    th:disabled="${!viewerIsOrganizer}"
