@@ -34,6 +34,8 @@
               autocomplete="off" action="#" th:action="@{/edit-profile}"
               th:object="${editProfileDto}" method="post"
               role="form">
+            <div class="valid-feedback" th:utext="${successMessage}"></div>
+
             <h2 class="h2 my-4">Twoje dane</h2>
 
             <div class="row">

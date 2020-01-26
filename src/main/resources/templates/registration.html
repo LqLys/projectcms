@@ -37,23 +37,23 @@
                 <div class="form-row mb-4">
                     <div class="col">
                         <!-- First name -->
-                        <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="validation-message"></label>
+                        <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="validation-message invalid-feedback"></label>
                         <input type="text" th:field="*{firstName}" placeholder="Imię" class="form-control" />
                     </div>
                     <div class="col">
                         <!-- Last name -->
-                        <label	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message"></label>
+                        <label	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message invalid-feedback"></label>
                         <input type="text" th:field="*{lastName}" placeholder="Nazwisko" class="form-control" />
                     </div>
                 </div>
 
                 <!-- E-mail -->
+                <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message invalid-feedback"></label>
                 <input type="email" th:field="*{email}" placeholder="E-mail" class="form-control mb-4" />
-                <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" lass="validation-message"></label>
 
                 <!-- Password -->
+                <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message invalid-feedback"></label>
                 <input type="password" th:field="*{password}" placeholder="Hasło" class="form-control" />
-                <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
 
                 <!-- Sign up button -->
                 <button class="btn blue my-4 text-white" type="submit">Zarejestruj</button>
@@ -62,7 +62,7 @@
 
                 <!-- Terms of service -->
                 <div>
-                    <a th:href="@{/login}">Posadasz już konto, zaloguj się</a>
+                    <a th:href="@{/login}">Jeśli posiadasz już konto, zaloguj się</a>
                 </div>
             </form>
             <span th:utext="${successMessage}"></span>

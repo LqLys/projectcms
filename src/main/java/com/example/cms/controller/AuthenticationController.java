@@ -101,6 +101,7 @@ public class AuthenticationController {
         UserEntity userEntity = userService.findUserByEmail(auth.getName());
         final EditProfileDto editProfileDto = userEntityToProfileDto(userEntity);
         modelAndView.addObject("editProfileDto", editProfileDto);
+        modelAndView.addObject("successMessage", "");
         modelAndView.setViewName("profile");
         return modelAndView;
 
@@ -125,7 +126,7 @@ public class AuthenticationController {
         } else {
             request.getSession().setAttribute("AVATAR_URL", editProfileDto.getAvatarUrl());
             userService.editUser(authenticatedUser, editProfileDto);
-            modelAndView.addObject("successMessage", "");
+            modelAndView.addObject("successMessage", "Dane pomyślnie zapisane");
 
             modelAndView.setViewName("profile");
 
