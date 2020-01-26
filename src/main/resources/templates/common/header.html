@@ -74,7 +74,7 @@
                 </li>
                 <li class="nav-item avatar" sec:authorize="isAuthenticated()">
                     <a class="nav-link p-0" th:href="@{/profile}">
-                        <img th:src="${AVATAR_URL != null ? AVATAR_URL : 'https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg'}"
+                        <img th:src="${AVATAR_URL}"  onError="this.onerror=null;this.src='/img/default-avatar.png'"
                              class="rounded-circle z-depth-0"
                              alt="avatar image" height="35">
                     </a>
