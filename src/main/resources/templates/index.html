@@ -1,105 +1,64 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Home</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<!-- MDB icon -->
-	<link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-	<!-- Bootstrap core CSS -->
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
-	<!-- Material Design Bootstrap -->
-	<link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
-	<!-- Your custom styles (optional) -->
-	<link rel="stylesheet" th:href="@{/css/style.css}"/>
-	<!-- DataTables CSS -->
-	<link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
-	<!-- DataTables JS -->
-	<script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- MDB icon -->
+    <link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
+    <!-- DataTables JS -->
+    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 
-<div th:replace="common/header :: header"> </div>
+<div th:replace="common/header :: header"></div>
 
-<div id="carousel-example-2" class="carousel slide carousel-fade z-depth-1-half text-center" data-ride="carousel">
-	<div class="carousel-inner" style="max-height: 30em !important;" role="listbox">
-		<div class="carousel-item active">
-			<video class="video-fluid" autoplay loop muted>
-				<source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4"/>
-			</video>
-			<div class="carousel-caption pb-5" style="top: 5rem !important; text-align: left">
-				<h1 class="h1-responsive main-page-title">On The Way</h1>
-				<p class="h5 main-page-sub-title">Zaplanuj... wszystko</p>
-			</div>
-		</div>
-	</div>
+<div id="carousel-example-2" class="carousel slide carousel-fade text-center" data-ride="carousel">
+    <div class="carousel-inner" style="max-height: 30em !important;" role="listbox">
+        <div class="carousel-item active">
+            <video class="video-fluid" autoplay loop muted>
+                <source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4"/>
+            </video>
+            <div class="carousel-caption pb-5" style="top: 5rem !important; text-align: left">
+                <h1 class="h1-responsive main-page-title">On The Way</h1>
+                <p class="h5 main-page-sub-title">Zaplanuj... wszystko</p>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <div th:each="group: ${availableTravelGroups}">
-		<a th:text="${group.id + ' ' + group.name + ' ' + group.destination + ' ' + group.startDate + ' ' + group.endDate}"
-		   th:href="@{/group/details/__${group.id}__}"></a>
-	</div>
-</div>
-<!--<div sec:authorize="isAuthenticated()">-->
-	<!--<a class="btn btn-success"th:href="@{/dashboard}">Dashboard</a>-->
-<!--</div>-->
-
-<!--&lt;!&ndash;<div sec:authorize="isAnonymous()">&ndash;&gt;-->
-	<!--&lt;!&ndash;<a class="btn btn-success" th:href="@{/login}">Login</a>&ndash;&gt;-->
-	<!--&lt;!&ndash;<a class="btn btn-primary" th:href="@{/register}">Register</a>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div sec:authentication="name">&ndash;&gt;-->
-	<!--&lt;!&ndash;The value of the "name" property of the authentication object should appear here.&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
-	<!--<div class="col-md-10 col-md-offset-2">-->
-		<!--<h2>siema</h2>-->
-	<!--</div>-->
-<!--</div>-->
-<!--<div sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')">-->
-	<!--<p>MAKA PAKA</p>-->
-<!--</div>-->
-
-
-<!--<div class="row" sec:authorize="hasAuthority('ADMIN')">-->
-	<!--<div class="col-md-10 col-md-offset-2">-->
-		<!--<h2>User Has Authority Admin</h2>-->
-	<!--</div>-->
-<!--</div>-->
-<!--<div class="row" sec:authorize="hasAuthority('OWNER')">-->
-	<!--<div class="col-md-10 col-md-offset-2">-->
-		<!--<h2>siema owner</h2>-->
-	<!--</div>-->
-<!--</div>-->
-<!--<div sec:authorize="isAuthenticated()">-->
-	<!--<p>USER IS AUTHENTICATED</p>-->
-<!--</div>-->
-
-<!--<div sec:authorize="!isAuthenticated()">-->
-	<!--<p>USER IS NOT AUTHENTICATED</p>-->
-<!--</div>-->
-
-<!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>-->
-<!--<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>-->
-<!--<div sec:authorize="isAuthenticated()">-->
-	<!--Text visible only to authenticated users.-->
-<!--</div>-->
-<!--Authenticated username:-->
-<!--<div sec:authentication="name"></div>-->
-<!--Authenticated user roles:-->
-<!--<th:block th:each="r, iter:${#authentication.getAuthorities()}">-->
-	<!--<span th:text="${r}"></span>-->
-	<!--<th:block th:if="${!iter.last}">, </th:block>-->
-<!--</th:block>-->
+<main class="container-fluid clamp-width my-2 my-xl-0">
+    <div class="row text-center my-3 mx-2 mx-xl-0">
+        <div class="col-lg-6 col-xl-4 my-2 px-2" th:each="group: ${availableTravelGroups}">
+            <a th:href="@{/group/details/__${group.id}__}" class="public-group-cell d-block h-100 d-flex flex-column">
+                <h3 class="h3" th:text="${group.name}"></h3>
+                <h5 class="h4 public-group-cell-destination" th:text="${(group.destination != '' ? group.destination : '?')}"></h5>
+                <figure class="public-group-cell-image">
+                    <img src="https://placeimg.com/640/480/nature" class="w-100">
+                </figure>
+                <div class="row mt-auto">
+                    <div class="col-6" th:text="${(group.startDate != null ? group.startDate : '????-??-??')}"></div>
+                    <div class="col-6" th:text="${(group.endDate != null ? group.endDate : '????-??-??')}"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</main>
 
 <div th:replace="common/footer :: footer"></div>
-
 
 </body>
 </html>
