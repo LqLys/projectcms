@@ -92,3 +92,9 @@ nav {
     -webkit-text-stroke-width: thin;
     letter-spacing: 0.1em;
 }
+
+.main-page-description{
+    -webkit-text-stroke-width: medium;
+    -webkit-text-stroke-color: indianred;
+    letter-spacing: 0.04em;
+}
