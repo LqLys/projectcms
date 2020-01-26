@@ -14,4 +14,5 @@ public class BaseFriendDto {
     private Long id;
     private String firstName;
     private String lastName;
+    private String avatarUrl;
 }

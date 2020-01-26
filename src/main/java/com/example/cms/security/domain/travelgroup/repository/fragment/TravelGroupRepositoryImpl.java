@@ -41,7 +41,7 @@ public class TravelGroupRepositoryImpl implements TravelGroupRepositoryFragment 
         QUserTravelGroupEntity userTravelGroup = QUserTravelGroupEntity.userTravelGroupEntity;
         QTravelGroupEntity group = QTravelGroupEntity.travelGroupEntity;
         return jpaQueryFactory.select(
-                Projections.constructor(GroupDetailsMembers.class, user.id, user.firstName, user.lastName, userTravelGroup.groupRole))
+                Projections.constructor(GroupDetailsMembers.class, user.id, user.firstName, user.lastName, userTravelGroup.groupRole, user.avatarUrl))
                 .from(user)
                 .join(userTravelGroup).on(user.id.eq(userTravelGroup.id.userId))
                 .join(group).on(userTravelGroup.id.travelGroupId.eq(group.id))

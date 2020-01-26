@@ -14,5 +14,6 @@ public class GroupDetailsMembers {
     private String firstName;
     private String lastName;
     private GroupRole groupRole;
+    private String avatarUrl;
 
 }

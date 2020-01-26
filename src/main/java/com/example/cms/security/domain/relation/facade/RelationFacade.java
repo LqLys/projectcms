@@ -29,6 +29,7 @@ public class RelationFacade {
                 .id(userEntity.getId())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
+                .avatarUrl(userEntity.getAvatarUrl())
                 .build();
 
     }
@@ -38,6 +39,7 @@ public class RelationFacade {
                 .id(userEntity.getId())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
+                .avatarUrl(userEntity.getAvatarUrl())
                 .build();
 
     }
