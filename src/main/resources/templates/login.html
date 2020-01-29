@@ -36,15 +36,19 @@
 
                 <p class="h4 mb-4">On The Way</p>
 
+                <label th:if="${(param.error != null)}" class="validation-message invalid-feedback">
+                    Niepoprawny login lub hasło
+                </label>
+
                 <!-- Email -->
                 <input type="email" id="email" name="email" th:placeholder="Email" class="form-control mb-4">
 
                 <!-- Password -->
                 <input type="password" id="password" name="password" class="form-control mb-4" th:placeholder="Hasło">
 
+
                 <!-- Sign in button -->
                 <button class="btn blue text-white my-4" type="submit">Zaloguj</button>
-
 
                 <div class="d-flex justify-content-around">
                     <div>
