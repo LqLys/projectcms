@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -33,15 +33,15 @@ public class UserEntity {
     private Long id;
 
     @Column(name = "FIRST_NAME")
-    @Size(min = 3, max = 30, message = "Imię musi zawierać od 3 do 30 znaków")
+    @Pattern(regexp="^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{3,30}$", message="Imię może składać się z 3 do 30 liter")
     private String firstName;
 
     @Column(name = "LAST_NAME")
-    @Size(min = 3, max = 50, message = "Nazwisko musi zawierać od 3 do 50 znaków")
+    @Pattern(regexp="^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\\-]{3,50}$", message="Nazwisko może składać się z 3 do 50 liter i znaków \'-\'")
     private String lastName;
 
     @Column(name = "PASSWORD")
-    @Size(min = 3, max = 50, message = "Hasło musi zawierać od 3 do 50 znaków")
+    @Size(min = 3, max = 50, message = "Hasło może składać się z 3 do 50 znaków")
     private String password;
 
     @Column(name = "EMAIL")
