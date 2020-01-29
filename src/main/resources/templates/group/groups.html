@@ -27,88 +27,97 @@
 <body>
 <div th:replace="common/header :: header"></div>
 
-<div class="container-fluid">
-    <div class="row mx-sm-4 my-lg-0">
-        <div class="col-sm-5">
-            <!-- Material form login -->
-            <div class="card my-3">
+<!-- Central Modal Small -->
+<div class="modal fade" id="centralModalSm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
 
-                <h5 class="card-header blue darken-2 white-text text-center py-3">
-                    <strong>Nowa Grupa</strong>
-                </h5>
+    <!-- Change class .modal-sm to change the size of the modal -->
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
 
-                <!--Card content-->
-                <div class="card-body px-lg-5 pt-0">
-
-                    <!-- Form -->
-                    <form class="text-center" autocomplete="off" action="#" th:action="@{/group}"
-                          th:object="${newTravelGroup}" method="post" role="form">
-
-                        <!-- Email -->
-                        <div class="md-form">
-                            <input type="text" th:field="*{name}" class="form-control" id="groupName"
-                                   placeholder="*Nazwa grupy" required/>
-                            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                                   class="validation-message" for="groupName"></label>
-                        </div>
-
-                        <!-- Table  -->
-                        <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
-                            <table class="table bordered table-hover mb-0" id="testTable">
-                                <!-- Table head -->
-                                <thead>
-                                <tr class="table-fixed">
-                                    <th>Avatar</th>
-                                    <th>Imię</th>
-                                    <th>Nazwisko</th>
-                                    <th>Uczestnik</th>
-                                </tr>
-                                </thead>
-                                <!-- Table head -->
-
-                                <!-- Table body -->
-                                <tbody id="members">
-                                <tr th:each="friend, index: ${userFriends}">
-                                    <td class="p-1">
-                                        <img th:src="${friend.avatarUrl}"
-                                             onError="this.onerror=null;this.src='/img/default-avatar.png'"
-                                             class="rounded-circle z-depth-0"
-                                             alt="avatar image" height="50" width="50">
-                                    </td>
-                                    <td th:text="${friend.firstName}"></td>
-                                    <td th:text="${friend.lastName}"></td>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                   th:id="${'friend-'+index}"
-                                                   th:value="${friend.id}" name="friendIds">
-                                            <label class="custom-control-label" th:for="${'friend-'+index}"></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                                <!-- Table body -->
-                            </table>
-                            <!-- Table  -->
-                        </div>
-                        <!-- Sign in button -->
-                        <button class="btn btn-blue my-4 waves-effect z-depth-0" type="submit">Utwórz</button>
-                    </form>
-                    <!-- Form -->
-                </div>
+            <div class="modal-header light-blue lighten-1">
+                <h5 class="modal-title w-100 text-white" id="myModalLabel">Nowa Grupa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <!-- Material form login -->
-        </div>
-        <div class="col-sm-7">
-            <div class="card my-3">
 
-                <div class="card-header blue darken-2 lighten-1 white-text text-center py-3 d-flex">
-                    <strong class="h5 flex-grow-1 px-2">Moje grupy</strong>
-                    <input class="form-control" type="text" placeholder="Szukaj" aria-label="Search">
+            <form class="modal-body" autocomplete="off" action="#" th:action="@{/group}" th:object="${newTravelGroup}" method="post" role="form">
+                <div class="text-center">
+
+                    <!-- Email -->
+                    <div class="md-form p-3">
+                        <input type="text" th:field="*{name}" class="form-control" id="groupName"
+                               placeholder="*Nazwa grupy" required/>
+                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                               class="validation-message" for="groupName"></label>
+                    </div>
+                    <!-- Table  -->
+                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto p-3 ">
+                        <h5 class="text-left">Dodaj Uczestników</h5>
+                        <table class="table bordered table-hover mb-0" id="testTable">
+                            <!-- Table head -->
+                            <thead>
+                            <tr class="table-fixed">
+                                <th>Avatar</th>
+                                <th>Imię</th>
+                                <th>Nazwisko</th>
+                                <th>Uczestnik</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody id="members">
+                            <tr th:each="friend, index: ${userFriends}">
+                                <td class="p-1">
+                                    <img th:src="${friend.avatarUrl}"
+                                         onError="this.onerror=null;this.src='/img/default-avatar.png'"
+                                         class="rounded-circle z-depth-0"
+                                         alt="avatar image" height="50" width="50">
+                                </td>
+                                <td th:text="${friend.firstName}"></td>
+                                <td th:text="${friend.lastName}"></td>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                               th:id="${'friend-'+index}"
+                                               th:value="${friend.id}" name="friendIds">
+                                        <label class="custom-control-label" th:for="${'friend-'+index}"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn light-blue lighten-1 btn-sm text-white">Utwórz Grupę</button>
+                        <button type="button" class="btn btn-orange btn-sm" data-dismiss="modal">Wróć</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Central Modal Small -->
+
+<div class="container">
+    <div class="row mx-sm-4 my-lg-0">
+        <div class="col-sm-12">
+            <div class="card my-5">
+
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <strong class="h4 flex-grow-1 px-2 m-auto">Moje grupy</strong>
+                    <button class="btn orange btn-sm" type="button" data-toggle="modal" data-target="#centralModalSm">
+                        Dodaj Grupę
+                        <i class="fas fa-plus "></i>
+                    </button>
                 </div>
 
                 <!--Card content-->
-                <div class="card-body px-lg-5 pt-0">
+                <div class="card-body px-lg-5 pt-0 mt-3">
 
                     <!-- Table  -->
                     <div class="table-wrapper-scroll-y my-custom-scrollbar">
@@ -116,7 +125,7 @@
                             <!-- Table head -->
                             <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Id</th>
                                 <th>Nazwa grupy</th>
                                 <th>Rola w grupie</th>
                             </tr>
@@ -126,9 +135,8 @@
                             <!-- Table body -->
                             <tbody id="demo">
                             <th:block th:each="grp : ${travelGroups}">
-                                <tr style="cursor: pointer"
-                                    th:onclick="'window.location.href = \'' + @{/group/details/{groupId}/members(groupId=${grp.groupId})}+ '\''">
-                                    <th th:href="@{/group/details/{groupId}/members(groupId=${grp.groupId})}">1</th>
+                                <tr style="cursor: pointer" th:onclick="'window.location.href = \'' + @{/group/details/{groupId}/members(groupId=${grp.groupId})}+ '\''">
+                                    <th th:text="${grp.groupId}">dsd</th>
                                     <td th:text="${grp.groupName}"></td>
                                     <td th:text="${grp.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
                                 </tr>
@@ -147,7 +155,6 @@
 </div>
 <!-- End your project here-->
 <!-- Footer -->
-<div th:replace="common/footer :: footer"></div>
 
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <!-- Bootstrap tooltips -->
