@@ -321,6 +321,16 @@
          </addColumn>
      </changeSet>
 
+     <changeSet id="unique_constraints_drop_user" author="lq">
+         <addUniqueConstraint tableName="USERS" columnNames="FIRST_NAME" constraintName="FIRST_NAME_UC"/>
+         <addUniqueConstraint tableName="USERS" columnNames="LAST_NAME" constraintName="LAST_NAME_UC"/>
+     </changeSet>
+
+     <changeSet id="unique_constraints_drop_user_002" author="lq">
+         <dropUniqueConstraint tableName="USERS" constraintName="FIRST_NAME_UC"/>
+         <dropUniqueConstraint tableName="USERS" constraintName="LAST_NAME_UC"/>
+     </changeSet>
+
 
 
 
