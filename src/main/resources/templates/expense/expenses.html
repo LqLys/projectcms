@@ -45,7 +45,7 @@
 
                     <div class="md-form pb-1">
                         <label for="lenderAmount">Kwota</label>
-                        <input type="number" th:field="*{amount}" placeholder="Kwota" class="form-control" id="lenderAmount"/>
+                        <input type="number" step="0.01" th:field="*{amount}" placeholder="Kwota" class="form-control" id="lenderAmount"/>
                     </div>
                     <button type="submit" class="btn green btn-sm text-white mx-5">Spłać</button>
                     <button type="button" class="btn orange btn-sm text-white mx-5" data-dismiss="modal">Wróć</button>
