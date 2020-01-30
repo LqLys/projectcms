@@ -26,193 +26,183 @@
 <body>
 <div th:replace="common/header :: header"></div>
 
-<div class="container-fluid">
+
+<div class="modal fade" id="invite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header light-blue lighten-1">
+                <h5 class="modal-title w-100 text-white" id="myModalLabel">Nowy Znajomy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <form autocomplete="off" action="#" th:action="@{/group/invite}"
+                      th:object="${groupInvitation}" method="post" role="form">
+                    <div class="input-group mb-3">
+                        <input type="text" placeholder="E-mail nowego znajomego"
+                               th:field="*{email}" class="form-control"/>
+                        <input type="hidden" th:attr="name=groupId"
+                               class="form-control" th:value="${groupId}"/>
+                        <label th:if="${#fields.hasErrors('email')}"
+                               th:errors="*{email}"
+                               class="validation-message"></label>
+
+                        <div class="input-group-append">
+                            <button class="btn btn-md green text-white m-0 px-3"
+                                    id="MaterialButton-addon2" type="submit">Zaproś
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <hr class="my-4"/>
+
+                <form autocomplete="off" action="#"
+                      th:action="@{/group/inviteFriends}"
+                      th:object="${groupInvitation}" method="post"
+                      class="text-center"
+                      role="form">
+                    <input type="hidden" th:attr="name=groupId"
+                           class="form-control"
+                           th:value="${groupId}"/>
+                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
+                        <table class="table bordered table-hover mb-0">
+                            <!-- Table head -->
+                            <thead>
+                            <tr class="table-fixed">
+                                <th>Imię i Nazwisko</th>
+                                <th>Uczestnik</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody id="members">
+
+                            <tr th:each="friend, index :${friends}">
+                                <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               class="custom-control-input"
+                                               th:id="${index}"
+                                               th:name="'friendIds'"
+                                               th:value="${friend.id}">
+                                        <label class="custom-control-label"
+                                               th:for="${index}"></label>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
+                    </div>
+                    <!-- Sign in button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn green btn-sm text-white mx-5">Dodaj</button>
+                        <button type="button" class="btn orange btn-sm text-white mx-5" data-dismiss="modal">Wróć</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
-            <div class="card my-3">
-                <div class="card-header">
-                    <ul class="nav nav-pills nav-justified">
-                        <h3 class="pr-5 mb-0 mr-5" th:text="${groupName}"></h3>
-                        <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card-body pb-0 pt-0">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3">
-                                    <div th:if="${!browsingIsMember}">
-                                        <form autocomplete="off" action="#" th:action="@{/group/__${groupId}__/join}"
-                                              th:object="${joinGroupDto}" method="post"
-                                              class="text-center"
-                                              role="form">
-                                            <input type="hidden" th:attr="name=browsingUserId" class="form-control"
-                                                   th:value="${browsingUserId}"/>
-                                            <input type="hidden" th:attr="name=groupId" class="form-control"
-                                                   th:value="${groupId}"/>
-                                            <button class="btn btn-danger btn-sm">Dołącz
-                                            </button>
-
-                                        </form>
-                                    </div>
-                                    <table class="table bordered table-hover mb-0" id="testTable">
-                                        <!-- Table head -->
-                                        <thead>
-                                        <tr class="table-fixed">
-                                            <th>Avatar</th>
-                                            <th>Uczestnik</th>
-                                            <th>Rola</th>
-                                            <th>Usuń</th>
-                                        </tr>
-                                        </thead>
-                                        <!-- Table head -->
-
-                                        <!-- Table body -->
-                                        <tbody>
-                                        <tr th:each="member :${groupDetailsMembers}">
-                                            <td class="p-1">
-                                                <img th:src="${member.avatarUrl}"
-                                                     onError="this.onerror=null;this.src='/img/default-avatar.png'"
-                                                     class="rounded-circle z-depth-0"
-                                                     alt="avatar image" height="50" width="50">
-                                            </td>
-                                            <td th:text="${member.firstName + ' ' + member.lastName}"></td>
-                                            <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
-                                            <td style="padding: 0.5rem">
-                                                <form autocomplete="off" action="#" th:action="@{/group/uninvite}"
-                                                      th:object="${groupInvitation}" method="post"
-                                                      class="text-center"
-                                                      role="form">
-                                                    <input type="hidden" th:attr="name=userId" class="form-control"
-                                                           th:value="${member.userId}"/>
-                                                    <input type="hidden" th:attr="name=groupId" class="form-control"
-                                                           th:value="${groupId}"/>
-                                                    <button th:if="${member.groupRole.name() != 'OWNER' && browsingUserRole.name() == 'OWNER'
-                                                    && member.userId != browsingUserId}"
-                                                            class="btn btn-danger btn-sm">Usuń
-                                                    </button>
-                                                    <button th:if="${member.userId == browsingUserId && groupStatus.name() == 'CREATED'}"
-                                                            class="btn btn-danger btn-sm">Opuść
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-
-
-                                        </tbody>
-                                        <!-- Table body -->
-                                    </table>
-                                    <!-- Table  -->
-                                </div>
-                            </div>
-                            <div th:if="${groupVisibility.name() == 'PUBLIC' || browsingUserRole.name() == 'OWNER'}"
-                                 class="col-md-5 my-3 px-0">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card mb-3">
-                                                <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Zaproś znajomych</strong>
-                                                </h5>
-                                                <div class="card-body p-lg-4 py-0 ">
-                                                    <form action="#" th:action="@{/group/invite}"
-                                                          th:object="${groupInvitation}" method="post"
-                                                          class="text-center"
-                                                          role="form">
-                                                        <div class="input-group mb-3">
-                                                            <input type="text" placeholder="E-mail nowego znajomego"
-                                                                   th:field="*{email}" class="form-control"/>
-                                                            <input type="hidden" th:attr="name=groupId"
-                                                                   class="form-control" th:value="${groupId}"/>
-                                                            <label th:if="${#fields.hasErrors('email')}"
-                                                                   th:errors="*{email}"
-                                                                   class="validation-message"></label>
-
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-md blue text-white m-0 px-3"
-                                                                        id="MaterialButton-addon2">Zaproś
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                    <hr class="m-4">
-                                                    <div class="jumbotron m-2 p-4">
-                                                        <form autocomplete="off" action="#"
-                                                              th:action="@{/group/inviteFriends}"
-                                                              th:object="${groupInvitation}" method="post"
-                                                              class="text-center"
-                                                              role="form">
-                                                            <input type="hidden" th:attr="name=groupId"
-                                                                   class="form-control"
-                                                                   th:value="${groupId}"/>
-                                                            <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
-                                                                <table class="table bordered table-hover mb-0">
-                                                                    <!-- Table head -->
-                                                                    <thead>
-                                                                    <tr class="table-fixed">
-                                                                        <th>Imię i Nazwisko</th>
-                                                                        <th>Uczestnik</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <!-- Table head -->
-
-                                                                    <!-- Table body -->
-                                                                    <tbody id="members">
-
-                                                                    <tr th:each="friend, index :${friends}">
-                                                                        <td th:text="${friend.firstName + ' ' + friend.lastName}"></td>
-                                                                        <td>
-                                                                            <div class="custom-control custom-checkbox">
-                                                                                <input type="checkbox"
-                                                                                       class="custom-control-input"
-                                                                                       th:id="${index}"
-                                                                                       th:name="'friendIds'"
-                                                                                       th:value="${friend.id}">
-                                                                                <label class="custom-control-label"
-                                                                                       th:for="${index}"></label>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-
-
-                                                                    </tbody>
-                                                                    <!-- Table body -->
-                                                                </table>
-                                                                <!-- Table  -->
-                                                            </div>
-                                                            <!-- Sign in button -->
-                                                            <button class="btn btn-blue waves-effect z-depth-0 mb-1"
-                                                                    type="submit">Dodaj
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <!--<strong class="h4 flex-grow-1 px-2 m-auto">Znajomi</strong>-->
+                    <div class="mr-auto my-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle h4 px-2 my-0 p-0 text-white" data-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false" th:text="${groupName}+' - Uczestnicy'" ></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/members}">Szczegóły</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
                             </div>
                         </div>
+                    </div>
+                    <div th:if="${groupVisibility.name() == 'PUBLIC' || browsingUserRole.name() == 'OWNER'}">
+                        <button class="btn green btn-sm" type="button" data-toggle="modal" data-target="#invite">
+                            Zaproś Znajomych
+                            <i class="far fa-envelope"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body px-lg-5 pt-0 mt-3">
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
+                        <table class="table bordered table-hover mb-0" id="testTable">
+                            <!-- Table head -->
+                            <thead>
+                            <tr class="table-fixed">
+                                <th>Avatar</th>
+                                <th>Uczestnik</th>
+                                <th>Rola</th>
+                                <th>Usuń/Opuść</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody>
+                            <tr th:each="member :${groupDetailsMembers}">
+                                <td class="py-0 px-3">
+                                    <img th:src="${member.avatarUrl}"
+                                         onError="this.onerror=null;this.src='/img/default-avatar.png'"
+                                         class="rounded-circle z-depth-0"
+                                         alt="avatar image" height="50" width="50">
+                                </td>
+                                <td th:text="${member.firstName + ' ' + member.lastName}"></td>
+                                <td th:text="${member.groupRole.name() == 'OWNER' ? 'Organizator' : 'Uczestnik'}"></td>
+                                <td class="px-0 py-1">
+                                    <form autocomplete="off" action="#" th:action="@{/group/uninvite}"
+                                          th:object="${groupInvitation}" method="post"
+                                          class="md-form my-0"
+                                          role="form">
+                                        <input type="hidden" th:attr="name=userId" class="form-control"
+                                               th:value="${member.userId}"/>
+                                        <input type="hidden" th:attr="name=groupId" class="form-control"
+                                               th:value="${groupId}"/>
+                                        <button th:if="${member.groupRole.name() != 'OWNER' && browsingUserRole.name() == 'OWNER'
+                                                    && member.userId != browsingUserId}"
+                                                class="text-white btn red lighten-1 btn-sm"> Usuń <i class="far fa-trash-alt ml-1"></i>
+                                        </button>
+                                        <button th:if="${member.userId == browsingUserId && groupStatus.name() == 'CREATED'}"
+                                                class="text-white btn orange btn-sm">Opuść <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
 </body>
 </html>
