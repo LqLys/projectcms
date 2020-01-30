@@ -103,7 +103,8 @@ nav {
     text-align: left;
     margin: auto;
     list-style-type: none;
-    color: #42a5f5;
+    /*color: #42a5f5;*/
+    color: #3584c4;
     line-height: 2em;
 }
 
