@@ -26,47 +26,79 @@
 <body>
 <div th:replace="common/header :: header"></div>
 
-<div class="container-fluid">
-    <div>
-        <h3>Oczekujące zaproszenia</h3>
-        <table class="table">
+<div class="container">
+    <div class="row mx-sm-2 my-lg-0">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <strong class="h4 flex-grow-1 px-2 m-auto">Zaproszenia do grup</strong>
+                </div>
 
-            <tbody>
-            <tr  th:each="invite :${pendingInvites}" style="font-size: small">
+                <!--Card content-->
+                <div class="card-body px-lg-5 pt-0 mt-3">
 
-                <td th:text="${invite.groupName}"></td>
-                <td th:text="${invite.invitationSourceEmail}"></td>
-                
-                <td>
-                    <form autocomplete="off" action="#" th:action="@{/group/invite/status}"
-                          th:object="${statusChangeRequest}" method="post" class="form-horizontal"
-                          role="form">
+                    <!-- Table  -->
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                        <table class="table table bordered table-hover" id="myGroups">
+                            <!-- Table head -->
+                            <thead>
+                            <tr>
+                                <th>Nazwa Grupy</th>
+                                <th>Osoba Zapraszająca</th>
+                                <th>Przyjmij</th>
+                                <th>Odrzuć</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
 
+                            <!-- Table body -->
+                            <tbody id="demo">
+                            <th:block th:each="invite :${pendingInvites}">
+                                <tr style="cursor: pointer" >
+                                    <td th:text="${invite.groupName}"></td>
+                                    <td th:text="${invite.invitationSourceEmail}"></td>
+                                    <td class="px-0 py-1">
+                                        <form autocomplete="off" action="#" th:action="@{/group/invite/status}"
+                                              th:object="${statusChangeRequest}" method="post"
+                                              role="form">
+                                            <div class="md-form my-0">
+                                                <input type="hidden" th:attr="name=id" class="form-control" th:value="${invite.id}"/>
+                                                <input type="hidden" th:attr="name=status" class="form-control" th:value="${'ACCEPTED'}"/>
+                                                <button type="submit" class="text-white btn green btn-sm">Przyjmij <i class="fas fa-check"></i></i></button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td class="px-0 py-1">
+                                        <form autocomplete="off" action="#" >
+                                            <div class="md-form my-0">
+                                                <button type="submit" class="text-white btn red lighten-1 btn-sm">Odrzuć <i class="fas fa-times"></i></button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                    </div>
+                    <!-- Table  -->
 
-                        <input type="hidden" th:attr="name=id" class="form-control" th:value="${invite.id}"/>
-                        <input type="hidden" th:attr="name=status" class="form-control" th:value="${'ACCEPTED'}"/>
+                </div>
 
-
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <button type="submit" class="btn btn-primary">Przyjmij</button>
-                            </div>
-                        </div>
-
-                        <!--<span th:utext="${successMessage}"></span>-->
-
-
-                    </form>
-                </td>
-            </tr>
-
-            </tbody>
-        </table>
-
+            </div>
+        </div>
     </div>
 </div>
 <!-- End your project here-->
 <!-- Footer -->
-<div th:replace="common/footer :: footer"></div>
+
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
 </body>
 </html>
