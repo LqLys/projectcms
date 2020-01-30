@@ -54,7 +54,7 @@
                     <div th:if="${registered == null}">
                         <a th:href="@{/registration}">Zarejestruj</a>
                     </div>
-                    <div th:if="${registered}">
+                    <div th:if="${registered}" class="valid-feedback">
                         <p th:text="${successMessage}"></p>
                     </div>
                 </div>
