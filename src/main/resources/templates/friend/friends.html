@@ -26,118 +26,114 @@
 <body>
 <div th:replace="common/header :: header"></div>
 
-<div class="container-fluid">
+<div class="modal fade" id="invite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header light-blue lighten-1">
+                <h5 class="modal-title w-100 text-white" id="myModalLabel">Nowy Znajomy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+            <form class="modal-body" autocomplete="off" action="#" th:action="@{/friends/add}"
+                  th:object="${addFriendDto}" method="post" role="form">
+                <div class="text-center">
+                    <!-- Email -->
+                    <div class="md-form mt-0">
+                        <input type="text" th:field="*{email}" placeholder="*Email" class="form-control"/>
+                    </div>
+                    <button type="submit" class="btn green btn-sm text-white mx-5">Zaproś</button>
+                    <button type="button" class="btn orange btn-sm text-white mx-5" data-dismiss="modal">Wróć</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
-            <div class="col-12">
-                <h1 th:text="${groupName}"></h1>
-            </div>
-            <div class="card my-3">
-                <div class="card-header">
-                    <ul class="nav nav-pills nav-justified">
-                        <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/friends}">Znajomi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/blocked}">Zablokowani</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3">
-                                    <table class="table bordered table-hover mb-0" id="testTable">
-                                        <!-- Table head -->
-                                        <thead>
-                                        <tr class="table-fixed">
-                                            <th>Avatar</th>
-                                            <th>Imię</th>
-                                            <th>Nazwisko</th>
-                                            <th>Akcje</th>
-                                        </tr>
-                                        </thead>
-                                        <!-- Table head -->
-
-                                        <!-- Table body -->
-                                        <tbody>
-                                        <tr th:each="friend :${friends}">
-                                            <td class="p-1">
-                                                <img th:src="${friend.avatarUrl}"
-                                                     onError="this.onerror=null;this.src='/img/default-avatar.png'"
-                                                     class="rounded-circle z-depth-0"
-                                                     alt="avatar image" height="50" width="50">
-                                            </td>
-                                            <td th:text="${friend.firstName}"></td>
-                                            <td th:text="${friend.lastName}"></td>
-                                            <td style="padding: 0.5rem">
-                                                <form autocomplete="off" action="#" th:action="@{/friends/delete}"
-                                                      th:object="${deleteFriend}" method="post"
-                                                      class="text-center"
-                                                      role="form">
-                                                    <div class="md-form my-0">
-                                                        <!--                                                        <label th:if="${#fields.hasErrors('email')}"-->
-                                                        <!--                                                               th:errors="*{email}"-->
-                                                        <!--                                                               class="validation-message"></label>-->
-                                                        <input type="hidden" th:attr="name=id" class="form-control"
-                                                               th:value="${friend.id}"/>
-                                                        <div class="form-group">
-                                                            <button type="submit" class="btn btn-danger btn-sm">Usuń
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-
-                                            </td>
-                                        </tr>
-
-
-                                        </tbody>
-                                        <!-- Table body -->
-                                    </table>
-                                    <!-- Table  -->
-                                </div>
-                            </div>
-                            <div class="col-md-5 my-3 px-0">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card mb-3">
-                                                <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Zaproś nowego znajomego</strong>
-                                                </h5>
-                                                <div class="card-body px-lg-5 py-0 ">
-                                                    <form autocomplete="off" action="#" th:action="@{/friends/add}"
-                                                          th:object="${addFriendDto}" method="post"
-                                                          class="text-center"
-                                                          role="form">
-                                                        <div class="md-form my-0">
-                                                            <input type="text" th:field="*{email}" placeholder="*Email"
-                                                                   class="form-control"/>
-
-                                                            <div class="form-group">
-                                                                <button type="submit"
-                                                                        class="btn btn-blue my-2 waves-effect z-depth-0">
-                                                                    Zaproś
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <label th:if="${#fields.hasErrors('email')}"
-                                                               th:errors="*{email}"
-                                                               class="validation-message"></label>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <!--<strong class="h4 flex-grow-1 px-2 m-auto">Znajomi</strong>-->
+                    <div class="flex-grow-1 mr-auto my-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle h4 px-2 my-0 p-0 text-white" data-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false">Znajomi</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" th:href="@{/blocked}">Zablokowane maile</a>
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <button class="btn green btn-sm" type="button" data-toggle="modal" data-target="#invite">
+                            Zaproś znajomego
+                            <i class="fas fa-plus "></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body px-lg-5 pt-0 mt-3">
+
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
+                        <table class="table bordered table-hover mb-0" id="testTable">
+                            <!-- Table head -->
+                            <thead>
+                            <tr class="table-fixed">
+                                <th>Avatar</th>
+                                <th>Imię</th>
+                                <th>Nazwisko</th>
+                                <th>Usuń</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody>
+                            <tr th:each="friend :${friends}">
+                                <td class="py-0 px-3">
+                                    <img th:src="${friend.avatarUrl}"
+                                         onError="this.onerror=null;this.src='/img/default-avatar.png'"
+                                         class="rounded-circle z-depth-0"
+                                         alt="avatar image" height="50" width="50">
+                                </td>
+                                <td th:text="${friend.firstName}"></td>
+                                <td th:text="${friend.lastName}"></td>
+                                <td class="px-0 py-1">
+                                    <form autocomplete="off" action="#" th:action="@{/friends/delete}"
+                                          th:object="${deleteFriend}" method="post"
+                                          role="form">
+                                        <div class="md-form my-0">
+                                            <input type="hidden" th:attr="name=id" class="form-control" th:value="${friend.id}"/>
+                                            <button type="submit" class="text-white btn red lighten-1 btn-sm">Usuń</button>
+                                        </div>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
+                    </div>
                 </div>
             </div>
-            <div th:replace="common/footer :: footer"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
 </body>
 </html>

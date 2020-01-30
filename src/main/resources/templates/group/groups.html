@@ -2,7 +2,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -28,8 +27,7 @@
 <div th:replace="common/header :: header"></div>
 
 <!-- Central Modal Small -->
-<div class="modal fade" id="centralModalSm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="centralModalSm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
     <!-- Change class .modal-sm to change the size of the modal -->
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -46,7 +44,7 @@
                 <div class="text-center">
 
                     <!-- Email -->
-                    <div class="md-form p-3">
+                    <div class="md-form pb-3">
                         <input type="text" th:field="*{name}" class="form-control" id="groupName"
                                placeholder="*Nazwa grupy" required/>
                         <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
@@ -93,8 +91,8 @@
                         <!-- Table  -->
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn light-blue lighten-1 btn-sm text-white">Utwórz Grupę</button>
-                        <button type="button" class="btn btn-orange btn-sm" data-dismiss="modal">Wróć</button>
+                        <button type="submit" class="btn green btn-sm text-white">Utwórz Grupę</button>
+                        <button type="button" class="btn orange btn-sm " data-dismiss="modal">Wróć</button>
                     </div>
                 </div>
             </form>
@@ -104,13 +102,12 @@
 <!-- Central Modal Small -->
 
 <div class="container">
-    <div class="row mx-sm-4 my-lg-0">
-        <div class="col-sm-12">
-            <div class="card my-5">
-
+    <div class="row mx-sm-2 my-lg-0">
+        <div class="col-12">
+            <div class="card my-4">
                 <div class="card-header blue lighten-1 white-text d-flex">
                     <strong class="h4 flex-grow-1 px-2 m-auto">Moje grupy</strong>
-                    <button class="btn orange btn-sm" type="button" data-toggle="modal" data-target="#centralModalSm">
+                    <button class="btn green btn-sm" type="button" data-toggle="modal" data-target="#centralModalSm">
                         Dodaj Grupę
                         <i class="fas fa-plus "></i>
                     </button>
