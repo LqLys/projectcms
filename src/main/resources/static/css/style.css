@@ -94,9 +94,21 @@ nav {
 }
 
 .main-page-description{
-    -webkit-text-stroke-width: medium;
-    -webkit-text-stroke-color: indianred;
-    letter-spacing: 0.04em;
+    -webkit-text-stroke-width: thin;
+    letter-spacing: 0.03em;
+}
+
+.bulletpoints{
+    max-width: fit-content;
+    text-align: left;
+    margin: auto;
+    list-style-type: none;
+    color: #42a5f5;
+    line-height: 2em;
+}
+
+.bulletpoints li:before {
+    content: "\2023";
 }
 
 .invalid-feedback{
