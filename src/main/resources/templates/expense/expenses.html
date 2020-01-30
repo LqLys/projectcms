@@ -92,7 +92,7 @@
                                 </td>
                                 <td class="px-0 py-1">
                                     <div class="md-form my-0">
-                                        <button class="btn green btn-sm" type="button" data-toggle="modal" data-target="#centralModalSm">Spłać
+                                        <button th:if="${balance.getAmount() < 0}" class="btn green btn-sm" type="button" data-toggle="modal" data-target="#centralModalSm">Spłać
                                             <i class="fas fa-hand-holding-usd pl-1"></i>
                                         </button>
                                     </div>
