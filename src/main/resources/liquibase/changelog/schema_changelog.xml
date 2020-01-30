@@ -15,10 +15,10 @@
                 <constraints primaryKey="true" primaryKeyName="PK_USER"/>
             </column>
             <column name="FIRST_NAME" type="varchar2(255)">
-                <constraints unique="true" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="LAST_NAME" type="varchar2(255)">
-                <constraints unique="true" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="PASSWORD" type="varchar2(255)">
                 <constraints nullable="false"/>
@@ -320,25 +320,6 @@
              </column>
          </addColumn>
      </changeSet>
-
-     <changeSet id="unique_constraints_drop_user" author="lq">
-         <addUniqueConstraint tableName="USERS" columnNames="FIRST_NAME" constraintName="FIRST_NAME_UC"/>
-         <addUniqueConstraint tableName="USERS" columnNames="LAST_NAME" constraintName="LAST_NAME_UC"/>
-     </changeSet>
-
-     <changeSet id="unique_constraints_drop_user_002" author="lq">
-         <dropUniqueConstraint tableName="USERS" constraintName="FIRST_NAME_UC"/>
-         <dropUniqueConstraint tableName="USERS" constraintName="LAST_NAME_UC"/>
-     </changeSet>
-
-     <changeSet id="unique_constraints_drop_user_003" author="lq">
-         <dropUniqueConstraint tableName="USERS" constraintName="users_first_name_key"/>
-         <dropUniqueConstraint tableName="USERS" constraintName="users_last_name_key"/>
-     </changeSet>
-
-
-
-
 
 
 </databaseChangeLog>
