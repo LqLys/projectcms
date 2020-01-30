@@ -115,14 +115,13 @@ public class AuthenticationController {
                 .build();
     }
 
-    @PostMapping(value = "/edit-profile")
+    @PostMapping(value = "/profile")
     public ModelAndView editProfile(@Valid EditProfileDto editProfileDto, BindingResult bindingResult, ModelAndView modelAndView, HttpServletRequest request) {
         final UserEntity authenticatedUser = userService.getAuthenticatedUser();
 
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("profile");
-            final EditProfileDto editProfileDto1 = userEntityToProfileDto(authenticatedUser);
-            modelAndView.addObject("editProfileDto", editProfileDto1);
+
         } else {
             request.getSession().setAttribute("AVATAR_URL", editProfileDto.getAvatarUrl());
             userService.editUser(authenticatedUser, editProfileDto);

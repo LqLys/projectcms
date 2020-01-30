@@ -331,6 +331,11 @@
          <dropUniqueConstraint tableName="USERS" constraintName="LAST_NAME_UC"/>
      </changeSet>
 
+     <changeSet id="unique_constraints_drop_user_003" author="lq">
+         <dropUniqueConstraint tableName="USERS" constraintName="users_first_name_key"/>
+         <dropUniqueConstraint tableName="USERS" constraintName="users_last_name_key"/>
+     </changeSet>
+
 
 
 
