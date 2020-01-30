@@ -58,7 +58,7 @@ public class ExpenseFacade {
     public void createExpense(CreateExpenseParticipants createExpenseRequest, UserEntity authenticatedUser) {
 
         final BigDecimal averageAmount = createExpenseRequest.getTotalAmount()
-                .divide(BigDecimal.valueOf(createExpenseRequest.getDebtors().size() + 1), RoundingMode.HALF_UP);
+                .divide(BigDecimal.valueOf(createExpenseRequest.getDebtors().size() + 1), 2, RoundingMode.HALF_UP);
         final BigDecimal debtorsInput = createExpenseRequest.getDebtors().stream()
                 .map(ExpenseParticipantDto::getAmount)
                 .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
@@ -99,7 +99,7 @@ public class ExpenseFacade {
     }
     private BigDecimal getParticipationAmount(BigDecimal amountBelowAvg, int nrOfMembersAbove){
         int denominator = nrOfMembersAbove > 0 ? nrOfMembersAbove : 1;
-        return amountBelowAvg.divide(BigDecimal.valueOf(denominator), RoundingMode.HALF_UP);
+        return amountBelowAvg.divide(BigDecimal.valueOf(denominator), 2, RoundingMode.HALF_UP);
     }
 
     private ExpenseParticipantEntity mapToExpenseParticipant(Long lenderId, Long debtorId, BigDecimal amount, ExpenseEntity expense,
