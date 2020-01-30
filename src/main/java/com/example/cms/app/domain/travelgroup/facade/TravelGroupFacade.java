@@ -50,7 +50,7 @@ public class TravelGroupFacade {
     public void createTravelGroup(CreateTravelGroupRequest createTravelGroupRequest, UserEntity user) {
 
         TravelGroupEntity travelGroup = TravelGroupEntity.builder()
-                .name(createTravelGroupRequest.getName())
+                .name(createTravelGroupRequest.getGroupName())
                 .groupStatus(GroupStatus.CREATED)
                 .groupVisibility(GroupVisibility.PRIVATE)
                 .build();

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,6 +62,7 @@ public class UserService {
         return userRepository.findAllByIdIn(debtors);
     }
 
+    @Transactional
     public void editUser(UserEntity authenticatedUser, EditProfileDto editProfileDto) {
         authenticatedUser.setAvatarUrl(editProfileDto.getAvatarUrl());
         authenticatedUser.setFirstName(editProfileDto.getFirstName());

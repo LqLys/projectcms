@@ -70,7 +70,7 @@ public class TravelGroupController {
         return modelAndView;
     }
 
-    @PostMapping(path = "")
+    @PostMapping(path = "/group-add")
     public ModelAndView createGroup(@Valid CreateTravelGroupRequest createTravelGroupRequest,
                                     BindingResult bindingResult, ModelAndView modelAndView){
         UserEntity user = userService.getAuthenticatedUser();

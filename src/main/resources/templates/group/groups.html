@@ -39,14 +39,14 @@
                 </button>
             </div>
 
-            <form class="modal-body" autocomplete="off" action="#" th:action="@{/group}" th:object="${newTravelGroup}" method="post" role="form">
+            <form class="modal-body" autocomplete="off" action="#" th:action="@{/group/group-add}" th:object="${newTravelGroup}" method="post" role="form">
                 <div class="text-center">
 
                     <!-- Email -->
                     <div class="md-form pb-3">
-                        <input type="text" th:field="*{name}" class="form-control" id="groupName"
+                        <input type="text" th:field="*{groupName}" class="form-control" id="groupName"
                                placeholder="*Nazwa grupy" required/>
-                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                        <label th:if="${#fields.hasErrors('groupName')}" th:errors="*{groupName}"
                                class="validation-message" for="groupName"></label>
                     </div>
                     <!-- Table  -->
