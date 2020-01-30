@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +32,7 @@ public class TravelGroupEntity {
     @Id
     private Long id;
 
+    @Size(min = 3, max = 50, message = "Nazwa grupy może składać się z 3 do 50 znaków")
     @Column(name = "NAME")
     private String name;
 
