@@ -19,7 +19,7 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
     <!-- DataTables JS -->
-    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}" ></script>
+    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}"></script>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
@@ -38,14 +38,17 @@
             </div>
 
 
-            <form class="modal-body" autocomplete="off" action="#" th:action="@{/expenses/pay}" th:object="${payDebtDto}" method="post" role="form">
+            <form class="modal-body" autocomplete="off" action="#" th:action="@{/expenses/pay}"
+                  th:object="${payDebtDto}" method="post" role="form">
                 <div class="text-center">
                     <!-- Email -->
-                    <input type="text" th:field="*{lenderEmail}" placeholder="Email" class="form-control" id="lenderEmail" readonly/>
+                    <input type="text" th:field="*{lenderEmail}" placeholder="Email" class="form-control"
+                           id="lenderEmail" readonly/>
 
                     <div class="md-form pb-1">
                         <label for="lenderAmount">Kwota</label>
-                        <input type="number" step="0.01" th:field="*{amount}" placeholder="Kwota" class="form-control" id="lenderAmount"/>
+                        <input type="number" step="0.01" th:field="*{amount}" placeholder="Kwota" class="form-control"
+                               id="lenderAmount"/>
                     </div>
                     <button type="submit" class="btn green btn-sm text-white mx-5">Spłać</button>
                     <button type="button" class="btn orange btn-sm text-white mx-5" data-dismiss="modal">Wróć</button>
@@ -59,9 +62,13 @@
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
             <div class="card my-4">
-                <div class="card-header blue lighten-1 white-text d-flex">
-                    <strong class="h4 flex-grow-1 px-2 m-auto">Wydatki</strong>
-                    <h3><span class="badge " th:classappend="${totalBalance >= 0} ? 'badge-success' : 'badge-danger'" th:text="${'Bilans ogólny:  ' + totalBalance + ' zł'}"></span></h3>
+                <div class="card-header blue lighten-1 white-text d-flex p-2">
+                    <strong class="h4 flex-grow-1 px-2 m-0">Wydatki</strong>
+                    <h4 class="m-0">
+                        <span class="px-2 py-1 " th:classappend="${totalBalance >= 0} ? 'badge-success' : 'badge-danger'"
+                              th:text="${'Bilans ogólny:  ' + totalBalance + ' zł'}">
+                        </span>
+                    </h4>
                 </div>
 
                 <!--Card content-->
@@ -87,12 +94,14 @@
                                 <td th:text="${balance.getRelatedUser()}" th:class="related-email"></td>
                                 <td th:text="${balance.getAmount()}" hidden></td>
                                 <td>
-                                    <h5 th:classappend="${balance.getAmount() >= 0} ? text-info : text-danger" th:text="${balance.getAmount() + ' zł'}"
+                                    <h5 th:classappend="${balance.getAmount() >= 0} ? text-info : text-danger"
+                                        th:text="${balance.getAmount() + ' zł'}"
                                         class="related-balance">></h5>
                                 </td>
                                 <td class="px-0 py-1">
                                     <div class="md-form my-0">
-                                        <button th:if="${balance.getAmount() < 0}" class="btn green btn-sm" type="button" data-toggle="modal" data-target="#centralModalSm">Spłać
+                                        <button th:if="${balance.getAmount() < 0}" class="btn green btn-sm"
+                                                type="button" data-toggle="modal" data-target="#centralModalSm">Spłać
                                             <i class="fas fa-hand-holding-usd pl-1"></i>
                                         </button>
                                     </div>
@@ -108,18 +117,17 @@
 </div>
 
 <script>
-    $( document ).ready(function(){
+    $(document).ready(function () {
         const balanceRows = $('.balanceRow');
         console.log(balanceRows);
         const userBalance = [];
         var lenderEmail = $('#lenderEmail');
         var lenderAmount = $('#lenderAmount');
-        for(var i = 0; i < balanceRows.length; i++){
+        for (var i = 0; i < balanceRows.length; i++) {
             const row = balanceRows[i];
             // const userId = $(row).find('.related-id')
             // const userEmail = $(row).find('.related-email')
             // const ammount = +$(row).find('.related-balance')
-
 
 
             const userId = row.children[0].innerText;
@@ -129,7 +137,7 @@
             console.log('email: ', userEmail);
             console.log('balance: ', ammount);
             userBalance[userEmail] = -ammount;
-            if(ammount < 0) {
+            if (ammount < 0) {
                 balanceRows[i].addEventListener('click', function () {
 
                     lenderEmail.val(userEmail);
@@ -144,13 +152,13 @@
                 })
             }
         }
-        lenderAmount[0].addEventListener('input', function() {
+        lenderAmount[0].addEventListener('input', function () {
             var invalid = +lenderAmount.val() > +userBalance[lenderEmail.val()];
             console.log(invalid);
             var payBtn = $("#paybtn");
-            if(invalid){
+            if (invalid) {
                 payBtn.prop('disabled', true);
-            }else{
+            } else {
                 payBtn.removeAttr('disabled');
             }
         })

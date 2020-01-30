@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dane użytkownika</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>On the Way</title>
+    <!-- MDB icon -->
+    <link rel="icon" th:href="@{/img/mdb-favicon.ico}" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" th:href="@{/css/addons/datatables.min.css}"/>
+    <!-- DataTables JS -->
+    <script rel="stylesheet" th:href="@{/js/addons/datatables.min.js}"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:replace="common/header :: header"></div>
+
+<div class="container">
+    <div class="row justify-content-center align-middle my-5">
+        <div class="form-horizontal jumbotron text-center border border-light p-5 justify-content-center d-flex flex-column">
+            <h2 class="h2 my-4">Wystąpił nieoczekiwany błąd</h2>
+            <a>
+                <button class="btn blue lighten-1 text-white" href="/">Wróć do strony głównej</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="common/footer :: footer"></div>
+
+</body>
+</html>

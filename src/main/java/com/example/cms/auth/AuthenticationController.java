@@ -11,11 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -61,13 +59,12 @@ public class AuthenticationController {
     @RequestMapping(value="/registration", method = RequestMethod.GET)
     public ModelAndView registration(ModelAndView modelAndView){
         modelAndView.addObject("registerUserDto", new RegisterUserDto());
-
         modelAndView.setViewName("registration");
         return modelAndView;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid RegisterUserDto registerUserDto, BindingResult bindingResult, ModelAndView modelAndView) {
+    public ModelAndView createNewUser(@Valid RegisterUserDto registerUserDto, BindingResult bindingResult, ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
         UserEntity userExists = userService.findUserByEmail(registerUserDto.getEmail());
         if (userExists != null) {
             bindingResult.rejectValue("email", "error.userEntity",
@@ -83,10 +80,9 @@ public class AuthenticationController {
                     .password(registerUserDto.getPassword())
                     .build();
             userService.saveUser(newUser);
-            modelAndView.addObject("successMessage", "Użytkownik pomyślnie zarejestrowany");
-            modelAndView.addObject("registerUser", new RegisterUserDto());
-            modelAndView.setViewName("registration");
-
+            modelAndView.setViewName("redirect:/login");
+            redirectAttributes.addFlashAttribute("successMessage", "Użytkownik zarejestrowany pomyślnie, możesz się zalogować.");
+            redirectAttributes.addFlashAttribute("registered", true);
         }
         return modelAndView;
     }
@@ -166,6 +162,13 @@ public class AuthenticationController {
             modelAndView.setViewName("profile");
         }
         return modelAndView;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleError(HttpServletRequest req, Exception ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("error-page");
+        return mav;
     }
 
 

@@ -41,10 +41,21 @@
     </div>
 </div>
 <main class="clamp-width m-auto">
-    <h1 class="h1 mx-3 my-5 text-center main-page-description">
-        Chcesz wyjechać, ale nie masz z kim?
-        Jesteś w odpowiednim miejscu.
-        Wybierz podróż i zwiedzaj świat z wspaniałymi ludźmi!
+    <h1 class="h2 mx-3 my-5 text-center main-page-description">
+        <ul class="bulletpoints">
+            <li>
+                Zaplanuj wycieczkę życia
+            </li>
+            <li>
+                Zaproś znajomych
+            </li>
+            <li>
+                Przegłosuj szczegóły
+            </li>
+            <li>
+                Rozlicz wydatki w trakcie wycieczki
+            </li>
+        </ul>
     </h1>
 </main>
 <section class="container-fluid clamp-width my-2 my-xl-0">
@@ -52,7 +63,8 @@
         <div class="col-lg-6 col-xl-4 my-2 px-2" th:each="group: ${availableTravelGroups}">
             <a th:href="@{/group/details/__${group.id}__}" class="public-group-cell d-block h-100 d-flex flex-column">
                 <h3 class="h3" th:text="${group.name}"></h3>
-                <h5 class="h4 public-group-cell-destination" th:text="${(group.destination != '' ? group.destination : '?')}"></h5>
+                <h5 class="h4 public-group-cell-destination"
+                    th:text="${(group.destination != '' ? group.destination : '?')}"></h5>
                 <figure class="public-group-cell-image">
                     <img th:src="${group.imgUrl}"
                          onError="this.onerror=null;this.src='/img/map.png'"

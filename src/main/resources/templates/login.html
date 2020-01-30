@@ -51,8 +51,11 @@
                 <button class="btn blue text-white my-4" type="submit">Zaloguj</button>
 
                 <div class="d-flex justify-content-around">
-                    <div>
+                    <div th:if="${registered == null}">
                         <a th:href="@{/registration}">Zarejestruj</a>
+                    </div>
+                    <div th:if="${registered}" class="valid-feedback">
+                        <p th:text="${successMessage}"></p>
                     </div>
                 </div>
             </form>
