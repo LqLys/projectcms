@@ -9,19 +9,19 @@ import com.example.cms.app.domain.relation.entity.RelationEntity;
 import com.example.cms.app.domain.role.entity.RoleEntity;
 import com.example.cms.app.domain.travelgroup.entity.TravelGroupEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "USERS")
 public class UserEntity {
 
