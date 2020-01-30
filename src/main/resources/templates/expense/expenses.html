@@ -24,27 +24,58 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-
 <div th:replace="common/header :: header"></div>
 
+<div class="modal fade" id="centralModalSm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header light-blue lighten-1">
+                <h5 class="modal-title w-100 text-white" id="myModalLabel">Spłacanie długu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-<div class="container-fluid">
-    <div class="row mx-sm-4 my-lg-0">
-        <div class="col-sm-7">
-            <!-- Material form login -->
-            <div class="card my-3">
 
-                <h5 class="card-header blue darken-2 white-text text-center py-3">
-                    <strong>Znajomi bilans</strong>
-                </h5>
+            <form class="modal-body" autocomplete="off" action="#" th:action="@{/expenses/pay}" th:object="${payDebtDto}" method="post" role="form">
+                <div class="text-center">
+                    <!-- Email -->
+                    <input type="text" th:field="*{lenderEmail}" placeholder="Email" class="form-control" id="lenderEmail" readonly/>
 
-                <div class="card-body px-lg-5 pt-0">
+                    <div class="md-form pb-1">
+                        <label for="lenderAmount">Kwota</label>
+                        <input type="number" th:field="*{amount}" placeholder="Kwota" class="form-control" id="lenderAmount"/>
+                    </div>
+                    <button type="submit" class="btn green btn-sm text-white mx-5">Spłać</button>
+                    <button type="button" class="btn orange btn-sm text-white mx-5" data-dismiss="modal">Wróć</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mx-sm-2 my-lg-0">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <strong class="h4 flex-grow-1 px-2 m-auto">Wydatki</strong>
+                    <h3><span class="badge " th:classappend="${totalBalance >= 0} ? 'badge-success' : 'badge-danger'" th:text="${'Bilans ogólny:  ' + totalBalance + ' zł'}"></span></h3>
+                </div>
+
+                <!--Card content-->
+                <div class="card-body px-lg-5 pt-0 mt-3">
+
+                    <!-- Table  -->
                     <div class="table-wrapper-scroll-y my-custom-scrollbar">
                         <table class="table table bordered table-hover" id="myGroups">
+                            <!-- Table head -->
                             <thead>
                             <tr>
                                 <th>Znajomy</th>
                                 <th>Bilans</th>
+                                <th>Spłać dług</th>
                             </tr>
                             </thead>
                             <!-- Table head -->
@@ -56,8 +87,15 @@
                                 <td th:text="${balance.getRelatedUser()}" th:class="related-email"></td>
                                 <td th:text="${balance.getAmount()}" hidden></td>
                                 <td>
-                                   <h5 th:classappend="${balance.getAmount() >= 0} ? text-info : text-danger" th:text="${balance.getAmount() + ' zł'}"
-                                       class="related-balance">></h5>
+                                    <h5 th:classappend="${balance.getAmount() >= 0} ? text-info : text-danger" th:text="${balance.getAmount() + ' zł'}"
+                                        class="related-balance">></h5>
+                                </td>
+                                <td class="px-0 py-1">
+                                    <div class="md-form my-0">
+                                        <button class="btn green btn-sm" type="button" data-toggle="modal" data-target="#centralModalSm">Spłać
+                                            <i class="fas fa-hand-holding-usd pl-1"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -66,204 +104,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-5">
-            <div class="card my-3">
-                <h5 class="card-header text-white text-center py-3" th:classappend="${totalBalance >= 0} ? green : red">
-                    <strong th:text="${'BILANS OGÓLNY:  ' + totalBalance + ' zł'}"></strong>
-                </h5>
-            </div>
-            <!-- Material form login -->
-            <div class="card my-3">
-
-                <h5 class="card-header blue darken-2 white-text text-center py-3">
-                    <strong>Spłać dług</strong>
-                </h5>
-
-                <div class="card-body px-lg-5 pt-0">
-                    <form autocomplete="off" action="#" th:action="@{/expenses/pay}"
-                          th:object="${payDebtDto}" method="post" class="form-horizontal"
-                          role="form">
-                    <div class="form-row mb-4 pt-4">
-                        <div class="col">
-                            <!-- First name -->
-                            <input type="text" th:field="*{lenderEmail}" placeholder="Email" class="form-control" id="lenderEmail" readonly/>
-                        </div>
-                        <div class="col">
-                            <!-- Last name -->
-                            <input type="number"  th:field="*{amount}" placeholder="Kwota" class="form-control" id="lenderAmount"/>
-                        </div>
-                    </div>
-                    <hr>
-                    <button class="btn btn-blue my-4 waves-effect z-depth-0" type="submit" id="paybtn">Wyślij</button>
-                    </form>
-                </div>
-            </div>
-            <!--<div class="card my-3">-->
-
-                <!--<h5 class="card-header blue darken-2 white-text text-center py-3">-->
-                    <!--<strong>Nowy Wydatek</strong>-->
-                <!--</h5>-->
-
-                <!--<div class="card-body px-lg-5 pt-0">-->
-                    <!--<div class="form-row mb-4 pt-4">-->
-                        <!--<div class="col">-->
-                            <!--&lt;!&ndash; First name &ndash;&gt;-->
-                            <!--<input type="text" placeholder="Tytuł" class="form-control" />-->
-                        <!--</div>-->
-                        <!--<div class="col">-->
-                            <!--&lt;!&ndash; Last name &ndash;&gt;-->
-                            <!--<input type="text"  placeholder="Kwota" class="form-control" />-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<input placeholder="Opis" class="form-control mb-4" />-->
-                    <!--<hr>-->
-                    <!--<div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">-->
-                        <!--<table class="table bordered table-hover mb-0" id="testTable">-->
-                            <!--&lt;!&ndash; Table head &ndash;&gt;-->
-                            <!--<thead>-->
-                            <!--<tr class="table-fixed">-->
-                                <!--<th>Znajomy</th>-->
-                                <!--<th>Uczestnik Wydatku</th>-->
-                            <!--</tr>-->
-                            <!--</thead>-->
-                            <!--&lt;!&ndash; Table head &ndash;&gt;-->
-
-                            <!--&lt;!&ndash; Table body &ndash;&gt;-->
-                            <!--<tbody id="members">-->
-                            <!--<tr>-->
-                                <!--<td >Jacek Placek</td>-->
-                                <!--<td>-->
-                                    <!--<div class="custom-control custom-checkbox">-->
-                                        <!--<input type="checkbox" class="custom-control-input" id="defaultChecked2" checked>-->
-                                        <!--<label class="custom-control-label" for="defaultChecked2"></label>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                            <!--</tr>-->
-                            <!--</tbody>-->
-                            <!--&lt;!&ndash; Table body &ndash;&gt;-->
-                        <!--</table>-->
-                        <!--&lt;!&ndash; Table  &ndash;&gt;-->
-                    <!--</div>-->
-                    <!--<button class="btn btn-blue my-4 waves-effect z-depth-0" type="submit">Utworz</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        </div>
     </div>
 </div>
-
-
-
-<!--<div class="container">-->
-    <!--<div class="row">-->
-        <!--<h2 th:text="${'Total balance: ' + totalBalance}"></h2>-->
-    <!--</div>-->
-    <!--<div class="row">-->
-        <!--<div>-->
-            <!--<ul class="nav nav-pills nav-justified">-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" th:href="@{/group/details/1/members}">Uczestnicy</a>-->
-                <!--</li>-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" th:href="@{/group/details/1}">Szczegóły</a>-->
-                <!--</li>-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" th:href="@{/group/details/1/planning}">Planowanie</a>-->
-                <!--</li>-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link active" th:href="@{/group/details/1/expenses}">Wydatki</a>-->
-                <!--</li>-->
-                <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" th:href="@{/group/details/1/chat}">Chat</a>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="row">-->
-        <!--<div class="col-sm-8">-->
-            <!--<h3>ja mam zapłacic innym</h3>-->
-            <!--<table class="table">-->
-
-                <!--<tbody>-->
-                <!--<tr th:each="exp :${userHasToPay}" style="font-size: x-large">-->
-
-                    <!--<td th:text="${exp.userId}"></td>-->
-                    <!--<td th:text="${exp.getRelatedUser()}"></td>-->
-                    <!--<td th:text="${exp.getAmount()}"></td>-->
-
-                <!--</tr>-->
-
-                <!--</tbody>-->
-            <!--</table>-->
-            <!--<h3>inni mają mi zapłacic</h3>-->
-            <!--<table class="table">-->
-
-                <!--<tbody>-->
-                <!--<tr th:each="expense :${othersHaveToPay}" style="font-size: x-large">-->
-                    <!--<td th:text="${expense.userId}"></td>-->
-                    <!--<td th:text="${expense.getRelatedUser()}"></td>-->
-                    <!--<td th:text="${expense.getAmount()}"></td>-->
-
-                <!--</tr>-->
-
-                <!--</tbody>-->
-            <!--</table>-->
-            <!--<h3>balans</h3>-->
-            <!--<table class="table">-->
-
-                <!--<tbody>-->
-                <!--<tr th:each="balance :${finalUserBalance}" style="font-size: x-large" class="balanceRow">-->
-                    <!--<td th:text="${balance.userId}"></td>-->
-                    <!--<td th:text="${balance.getRelatedUser()}"></td>-->
-                    <!--<td th:text="${balance.getAmount()}"></td>-->
-                <!--</tr>-->
-
-                <!--</tbody>-->
-            <!--</table>-->
-        <!--</div>-->
-        <!--<div class="col-sm-4">-->
-            <!--<div>-->
-                <!--<form autocomplete="off" action="#" th:action="@{/expenses/pay}"-->
-                      <!--th:object="${payDebtDto}" method="post" class="form-horizontal"-->
-                      <!--role="form">-->
-                    <!--<h2>Spłać dług</h2>-->
-                    <!--<div class="form-group">-->
-                        <!--<div class="col-sm-9">-->
-                            <!--<label th:if="${#fields.hasErrors('lenderEmail')}" th:errors="*{lenderEmail}"-->
-                                   <!--class="validation-message"></label>-->
-                            <!--<input type="text" th:field="*{lenderEmail}" placeholder="email" id="lenderEmail" readonly-->
-                                   <!--class="form-control"/>-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-9">-->
-                            <!--<label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"-->
-                                   <!--class="validation-message"></label>-->
-                            <!--<input type="text" th:field="*{amount}" placeholder="kwota" id="lenderAmount"-->
-                                   <!--class="form-control"/>-->
-                        <!--</div>-->
-
-
-                    <!--</div>-->
-
-
-                    <!--<div class="form-group">-->
-                        <!--<div class="col-sm-9">-->
-                            <!--<button type="submit" class="btn btn-primary" id="paybtn">Zapłać!</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--&lt;!&ndash;<span th:utext="${successMessage}"></span>&ndash;&gt;-->
-
-
-                <!--</form>-->
-            <!--</div>-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
 
 <script>
     $( document ).ready(function(){
         const balanceRows = $('.balanceRow');
-        console.log(balanceRows)
+        console.log(balanceRows);
         const userBalance = [];
         var lenderEmail = $('#lenderEmail');
         var lenderAmount = $('#lenderAmount');
@@ -311,5 +158,13 @@
 
 </script>
 
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
 </body>
 </html>
