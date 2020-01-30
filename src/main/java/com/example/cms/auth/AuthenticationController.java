@@ -3,6 +3,7 @@ import com.example.cms.app.domain.travelgroup.dto.TravelGroupDto;
 import com.example.cms.app.domain.travelgroup.facade.TravelGroupFacade;
 import com.example.cms.app.domain.user.dto.ChangePasswordDto;
 import com.example.cms.app.domain.user.dto.EditProfileDto;
+import com.example.cms.app.domain.user.dto.RegisterUserDto;
 import com.example.cms.app.domain.user.entity.UserEntity;
 import com.example.cms.app.domain.user.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -59,16 +60,15 @@ public class AuthenticationController {
 
     @RequestMapping(value="/registration", method = RequestMethod.GET)
     public ModelAndView registration(ModelAndView modelAndView){
-        UserEntity userEntity = new UserEntity();
-        modelAndView.addObject("userEntity", userEntity);
+        modelAndView.addObject("registerUserDto", new RegisterUserDto());
 
         modelAndView.setViewName("registration");
         return modelAndView;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid UserEntity userEntity, BindingResult bindingResult, ModelAndView modelAndView) {
-        UserEntity userExists = userService.findUserByEmail(userEntity.getEmail());
+    public ModelAndView createNewUser(@Valid RegisterUserDto registerUserDto, BindingResult bindingResult, ModelAndView modelAndView) {
+        UserEntity userExists = userService.findUserByEmail(registerUserDto.getEmail());
         if (userExists != null) {
             bindingResult.rejectValue("email", "error.userEntity",
                             "Użytkownik o takim adresie email został już zarejestrowany");
@@ -76,9 +76,15 @@ public class AuthenticationController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
         } else {
-            userService.saveUser(userEntity);
+            final UserEntity newUser = UserEntity.builder()
+                    .firstName(registerUserDto.getFirstName())
+                    .lastName(registerUserDto.getLastName())
+                    .email(registerUserDto.getEmail())
+                    .password(registerUserDto.getPassword())
+                    .build();
+            userService.saveUser(newUser);
             modelAndView.addObject("successMessage", "Użytkownik pomyślnie zarejestrowany");
-            modelAndView.addObject("userEntity", new UserEntity());
+            modelAndView.addObject("registerUser", new RegisterUserDto());
             modelAndView.setViewName("registration");
 
         }
