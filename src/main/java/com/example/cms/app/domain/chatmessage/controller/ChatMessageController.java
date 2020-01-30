@@ -23,6 +23,9 @@ public class ChatMessageController {
     @Value("${api.base-url}")
     private String API_BASE;
 
+    @Value("${websocket.prefix}")
+    private String WS_PREFIX;
+
 
     private final ChatMessageFacade chatMessageFacade;
     private final UserService userService;
@@ -47,6 +50,7 @@ public class ChatMessageController {
         modelAndView.addObject("groupName", groupName);
         modelAndView.addObject("groupId", groupId);
         modelAndView.addObject("apiBase", API_BASE);
+        modelAndView.addObject("WS_PREFIX", WS_PREFIX);
         return modelAndView;
 
     }

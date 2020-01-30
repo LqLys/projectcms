@@ -25,3 +25,9 @@ spring:
 
 api:
   base-url: "http://localhost:8080"
+
+google:
+  maps-key: "apiKey"
+
+websocket:
+  prefix: "ws"

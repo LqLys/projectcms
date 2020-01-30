@@ -36,6 +36,9 @@ public class TravelGroupController {
     @Value("${api.base-url}")
     private String API_BASE;
 
+    @Value("${google.maps-key}")
+    private String MAPS_KEY;
+
     private final TravelGroupFacade travelGroupFacade;
     private final GroupInviteFacade groupInviteFacade;
     private final UserService userService;
@@ -191,6 +194,7 @@ public class TravelGroupController {
         modelAndView.addObject("travelGroupDto", travelGroupDto);
         modelAndView.addObject("groupId", groupId);
         modelAndView.addObject("viewerIsOrganizer", viewerIsOrganizer);
+        modelAndView.addObject("MAPS_KEY", MAPS_KEY);
         return modelAndView;
     }
     @PostMapping(path = "/details/edit")

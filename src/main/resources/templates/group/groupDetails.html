@@ -192,7 +192,7 @@
 
                                 </script>
                                 <script th:inline="javascript" async="async" defer="defer"
-                                        src="https://maps.googleapis.com/maps/api/js?key=apikey&callback=initMap"></script>
+                                        th:src="${'https://maps.googleapis.com/maps/api/js?key=' + MAPS_KEY + '&callback=initMap'}"></script>
                             </div>
                         </div>
                     </div>
