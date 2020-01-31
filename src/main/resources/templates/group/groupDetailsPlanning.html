@@ -26,144 +26,137 @@
 <body>
 <div th:replace="common/header :: header"></div>
 
-<div class="container-fluid">
+<div class="modal fade" id="invite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header light-blue lighten-1">
+                <h5 class="modal-title w-100 text-white" id="myModalLabel">Nowa Ankieta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+            <form class="modal-body" autocomplete="off" action="#">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3" style="max-height: 40vh; min-height: 40vh">
+                    <div class="md-form my-0" id="questionFormDiv">
+                        <input id="groupId"
+                               type="hidden"
+                               class="form-control"
+                               th:value="${groupId}"/>
+                        <div class="custom-control py-2">
+                            <input id="questionInput"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="*Temat"
+                            />
+                        </div>
+                        <div class="custom-control py-2">
+                            <input id="endDate"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="*Aktywne do"
+                                   onfocus="(this.type='date')"
+                            />
+                        </div>
+                        <div class="custom-control py-2">
+                            <input type="text"
+                                   placeholder="*Propozycja 1"
+                                   class="form-control addAnswer"
+                            />
+                        </div>
+                        <div class="custom-control py-2">
+                            <input type="text"
+                                   placeholder="*Propozycja 2"
+                                   class="form-control addAnswer"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row pb-3 text-center">
+                    <div class="col">
+                        <button type="button" id="createQuestionBtn" class="btn green btn-sm text-white mx-auto">Utwórz Ankietę</button>
+                    </div>
+                    <div class="col">
+                        <button type="button" id="moreAnswers" class="btn orange btn-sm text-white mx-auto">Dodaj Propozycję</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
-            <div class="card my-3">
-                <div class="card-header">
-                    <ul class="nav nav-pills nav-justified">
-                        <h3 class="pr-5 mb-0 mr-5" th:text="${groupName}"></h3>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
-                        </li>
-                    </ul>
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <!--<strong class="h4 flex-grow-1 px-2 m-auto">Znajomi</strong>-->
+                    <div class="mr-auto my-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle h4 px-2 my-0 p-0 text-white" data-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false" th:text="${groupName}+' - Planowanie'"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item"
+                                   th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn green btn-sm m-0" type="button" data-toggle="modal" data-target="#invite">
+                            Dodaj Ankietę
+                            <i class="fas fa-plus ml-1"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="card-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3" style="max-height: 70vh">
-                                    <table class="table bordered mb-0" id="testTable">
-                                        <tbody>
-                                        <input id="userId"
-                                               type="hidden"
-                                               class="form-control"
-                                               th:value="${userId}"/>
-                                        <tr th:each="question, iter :${questions}" th:id="${'question-row-'+iter.index}" th:class="question-row">
-                                            <td th:onclick="'updateAnswer(\'' + ${question.id} + '\');'">
-                                                <div th:class="${'jumbotron m-4 p-4 text-center question-' + (question.isActive ? 'active' : 'disabled')}">
-                                                    <h3 th:text="${question.text}"></h3>
-                                                    <canvas th:id="${'pieChart-' + iter.index}"></canvas>
-
-                                                    <div th:each="answer :${question.answers}">
-                                                        <input type="checkbox" th:value="${answer.id}"
-                                                               th:name="${'question-answers-' + question.id}" th:checked="${answer.checked}"
-                                                               th:class="${'question-answers-' + question.id + (question.isActive ? '' : ' d-none')}"
-                                                               th:disabled="${!question.isActive}"
-                                                        >
-                                                        <span th:text="${answer.text}"></span>
-                                                        <span th:text="${answer.answerCount}"></span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                        <!-- Table body -->
-                                    </table>
-                                    <!-- Table  -->
-                                </div>
-                            </div>
-                            <div class="col-md-5 my-3 px-0">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card mb-3">
-                                                <h5 class="card-header blue darken-2 white-text text-center py-2">
-                                                    <strong>Nowa Ankieta</strong>
-                                                </h5>
-                                                <div class="card-body px-lg-5 py-0 ">
-                                                    <form autocomplete="off" action="#"
-                                                          class="text-center"
-                                                          role="form">
-                                                        <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3" style="max-height: 10vh">
-                                                            <div class="md-form my-0" id="questionFormDiv">
-                                                                <input id="groupId"
-                                                                       type="hidden"
-                                                                       class="form-control"
-                                                                       th:value="${groupId}"/>
-                                                                <div class="custom-control py-2">
-                                                                    <input id="questionInput"
-                                                                           type="text"
-                                                                           class="form-control"
-                                                                           placeholder="*Temat"
-                                                                    />
-                                                                </div>
-                                                                <div class="custom-control py-2">
-                                                                    <input id="endDate"
-                                                                           type="text"
-                                                                           class="form-control"
-                                                                           placeholder="*Aktywne do"
-                                                                           onfocus="(this.type='date')"
-                                                                    />
-                                                                </div>
-                                                                <div class="custom-control py-2">
-                                                                    <input type="text"
-                                                                           placeholder="*Propozycja 1"
-                                                                           class="form-control addAnswer"
-                                                                    />
-                                                                </div>
-                                                                <div class="custom-control py-2">
-                                                                    <input type="text"
-                                                                           placeholder="*Propozycja 2"
-                                                                           class="form-control addAnswer"
-                                                                    />
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="form-row pb-3">
-                                                            <div class="col">
-                                                                <button id="createQuestionBtn"
-                                                                        type="button"
-                                                                        class="btn btn-blue my-2 waves-effect z-depth-0">
-                                                                    Utwórz ankietę
-                                                                </button>
-                                                            </div>
-                                                            <div class="col">
-                                                                <button id="moreAnswers"
-                                                                        type="button"
-                                                                        class="btn btn-amber my-2 waves-effect z-depth-0">
-                                                                    Dodaj propozycję
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
+                <div class="card-body px-lg-5 pt-0 mx-5">
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
+                        <table class="table bordered mb-0" id="testTable">
+                            <tbody>
+                            <input id="userId"
+                                   type="hidden"
+                                   class="form-control"
+                                   th:value="${userId}"/>
+                            <tr th:each="question, iter :${questions}" th:id="${'question-row-'+iter.index}"
+                                th:class="question-row">
+                                <td th:onclick="'updateAnswer(\'' + ${question.id} + '\');'">
+                                    <div th:class="${'jumbotron m-4 p-4 text-center question-' + (question.isActive ? 'active' : 'disabled')}">
+                                        <h3 th:text="${question.text}"></h3>
+                                        <canvas th:id="${'pieChart-' + iter.index}"></canvas>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div th:each="answer :${question.answers}" class="col">
+                                                    <input type="checkbox" th:value="${answer.id}"
+                                                           th:name="${'question-answers-' + question.id}"
+                                                           th:checked="${answer.checked}"
+                                                           th:class="${'question-answers-' + question.id + (question.isActive ? '' : ' d-none')}"
+                                                           th:disabled="${!question.isActive}">
+                                                    <span th:text="${answer.text}"></span>
+                                                    <span th:text="${answer.answerCount}"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <!-- Bootstrap tooltips -->
 <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
@@ -214,10 +207,12 @@
     function getChartData(questionIndex){
         const question = $('#question-row-'+ questionIndex);
         const questionText = question.find('h3').text();
-        const questionAnswers =  jQuery.makeArray(question.find('input')).map(a => a.parentNode);
-        const answerLabels = questionAnswers.map(q => q.children[1].innerHTML);
-        const answerCounts = questionAnswers.map(q => +q.children[2].innerHTML);
-
+        const questionAnswers = jQuery.makeArray(question.find('input')).map(a = > a.parentNode;
+    )
+        const answerLabels = questionAnswers.map(q = > q.children[1].innerHTML;
+    )
+        const answerCounts = questionAnswers.map(q = > +q.children[2].innerHTML;
+    )
         const allBackgroundColors = ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
             "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)",
             "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
@@ -260,9 +255,7 @@
             }
         });
         charts.push(myPieChart);
-    };
-
-
+    }
     function addNewAnswer() {
         const questionFormDiv = $('#questionFormDiv');
         const answers = $('.addAnswer');
@@ -281,7 +274,8 @@
 
     function createQuestion() {
         const answerInputs = jQuery.makeArray($('.addAnswer'));
-        const answers = answerInputs.map(ans => ans.value);
+        const answers = answerInputs.map(ans = > ans.value;
+    )
         const questionText = $('#questionInput').val();
         const groupId = $('#groupId').val();
         const endDate = $('#endDate').val();
