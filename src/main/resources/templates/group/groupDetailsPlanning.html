@@ -164,6 +164,7 @@
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 <!-- MDB core JavaScript -->
 <script rel="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+
 <script th:inline="javascript">
     var apiBase = /*[[${apiBase}]]*/ "";
 
@@ -207,18 +208,18 @@
     function getChartData(questionIndex){
         const question = $('#question-row-'+ questionIndex);
         const questionText = question.find('h3').text();
-        const questionAnswers = jQuery.makeArray(question.find('input')).map(a = > a.parentNode;
-    )
-        const answerLabels = questionAnswers.map(q = > q.children[1].innerHTML;
-    )
-        const answerCounts = questionAnswers.map(q = > +q.children[2].innerHTML;
-    )
+        const questionAnswers =  jQuery.makeArray(question.find('input')).map(a => a.parentNode);
+        const answerLabels = questionAnswers.map(q => q.children[1].innerHTML);
+        const answerCounts = questionAnswers.map(q => +q.children[2].innerHTML);
+
         const allBackgroundColors = ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
             "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)",
-            "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"];
+            "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
+        ];
         const backgroundColors = allBackgroundColors.slice(0, answerCounts.length);
         const allBorderColor = ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
-            "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"];
+            "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"
+        ];
         const borderColors = allBorderColor.slice(0, answerCounts.length);
 
         const chartData = {
@@ -253,7 +254,9 @@
             }
         });
         charts.push(myPieChart);
-    }
+    };
+
+
     function addNewAnswer() {
         const questionFormDiv = $('#questionFormDiv');
         const answers = $('.addAnswer');
@@ -272,8 +275,7 @@
 
     function createQuestion() {
         const answerInputs = jQuery.makeArray($('.addAnswer'));
-        const answers = answerInputs.map(ans = > ans.value;
-    )
+        const answers = answerInputs.map(ans => ans.value);
         const questionText = $('#questionInput').val();
         const groupId = $('#groupId').val();
         const endDate = $('#endDate').val();
