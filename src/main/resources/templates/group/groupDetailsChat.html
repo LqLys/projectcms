@@ -28,34 +28,65 @@
 </head>
 <body>
 <div th:replace="common/header :: header"></div>
+
 <div class="container">
-    <div class="row">
-        <h2>Wyjazd Integracyjny</h2>
-    </div>
-    <div class="row">
-        <div class="col-sm-8">
-            <h3 th:text="${groupName + ' czat'}"></h3>
-            <div>
-                <!--<label>User:</label>-->
-                <!--<input id="user" type="text"/><br>-->
+    <div class="row mx-sm-2 my-lg-0">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <!--<strong class="h4 flex-grow-1 px-2 m-auto">Znajomi</strong>-->
+                    <div class="mr-auto my-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle h4 px-2 my-0 p-0 text-white" data-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false" th:text="${groupName}+' - Chat'" ></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/members}">Szczegóły</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <label>Wpisz wiadomość:</label>
-                <input id="messageToSend" type="text"/><br>
+                <div class="card-body px-lg-5 pt-0 mt-3 ">
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto border border-light mx-3" id="kaszanka">
+                        <div id="all-messages">
+                            <div th:each="msg: ${messages }">
+                                <div th:if="${msg.author} == ${#authorization.authentication.name}" class="text-right p-3">
+                                    <p th:text="${msg.author}" class="pb-0 mb-0"></p>
+                                    <div th:text="${msg.message}" class="badge badge-primary text-wrap p-2 text-left" style="width: 20rem;"></div>
+                                </div>
+                                <div th:if="${msg.author} != ${#authorization.authentication.name}" class="text-left p-3">
+                                    <p th:text="${msg.author}" class="pb-0 mb-0">Bartlomiej Gronostajski</p>
+                                    <div th:text="${msg.message}" class="badge badge-light text-wrap text-left p-2" style="width: 20rem;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Table  -->
+                    </div>
+                    <div class="form-group shadow-textarea p-3 mb-0 text-right">
+                        <textarea class="form-control z-depth-1" id="messageToSend" rows="3" placeholder="Write something here..."></textarea>
+                        <button class="btn btn-md blue lighten-1 text-white mt-2 mr-0"
+                                id="sendBtn">Wyślij
+                        </button >
+                    </div>
 
-                <button id="sendBtn">Wyślij</button>
-                <div id="all-messages">
-                    <p th:each="msg: ${messages}" th:text="${msg.author + ': ' + msg.message}"></p>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-4">
-
         </div>
     </div>
 </div>
 
-<div th:replace="common/footer :: footer"></div>
-
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
 
 <script th:inline="javascript">
     $( document ).ready(function(){
@@ -69,13 +100,29 @@
         var color;
 
         function showMessage(value, user, userColor) {
-            var newResponse = document.createElement('p');
-            newResponse.style.color = userColor;
-            newResponse.appendChild(document.createTextNode(user));
-            newResponse.appendChild(document.createTextNode(": "));
-            newResponse.appendChild(document.createTextNode(value));
+            var newResponse = document.createElement('div');
+
+            var userLabel = document.createElement('p');
+            userLabel.setAttribute('class', 'pb-0 mb-0');
+            userLabel.textContent = user;
+
+            var message = document.createElement('div');
+            message.setAttribute('style', 'width: 20rem;');
+            message.textContent = value;
+
+            newResponse.appendChild(userLabel);
+            newResponse.appendChild(message);
+
+            if('TU MAJSTER PODMIEN' === user){
+                newResponse.setAttribute('class', 'text-right p-3');
+                message.setAttribute('class', 'badge badge-primary text-wrap p-2 text-left');
+            }else {
+                newResponse.setAttribute('class', 'text-left p-3');
+                message.setAttribute('class', 'badge badge-light text-wrap text-left p-2');
+            }
             var respone = document.getElementById('all-messages');
             respone.appendChild(newResponse);
+
         }
         function connect(id) {
 
@@ -90,8 +137,10 @@
         function sendMessage() {
             var messageToSend = document.getElementById('messageToSend').value;
             // var user = document.getElementById('user').value;
-            client.send("/app/chat/"+grId, {}, JSON.stringify({'value': messageToSend, 'user': username, 'userColor': color}) );
-            document.getElementById('messageToSend').value = "";
+            if(messageToSend){
+                client.send("/app/chat/"+grId, {}, JSON.stringify({'value': messageToSend, 'user': username, 'userColor': color}) );
+                document.getElementById('messageToSend').value = "";
+            }
         }
         function getRandomColor() {
             var letters = '0123456789ABCDEF';
