@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class GroupInviteStatusChangeRequest {
 
     private Long id;
-    private GroupInvitationStatus status;
+    private GroupInvitationStatus invitationStatus;
 }

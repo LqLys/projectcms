@@ -1,6 +1,7 @@
 package com.example.cms.app.domain.travelgroup.controller;
 
 import com.example.cms.app.domain.expense.facade.ExpenseFacade;
+import com.example.cms.app.domain.groupinvite.entity.GroupInvitationStatus;
 import com.example.cms.app.domain.groupinvite.facade.GroupInviteFacade;
 import com.example.cms.app.domain.question.dto.PlanningQuestionDto;
 import com.example.cms.app.domain.question.facade.QuestionFacade;
@@ -177,8 +178,14 @@ public class TravelGroupController {
     public ModelAndView changeInvitationStatus(@Valid GroupInviteStatusChangeRequest groupInviteStatusChangeRequest,
                                                BindingResult bindingResult, ModelAndView modelAndView) {
         UserEntity authenticatedUser = userService.getAuthenticatedUser();
-        Long groupId = groupInviteFacade.acceptInvitation(authenticatedUser, groupInviteStatusChangeRequest);
-        modelAndView.setViewName("redirect:/group/details/"+groupId+"/members");
+
+        Long groupId = groupInviteFacade.handleInvitation(authenticatedUser, groupInviteStatusChangeRequest);
+        if(groupInviteStatusChangeRequest.getInvitationStatus() == GroupInvitationStatus.ACCEPTED) {
+            modelAndView.setViewName("redirect:/group/details/"+groupId+"/members");
+        } else {
+            modelAndView.setViewName("redirect:/notification/invitations");
+        }
+
         return modelAndView;
     }
 

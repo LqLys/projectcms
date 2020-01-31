@@ -84,29 +84,29 @@
         </div>
         <div sec:authentication="name" hidden id="user-email"></div>
         <div th:text="${ADDED_API}" hidden id="api-url"></div>
-        <!--<script>-->
-            <!--$(document).ready(function () {-->
-                <!--const username = $('#user-email')[0].innerText;-->
-                <!--const apiUrl = $('#api-url')[0].innerText;-->
+        <script>
+            $(document).ready(function () {
+                const username = $('#user-email')[0].innerText;
+                const apiUrl = $('#api-url')[0].innerText;
 
-                <!--function getInvitesCount() {-->
-                    <!--console.log(username);-->
+                function getInvitesCount() {
+                    console.log(username);
 
-                    <!--$.get(apiUrl + '/notification/pending/' + username, function (data, status) {-->
-                        <!--console.log(data);-->
-                        <!--var invitesCountLink = $($('#invites-count')[0]);-->
-                        <!--invitesCountLink.text(data);-->
-                    <!--});-->
+                    $.get(apiUrl + '/notification/pending/' + username, function (data, status) {
+                        console.log(data);
+                        var invitesCountLink = $($('#invites-count')[0]);
+                        invitesCountLink.text(data);
+                    });
 
-                <!--}-->
+                }
 
-                <!--// if (username !== 'anonymousUser') {-->
-                <!--//     getInvitesCount();-->
-                <!--//     setInterval(getInvitesCount, 3000);-->
-                <!--// }-->
+                if (username !== 'anonymousUser') {
+                    getInvitesCount();
+                    setInterval(getInvitesCount, 3000);
+                }
 
-            <!--})-->
-        <!--</script>-->
+            })
+        </script>
     </div>
 </nav>
 </body>

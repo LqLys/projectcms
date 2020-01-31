@@ -1,5 +1,6 @@
 package com.example.cms.app.domain.groupinvite.facade;
 
+import com.example.cms.app.domain.groupinvite.entity.GroupInvitationStatus;
 import com.example.cms.app.domain.groupinvite.entity.GroupInviteEntity;
 import com.example.cms.app.domain.groupinvite.service.GroupInviteService;
 import com.example.cms.app.domain.travelgroup.dto.GroupInviteDto;
@@ -34,14 +35,17 @@ public class GroupInviteFacade {
         return groupInviteService.getUsersPendingInvites(userId);
     }
     @Transactional
-    public Long acceptInvitation(UserEntity authenticatedUser, GroupInviteStatusChangeRequest groupInviteStatusChangeRequest) {
+    public Long handleInvitation(UserEntity authenticatedUser, GroupInviteStatusChangeRequest groupInviteStatusChangeRequest) {
         GroupInviteEntity invitation = groupInviteService.getInvitation(groupInviteStatusChangeRequest.getId());
         TravelGroupEntity travelGroup = invitation.getTravelGroup();
-        UserTravelGroupEntity userInGroup = UserTravelGroupEntity.builder()
-                .groupRole(GroupRole.MEMBER)
-                .id(new UserTravelGroupId(authenticatedUser.getId(), travelGroup.getId()))
-                .build();
-        userTravelGroupService.addUserToGroup(userInGroup);
+        if(groupInviteStatusChangeRequest.getInvitationStatus().equals(GroupInvitationStatus.ACCEPTED)){
+            UserTravelGroupEntity userInGroup = UserTravelGroupEntity.builder()
+                    .groupRole(GroupRole.MEMBER)
+                    .id(new UserTravelGroupId(authenticatedUser.getId(), travelGroup.getId()))
+                    .build();
+            userTravelGroupService.addUserToGroup(userInGroup);
+        }
+
         groupInviteService.delete(invitation);
         return travelGroup.getId();
 
