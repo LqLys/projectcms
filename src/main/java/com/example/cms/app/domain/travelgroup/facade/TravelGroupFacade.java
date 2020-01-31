@@ -73,12 +73,12 @@ public class TravelGroupFacade {
     public void sendInvitation(UserEntity authenticatedUser, GroupInviteRequest groupInviteRequest) {
         UserEntity invitationTarget = userService.findUserByEmail(groupInviteRequest.getEmail());
         TravelGroupEntity group = travelGroupService.findTravelGroup(groupInviteRequest.getGroupId());
-        boolean userAlreadyInGroup = userTravelGroupService.userAlreadyInGroup(invitationTarget.getId(), group.getId());
-        if (!userAlreadyInGroup) {
-            groupInviteService.sendInvitation(authenticatedUser, invitationTarget, group);
+        if(invitationTarget != null) {
+            boolean userAlreadyInGroup = userTravelGroupService.userAlreadyInGroup(invitationTarget.getId(), group.getId());
+            if (!userAlreadyInGroup) {
+                groupInviteService.sendInvitation(authenticatedUser, invitationTarget, group);
+            }
         }
-
-
     }
 
     public TravelGroupExpensesDto getTravelGroupExpensesView(Long groupId) {

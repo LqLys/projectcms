@@ -163,13 +163,4 @@ public class AuthenticationController {
         }
         return modelAndView;
     }
-
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handleError(HttpServletRequest req, Exception ex) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("error-page");
-        return mav;
-    }
-
-
 }
