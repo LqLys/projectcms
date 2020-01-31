@@ -49,7 +49,7 @@
                             <input id="questionInput"
                                    type="text"
                                    class="form-control"
-                                   placeholder="*Temat"
+                                   placeholder="*Tematjkh"
                             />
                         </div>
                         <div class="custom-control py-2">
@@ -138,7 +138,7 @@
                                                            th:class="${'question-answers-' + question.id + (question.isActive ? '' : ' d-none')}"
                                                            th:disabled="${!question.isActive}">
                                                     <span th:text="${answer.text}"></span>
-                                                    <span th:text="${answer.answerCount}"></span>
+                                                    <span th:text="${answer.answerCount}">   </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -215,12 +215,10 @@
     )
         const allBackgroundColors = ["rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)",
             "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(54, 162, 235, 0.2)",
-            "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"
-        ];
+            "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"];
         const backgroundColors = allBackgroundColors.slice(0, answerCounts.length);
         const allBorderColor = ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)",
-            "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"
-        ];
+            "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"];
         const borderColors = allBorderColor.slice(0, answerCounts.length);
 
         const chartData = {
