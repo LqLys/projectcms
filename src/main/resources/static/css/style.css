@@ -93,12 +93,12 @@ nav {
     letter-spacing: 0.1em;
 }
 
-.main-page-description{
+.main-page-description {
     -webkit-text-stroke-width: thin;
     letter-spacing: 0.03em;
 }
 
-.bulletpoints{
+.bulletpoints {
     max-width: fit-content;
     text-align: left;
     margin: auto;
@@ -112,21 +112,26 @@ nav {
     content: "\2023";
 }
 
-.invalid-feedback{
+.invalid-feedback {
     display: block;
     font-size: 1.3em;
 }
 
-.valid-feedback{
+.valid-feedback {
     display: block;
     font-size: 1.3em;
 }
-@media (min-width: 1600px){
+
+@media (min-width: 1600px) {
     .container {
         max-width: 1300px;
     }
 }
 
-.green{
+.green {
     background-color: #54c358 !important;
+}
+
+.planning-checkbox {
+
 }
