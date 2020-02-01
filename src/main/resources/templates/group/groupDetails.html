@@ -26,115 +26,117 @@
 <body>
 <div th:replace="common/header :: header"></div>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
-            <div class="card my-3">
-                <div class="card-header">
-                    <ul class="nav nav-pills nav-justified">
-                        <h3 class="pr-5 mb-0 mr-5" th:text="${travelGroupDto.name}"></h3>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
-                        </li>
-                    </ul>
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <!--<strong class="h4 flex-grow-1 px-2 m-auto">Znajomi</strong>-->
+                    <div class="mr-auto my-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle h4 px-2 my-0 p-0 text-white" data-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false" th:text="${travelGroupDto.name}+' - Szczegóły'" ></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/expenses}">Wydatki</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card-body pb-0 pt-0">
+                <div class="card-body px-lg-5 pt-0 mt-3">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-7">
-                                <div class="jumbotron m-4 p-4">
-                                    <form autocomplete="off" action="#" th:action="@{/group/details/edit}"
-                                          th:object="${travelGroupDto}" method="post"
-                                          class="p-4"
-                                          role="form">
-                                        <div class="md-form my-0">
-                                            <label th:if="${#fields.hasErrors('name')}"
-                                                   th:errors="*{name}"
-                                                   class="validation-message"></label>
-                                            <input type="text" th:field="*{name}" placeholder="*Nazwa"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                                   class="form-control"/>
-                                            <label th:if="${#fields.hasErrors('destination')}"
-                                                   th:errors="*{destination}"
-                                                   class="validation-message"></label>
-                                            <input type="text" th:field="*{destination}" placeholder="*Cel"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                                   class="form-control"/>
-                                            <label th:if="${#fields.hasErrors('startDate')}"
-                                                   th:errors="*{startDate}"
-                                                   class="validation-message"></label>
-                                            <input type="date" th:field="*{startDate}" class="form-control"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                                   th:value="${#temporals.format(travelGroupDto.startDate, 'dd/MM/yyyy')}"
-                                            />
-                                            <label th:if="${#fields.hasErrors('endDate')}"
-                                                   th:errors="*{endDate}"
-                                                   class="validation-message"></label>
-                                            <input type="date" th:field="*{endDate}"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                                   class="form-control"/>
-                                            <div th:each="visibility, visIndex :${groupVisibilityOptions}">
-                                                <input type="radio" th:value="${visibility.name()}" th:text="${visibility.name() == 'PUBLIC' ? 'Publiczna' : 'Prywatna'}"
-                                                       th:name="${'groupVisibility'}" th:checked="${travelGroupDto.getGroupVisibility().equals(visibility)}"
-                                                       th:disabled="${!viewerIsOrganizer}"
-                                                >
+                            <div class="col-5">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
+                                    <form autocomplete="off" action="#" th:action="@{/group/details/edit}" th:object="${travelGroupDto}" method="post" class="px-3" role="form">
+                                        <div class="md-form">
+                                            <input type="text" id="Name" class="form-control" th:field="*{name}" th:disabled="${!viewerIsOrganizer}">
+                                            <label for="Name">Nazwa Grupy</label>
+                                            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
+                                        </div>
+                                        <div class="md-form">
+                                            <input type="text" id="Destination" class="form-control" th:field="*{destination}" th:disabled="${!viewerIsOrganizer}">
+                                            <label for="Destination">Cel Podróży</label>
+                                            <label th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}" class="validation-message"></label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="md-form">
+                                                    <input type="date" id="start" class="form-control" th:field="*{startDate}" th:disabled="${!viewerIsOrganizer}" th:value="${#temporals.format(travelGroupDto.startDate, 'dd/MM/yyyy')}">
+                                                    <label for="start">Data Wyjazdu</label>
+                                                    <label th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" class="validation-message"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="md-form">
+                                                    <input type="date" id="end" class="form-control" th:field="*{endDate}" th:disabled="${!viewerIsOrganizer}">
+                                                    <label for="end">Data Powrotu</label>
+                                                    <label th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" class="validation-message"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <label class="mb-1">Status</label>
+                                                <div class="md-form my-0">
+                                                    <select class="browser-default custom-select">
+                                                        <option th:each="status :${groupStatusOptions}" th:value="${status.name()}" th:text="${status.name() == 'CREATED' ? 'Utworzona' : (status.name() == 'ACTIVE' ? 'W toku' : 'Zakończona')}" th:name="${'groupStatus'}" th:checked="${travelGroupDto.getGroupStatus().equals(status)}" th:disabled="${!viewerIsOrganizer}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <label class="mb-1">Typ</label>
+                                                <div class="md-form my-0">
+                                                    <select class="browser-default custom-select">
+                                                        <option th:each="visibility, visIndex :${groupVisibilityOptions}" th:value="${visibility.name()}" th:text="${visibility.name() == 'PUBLIC' ? 'Publiczna' : 'Prywatna'}" th:name="${'groupVisibility'}" th:checked="${travelGroupDto.getGroupVisibility().equals(visibility)}" th:disabled="${!viewerIsOrganizer}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-3">
+                                                <div class="md-form">
+                                                    <img th:src="${travelGroupDto.imgUrl}"
+                                                         onError="this.onerror=null;this.src='/img/map.png'"
+                                                         class="rounded-circle z-depth-0"
+                                                         alt="avatar image" height="50" width="50">
+                                                </div>
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="md-form">
+                                                    <input type="text" th:field="*{imgUrl}" placeholder="*Link obrazka"
+                                                           th:disabled="${!viewerIsOrganizer}"
+                                                           class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label th:if="${#fields.hasErrors('imgUrl')}"
+                                               th:errors="*{imgUrl}"
+                                               class="validation-message"></label>
+                                        <input type="hidden" th:attr="name=groupId" class="form-control"
+                                               th:value="${groupId}"
+                                               th:disabled="${!viewerIsOrganizer}"/>
+                                        <input type="hidden" th:attr="name=lat" class="form-control" id="groupLat"
+                                               th:disabled="${!viewerIsOrganizer}"
+                                               th:value="${travelGroupDto.lat}"/>
+                                        <input type="hidden" th:attr="name=lng" class="form-control" id="groupLng"
+                                               th:disabled="${!viewerIsOrganizer}"
+                                               th:value="${travelGroupDto.lng}"/>
 
-                                            </div>
-                                            <hr>
-                                            <div th:each="status :${groupStatusOptions}">
-                                                <input type="radio" th:value="${status.name()}" th:text="${status.name() == 'CREATED' ? 'Utworzona' : (status.name() == 'ACTIVE' ? 'W toku' : 'Zakończona')}"
-                                                       th:name="${'groupStatus'}" th:checked="${travelGroupDto.getGroupStatus().equals(status)}"
-                                                       th:disabled="${!viewerIsOrganizer}"
-                                                >
-
-                                            </div>
-                                            <hr>
-                                            <img th:src="${travelGroupDto.imgUrl}"
-                                                 onError="this.onerror=null;this.src='/img/map.png'"
-                                                 class="rounded-circle z-depth-0"
-                                                 alt="avatar image" height="50" width="50">
-                                            <label th:if="${#fields.hasErrors('imgUrl')}"
-                                                   th:errors="*{imgUrl}"
-                                                   class="validation-message"></label>
-                                            <input type="text" th:field="*{imgUrl}" placeholder="*Link obrazka"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                                   class="form-control"/>
-                                            <input type="hidden" th:attr="name=groupId" class="form-control"
-                                                   th:value="${groupId}"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                            />
-                                            <input type="hidden" th:attr="name=lat" class="form-control" id="groupLat"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                                   th:value="${travelGroupDto.lat}"/>
-                                            <input type="hidden" th:attr="name=lng" class="form-control" id="groupLng"
-                                                   th:disabled="${!viewerIsOrganizer}"
-                                                   th:value="${travelGroupDto.lng}"/>
-                                            <div class="form-group">
-                                                <button type="submit "
-                                                        th:disabled="${!viewerIsOrganizer}"
-                                                        th:hidden="${!viewerIsOrganizer}"
-                                                        class="btn btn-blue mt-4 mx-0 waves-effect z-depth-0">
-                                                    Zapisz zmiany
-                                                </button>
-                                            </div>
+                                        <div class="text-center">
+                                            <button class="btn green m-0" type="submit" data-toggle="modal" data-target="#centralModalSm" th:disabled="${!viewerIsOrganizer}" th:hidden="${!viewerIsOrganizer}">
+                                                Zapisz
+                                                <i class="pl-1 far fa-save"></i>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
-                            </div>
-                            <div class="col-md-5">
+                                </div>
+                            <div class="col-7">
                                 <div id="map" style="width: 500px; height: 480px;" class="jumbotron m-4"></div>
                                 <script th:inline="javascript">
                                     var map;
@@ -189,10 +191,8 @@
 
                                 </script>
                                 <script>
-
                                 </script>
-                                <script th:inline="javascript" async="async" defer="defer"
-                                        th:src="${'https://maps.googleapis.com/maps/api/js?key=' + MAPS_KEY + '&callback=initMap'}"></script>
+                                <script th:inline="javascript" async="async" defer="defer" th:src="${'https://maps.googleapis.com/maps/api/js?key=' + MAPS_KEY + '&callback=initMap'}"></script>
                             </div>
                         </div>
                     </div>
@@ -201,5 +201,13 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
 </body>
 </html>
