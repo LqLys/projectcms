@@ -113,7 +113,7 @@
             newResponse.appendChild(userLabel);
             newResponse.appendChild(message);
 
-            if('TU MAJSTER PODMIEN' === user){
+            if(username === user){
                 newResponse.setAttribute('class', 'text-right p-3');
                 message.setAttribute('class', 'badge badge-primary text-wrap p-2 text-left');
             }else {
@@ -122,6 +122,7 @@
             }
             var respone = document.getElementById('all-messages');
             respone.appendChild(newResponse);
+            newResponse.scrollIntoView(true);
 
         }
         function connect(id) {
@@ -152,6 +153,8 @@
         }
         $('#sendBtn').on('click', sendMessage);
         connect(grId);
+        var allMsg = $('#all-messages').children()
+        allMsg[allMsg.length-1].scrollIntoView(true);
     })
 
 
