@@ -118,7 +118,7 @@
     <div class="row mx-sm-2 my-lg-0">
         <div class="col-12">
             <div class="card my-4">
-                <div class="card-header blue lighten-1 white-text d-flex">
+                <div class="card-header blue lighten-1 white-text d-flex p-2">
                     <!--<strong class="h4 flex-grow-1 px-2 m-auto">Znajomi</strong>-->
                     <div class="mr-auto my-auto">
                         <div class="nav-item dropdown">
@@ -134,7 +134,7 @@
                         </div>
                     </div>
                     <div th:if="${groupVisibility.name() == 'PUBLIC' || browsingUserRole.name() == 'OWNER'}">
-                        <button class="btn green btn-sm" type="button" data-toggle="modal" data-target="#invite">
+                        <button class="btn green btn-sm my-1" type="button" data-toggle="modal" data-target="#invite">
                             Zaproś Znajomych
                             <i class="far fa-envelope"></i>
                         </button>
