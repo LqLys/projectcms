@@ -55,11 +55,11 @@
                         <div id="all-messages">
                             <div th:each="msg: ${messages }">
                                 <div th:if="${msg.author} == ${#authorization.authentication.name}" class="text-right p-3">
-                                    <p th:text="${msg.author}" class="pb-0 mb-0"></p>
+                                    <p th:text="${msg.firstName + ' ' + msg.lastName}" class="pb-0 mb-0"></p>
                                     <div th:text="${msg.message}" class="badge badge-primary text-wrap p-2 text-left" style="width: 20rem;"></div>
                                 </div>
                                 <div th:if="${msg.author} != ${#authorization.authentication.name}" class="text-left p-3">
-                                    <p th:text="${msg.author}" class="pb-0 mb-0">Bartlomiej Gronostajski</p>
+                                    <p th:text="${msg.firstName + ' ' + msg.lastName}" class="pb-0 mb-0">Bartlomiej Gronostajski</p>
                                     <div th:text="${msg.message}" class="badge badge-light text-wrap text-left p-2" style="width: 20rem;"></div>
                                 </div>
                             </div>
@@ -92,6 +92,8 @@
     $( document ).ready(function(){
         var grId = /*[[${groupId}]]*/ "";
         var username =/*[[${username}]]*/ "";
+        var firstName =/*[[${firstName}]]*/ "";
+        var lastName =/*[[${lastName}]]*/ "";
         var apiBase = /*[[${apiBase}]]*/ "";
         var wsPrefix = /*[[${WS_PREFIX}]]*/ "";
         var indexOfUrl = apiBase.indexOf('/');
@@ -99,12 +101,12 @@
         var client = null;
         var color;
 
-        function showMessage(value, user, userColor) {
+        function showMessage(value, user, fn, ln, userColor) {
             var newResponse = document.createElement('div');
 
             var userLabel = document.createElement('p');
             userLabel.setAttribute('class', 'pb-0 mb-0');
-            userLabel.textContent = user;
+            userLabel.textContent = fn + ' ' + ln;
 
             var message = document.createElement('div');
             message.setAttribute('style', 'width: 20rem;');
@@ -131,7 +133,7 @@
             color = getRandomColor();
             client.connect({}, function (frame) {
                 client.subscribe("/topic/messages/"+id, function(message){
-                    showMessage(JSON.parse(message.body).value, JSON.parse(message.body).user, JSON.parse(message.body).userColor)
+                    showMessage(JSON.parse(message.body).value, JSON.parse(message.body).user, JSON.parse(message.body).firstName, JSON.parse(message.body).lastName, JSON.parse(message.body).userColor)
                 });
             })
         }
@@ -139,7 +141,7 @@
             var messageToSend = document.getElementById('messageToSend').value;
             // var user = document.getElementById('user').value;
             if(messageToSend){
-                client.send("/app/chat/"+grId, {}, JSON.stringify({'value': messageToSend, 'user': username, 'userColor': color}) );
+                client.send("/app/chat/"+grId, {}, JSON.stringify({'value': messageToSend, 'user': username, 'userColor': color, 'firstName': firstName, 'lastName': lastName}) );
                 document.getElementById('messageToSend').value = "";
             }
         }

@@ -17,4 +17,6 @@ public class ChatMessageDto {
     private String message;
     private LocalDateTime time;
     private String author;
+    private String firstName;
+    private String lastName;
 }

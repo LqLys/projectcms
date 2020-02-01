@@ -34,6 +34,8 @@ public class ChatMessageFacade {
                                 .author(message.getUser().getEmail())
                                 .message(message.getMessage())
                                 .time(message.getTime())
+                                .firstName(message.getUser().getFirstName())
+                                .lastName(message.getUser().getLastName())
                 .build()).collect(Collectors.toList());
     }
 
