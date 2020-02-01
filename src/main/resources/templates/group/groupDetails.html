@@ -83,7 +83,7 @@
                                             <div class="col">
                                                 <label class="mb-1">Status</label>
                                                 <div class="md-form my-0">
-                                                    <select class="browser-default custom-select">
+                                                    <select th:field="*{groupStatus}" class="browser-default custom-select">
                                                         <option th:each="status :${groupStatusOptions}" th:value="${status.name()}" th:text="${status.name() == 'CREATED' ? 'Utworzona' : (status.name() == 'ACTIVE' ? 'W toku' : 'Zakończona')}" th:name="${'groupStatus'}" th:checked="${travelGroupDto.getGroupStatus().equals(status)}" th:disabled="${!viewerIsOrganizer}"></option>
                                                     </select>
                                                 </div>
@@ -91,7 +91,7 @@
                                             <div class="col">
                                                 <label class="mb-1">Typ</label>
                                                 <div class="md-form my-0">
-                                                    <select class="browser-default custom-select">
+                                                    <select th:field="*{groupVisibility}" class="browser-default custom-select">
                                                         <option th:each="visibility, visIndex :${groupVisibilityOptions}" th:value="${visibility.name()}" th:text="${visibility.name() == 'PUBLIC' ? 'Publiczna' : 'Prywatna'}" th:name="${'groupVisibility'}" th:checked="${travelGroupDto.getGroupVisibility().equals(visibility)}" th:disabled="${!viewerIsOrganizer}"></option>
                                                     </select>
                                                 </div>
