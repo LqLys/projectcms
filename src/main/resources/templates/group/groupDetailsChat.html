@@ -153,6 +153,8 @@
         }
         $('#sendBtn').on('click', sendMessage);
         connect(grId);
+        var allMsg = $('#all-messages').children()
+        allMsg[allMsg.length-1].scrollIntoView(true);
     })
 
 
