@@ -37,7 +37,6 @@
                 </button>
             </div>
 
-
             <form class="modal-body" autocomplete="off" action="#">
                 <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto my-3" style="max-height: 40vh; min-height: 40vh">
                     <div class="md-form my-0" id="questionFormDiv">
@@ -135,7 +134,7 @@
                                                     <input type="checkbox" th:value="${answer.id}"
                                                            th:name="${'question-answers-' + question.id}"
                                                            th:checked="${answer.checked}"
-                                                           th:class="${'question-answers-' + question.id + (question.isActive ? '' : ' d-none')}"
+                                                           th:class="${'planning-checkbox big-checkbox question-answers-' + question.id + (question.isActive ? '' : ' d-none')}"
                                                            th:disabled="${!question.isActive}">
                                                     <span th:text="${answer.text}"></span>
                                                     <span th:text="${answer.answerCount}">   </span>
