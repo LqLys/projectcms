@@ -28,6 +28,133 @@
 <div th:replace="common/header :: header"></div>
 
 
+<div class="modal fade" id="invite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header light-blue lighten-1">
+                <h5 class="modal-title w-100 text-white" id="myModalLabel">Nowy Wydatek</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <form autocomplete="off" action="#" th:object="${createExpenseRequest}" method="post" role="form">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="md-form">
+                                <input type="text" id="start" class="form-control" th:field="*{title}">
+                                <label for="start">Tytuł Wydatku</label>
+                                <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="validation-message"></label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="md-form">
+                                <input type="text" id="end" class="form-control" th:field="*{amount}">
+                                <label for="end">Kwota Wydatku</label>
+                                <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="validation-message"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-2">
+                    <div class="table-wrapper-scroll-y sm-custom-scrollbar overflow-auto">
+                        <table class="table bordered table-hover mb-0">
+                            <!-- Table head -->
+                            <thead>
+                                <tr class="table-fixed">
+                                    <th>Uczestnik</th>
+                                    <th>Czy bierze udział?</th>
+                                    <th>Wkład własny</th>
+                                </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody id="members">
+
+                            <tr th:block th:each="member : ${travelGroup.getMembers()}">
+                                <td th:if="${currentUserId != member.id}" th:text="${member.name}" ></td>
+                                <td th:if="${currentUserId != member.id}">
+                                    <input type="checkbox" name="debtors" th:value="${member.id}" th:id="${'debtor-'+member.id}"/>
+                                </td>
+                                <td class="pb-0 pt-1" th:if="${currentUserId != member.id}">
+                                    <div class="md-form m-0">
+                                        <input th:type="number" id="starto" class="form-control" th:id="${'amount-'+member.id}">
+                                        <label for="starto">Kwota</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
+                        <input type="hidden" th:attr="name=groupId" class="form-control" th:value="${travelGroup.id}" id="groupId"/>
+                        <input type="hidden" th:attr="name=authorId" class="form-control" th:value="${currentUserId}" id="authorId"/>
+                    </div>
+                    <div class="text-center pt-4">
+                        <button type="button" class="btn green btn-sm text-white mx-5" th:onclick="'createExpense(\'\');'">Dodaj Wudatek</button>
+                        <button type="button" class="btn orange btn-sm text-white mx-5" data-dismiss="modal">Wróć</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row mx-sm-2 my-lg-0">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header blue lighten-1 white-text d-flex">
+                    <!--<strong class="h4 flex-grow-1 px-2 m-auto">Znajomi</strong>-->
+                    <div class="mr-auto my-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle h4 px-2 my-0 p-0 text-white" data-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false" th:text="${travelGroup.name}+' - Wydatki'" ></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/members}">Uczestnicy</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__}">Szczegóły</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/planning}">Planowanie</a>
+                                <a class="dropdown-item" th:href="@{/group/details/__${groupId}__/chat}">Chat</a>
+                            </div>
+                        </div>
+                    </div>
+                        <button class="btn green btn-sm" type="button" data-toggle="modal" data-target="#invite">
+                            Dodaj Wydatek
+                            <i class="pl-1 fas fa-dollar-sign"></i>
+                        </button>
+                </div>
+
+                <div class="card-body px-lg-5 pt-0 mt-3">
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar overflow-auto">
+                        <table class="table bordered table-hover mb-0" id="testTable">
+                            <!-- Table head -->
+                            <thead>
+                            <tr class="table-fixed">
+                                <th>Tytuł wydatku</th>
+                                <th>Kwotw wydatku</th>
+                            </tr>
+                            </thead>
+                            <!-- Table head -->
+
+                            <!-- Table body -->
+                            <tbody>
+                            <tr th:each="expense :${travelGroup.expenses}" style="font-size: x-large">
+                                <td th:text="${expense.getTitle()}"></td>
+                                <td class="font-weight-bold" th:text="${expense.getAmount()} + ' zł'"></td>
+                            </tr>
+                            <!-- Table body -->
+                        </table>
+                        <!-- Table  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
 
     <div class="row">
@@ -70,23 +197,19 @@
         </div>
         <div class="col-sm-4">
             <div>
-                <form autocomplete="off" action="#"
-                      th:object="${createExpenseRequest}" method="post" class="form-horizontal"
-                      role="form">
+                <form autocomplete="off" action="#" th:object="${createExpenseRequest}" method="post" class="form-horizontal" role="form">
                     <h2>Dodaj wydatek</h2>
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
-                                   class="validation-message"></label>
-                            <input type="text" th:field="*{title}" placeholder="tytuł"
-                                   class="form-control" id="title"/>
+                            <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="validation-message"></label>
+                            <input type="text" th:field="*{title}" placeholder="tytuł" class="form-control" id="title"/>
                         </div>
                         <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
-                                   class="validation-message"></label>
-                            <input type="text" th:field="*{amount}" placeholder="kwota"
-                                   class="form-control" id="totalAmount"/>
+                            <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="validation-message"></label>
+                            <input type="text" th:field="*{amount}" placeholder="kwota" class="form-control" id="totalAmount"/>
                         </div>
+
+
                         <div class="col-sm-9">
                             <label>Dodaj osoby, które uczestniczyły w wydatku.</label>
                             <th:block th:each="member : ${travelGroup.getMembers()}">
@@ -105,8 +228,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <button type="button" class="btn btn-primary"
-                                    th:onclick="'createExpense(\'\');'">Dodaj</button>
+                            <button type="button" class="btn btn-primary" th:onclick="'createExpense(\'\');'">Dodaj</button>
                         </div>
                     </div>
 
@@ -120,14 +242,17 @@
     </div>
 </div>
 
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
+<!-- Your custom scripts (optional) -->
+
 <script th:inline="javascript">
     var apiBase = /*[[${apiBase}]]*/ "";
-
-
-
-
-
-
     function createExpense(){
         const authorId = $('#authorId').val();
         const groupId = $('#groupId').val();
@@ -171,8 +296,6 @@
         });
 
     }
-
-
 </script>
 
 </body>
